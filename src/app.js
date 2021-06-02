@@ -7,14 +7,9 @@ const app = express();
 app.use(express.json());
 // app.use('/readers', readerRouter);
 app.post('/readers', readerController.create);
-
-// app.get('/', (req, res) => {
-//   console.log('Hitting this endpoint');
-//   res.status(200).json({ result: "Hello World" });
-// });
-
-// app.post('/readers', (req, res) => {
-//   res.sendStatus(201);
-// });
+app.get('/readers', readerController.list);
+app.get('/readers/:id', readerController.findById);
+app.patch('/readers/:id', readerController.update);
+app.delete('/readers/:id', readerController.delete);
 
 module.exports = app;
