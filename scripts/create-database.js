@@ -17,7 +17,7 @@ require('dotenv').config({
 const { DB_PASSWORD, DB_NAME, DB_USER, DB_HOST, DB_PORT } = process.env;
 
 // This asynchronous function will run before app
-const setUpDatabase = async () => {
+const setupDatabase = async () => {
   try {
   //   // connect to the database
     const db = await mysql.createConnection({
@@ -37,4 +37,4 @@ const setUpDatabase = async () => {
 };
 
 // run the async function
-setUpDatabase();
+setupDatabase();
