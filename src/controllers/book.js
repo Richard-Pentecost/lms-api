@@ -6,7 +6,8 @@ exports.create = async (req, res) => {
   const { name, author } = req.body;
 
   try {
-    await db.query(`INSERT INTO Book (name, author) VALUES ('${name}', '${author}')`);
+    const result = await db.query(`INSERT INTO Book (name, author) VALUES (?, ?)`, [name, author]);
+    console.log(result);
     res.sendStatus(201);
   } catch (err) {
     console.log(err);

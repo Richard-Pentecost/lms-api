@@ -25,7 +25,7 @@ describe('create book', () => {
         const [[ books ]] = await db.query(
           `SELECT * FROM Book WHERE name = 'Harry Potter and the Philosophers Stone'`
         );
-        console.log(books);
+        // console.log(books);
 
         expect(books.name).to.equal('Harry Potter and the Philosophers Stone');
         expect(books.author).to.equal('JK Rowling');
