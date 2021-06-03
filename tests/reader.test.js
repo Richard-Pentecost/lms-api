@@ -6,7 +6,7 @@ const app = require('../src/app');
 describe('/reader', () => {
   before(async () => Reader.sequelize.sync());
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await Reader.destroy({ where: {} });
   });
 

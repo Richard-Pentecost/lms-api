@@ -19,7 +19,7 @@ const { DB_PASSWORD, DB_NAME, DB_USER, DB_HOST, DB_PORT } = process.env;
 // This asynchronous function will run before app
 const setupDatabase = async () => {
   try {
-  //   // connect to the database
+    // connect to the database
     const db = await mysql.createConnection({
       host: DB_HOST,
       user: DB_USER,
