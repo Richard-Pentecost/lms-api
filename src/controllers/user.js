@@ -1,4 +1,4 @@
-const { Reader } = require('../models');
+const { User } = require('../models');
 
 const removePassword = obj => {
   if (obj.hasOwnProperty('password')) {

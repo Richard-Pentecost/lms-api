@@ -3,13 +3,16 @@ module.exports = (connection, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notNull: { msg: 'Name must be given.'}
+      }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         isEmail: { msg: 'Must be a valid email address.' },
-        notNull: { msg: 'Email must be given'},
+        notNull: { msg: 'Email must be given.'},
       },
     },
     password: {
@@ -20,10 +23,15 @@ module.exports = (connection, DataTypes) => {
           args: 8,
           msg: 'Password must be at least 8 characters long.',
         },
+        notNull: { msg: 'Password must be given.' },
       },
     },
+    permissionLevel: {
+      type: DataTypes.STRING,
+      defaultValue: 'user',
+    }
   };
 
-  const ReaderModel = connection.define('Reader', schema);
-  return ReaderModel;
+  const UserModel = connection.define('User', schema);
+  return UserModel;
 };
