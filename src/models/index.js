@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const UserModel = require('./user');
+const FarmModel = require('./farm');
 
 const { DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_PORT } = process.env;
 
@@ -16,6 +17,7 @@ const setupDatabase = () => {
   connection.sync({ alter: true });
   return {
     User,
+    Farm,
   };
 };
 
