@@ -1,12 +1,5 @@
 const { User } = require('../models');
-// const removePassword = require('./utils/helpers');
-
-const removePassword = obj => {
-  if (obj.hasOwnProperty('password')) {
-    delete obj.password;
-  };
-  return obj;
-};
+const { removePassword } = require('../utils/helpers');
 
 const createUser = async (req, res) => {
   try {
