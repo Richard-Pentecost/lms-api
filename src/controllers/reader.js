@@ -1,9 +1,18 @@
 const { Reader } = require('../models');
 
+const removePassword = obj => {
+  if (obj.hasOwnProperty('password')) {
+    delete obj.password;
+  };
+  return obj;
+}
+
 exports.create = async (req, res) => {
   try {
     const newReader = await Reader.create(req.body);
-    res.status(201).json(newReader);
+
+    const readerWithoutPassword = removePassword(newReader.dataValues);
+    res.status(201).json(readerWithoutPassword);
   } catch (err) {
     res.status(401).json({ error: err });
   }
@@ -12,7 +21,11 @@ exports.create = async (req, res) => {
 exports.list = async (req, res) => {
   try {
     const readers = await Reader.findAll();
-    res.status(200).json(readers);
+    const readersWithoutPasswords = readers.map(reader => {
+      return removePassword(reader.dataValues);
+    });
+
+    res.status(200).json(readersWithoutPasswords);
   } catch (err) {
     console.log(err);
     res.status(401).json({ error: err });
@@ -25,7 +38,8 @@ exports.findById = async (req, res) => {
     const reader = await Reader.findByPk(id);
 
     if (reader) {
-      res.status(200).json(reader);
+      const readerWithoutPassword = removePassword(reader.dataValues);
+      res.status(200).json(readerWithoutPassword);
     } else {
       res.status(404).json({ error: 'The reader could not be found.' });
     };
