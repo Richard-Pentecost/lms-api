@@ -16,7 +16,7 @@ describe('/reader', () => {
         const response = await request(app).post('/readers').send({
           name: 'Elizabeth Bennet',
           email: 'future_ms_darcy@gmail.com',
-          password: 'password',
+          password: 'password1',
         });
 
         const newReaderRecord = await Reader.findByPk(response.body.id, { raw: true });
@@ -25,7 +25,51 @@ describe('/reader', () => {
         expect(response.body.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.email).to.equal('future_ms_darcy@gmail.com');
-        expect(newReaderRecord.password).to.equal('password');
+        expect(newReaderRecord.password).to.equal('password1');
+      });
+
+      it('returns 404 when any field is null', async () => {
+        const noNameResponse = await request(app).post('/readers').send({
+          email: 'future_ms_darcy@gmail.com',
+          password: 'password',
+        });
+        const noEmailResponse = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          password: 'password',
+        });
+        const noPasswordResponse = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'future_ms_darcy@gmail.com',
+        });
+
+        expect(noNameResponse.status).to.equal(401);
+        expect(noNameResponse.body.error.errors[0].message).to.equal('Reader.name cannot be null');
+        expect(noEmailResponse.status).to.equal(401);
+        expect(noEmailResponse.body.error.errors[0].message).to.equal('Email must be given');
+        expect(noPasswordResponse.status).to.equal(401);
+        expect(noPasswordResponse.body.error.errors[0].message).to.equal('Reader.password cannot be null');
+      });
+
+      it('returns 404 if an invalid email is given', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: "invalid email",
+          password: 'password',
+        });
+
+        expect(response.status).to.equal(401);
+        expect(response.body.error.errors[0].message).to.equal('Must be a valid email address.');
+      });
+
+      it('returns 404 if the password does not have at least 8 characters', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'future_ms_darcy@gmail.com',
+          password: 'asdf',
+        });
+
+        expect(response.status).to.equal(401);
+        expect(response.body.error.errors[0].message).to.equal('Password must be at least 8 characters long.');
       });
     });
   });
