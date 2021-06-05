@@ -5,7 +5,7 @@ module.exports = (connection, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: 'Name must be given.'}
-      }
+      },
     },
     email: {
       type: DataTypes.STRING,

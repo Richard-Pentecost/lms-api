@@ -13,6 +13,7 @@ const setupDatabase = () => {
   });
   
   const User = UserModel(connection, Sequelize);
+  const Farm = FarmModel(connection, Sequelize);
 
   connection.sync({ alter: true });
   return {
