@@ -8,10 +8,6 @@ describe('POST /farms/:id', () => {
 
   before(async () => Farm.sequelize.sync());
 
-  afterEach(async () => {
-    await Farm.destroy({ where: {} });
-  });
-
   beforeEach(async () => {
     farms = await Promise.all([
       Farm.create({
@@ -29,6 +25,10 @@ describe('POST /farms/:id', () => {
         deliveryMethod: 'Drum',
       }),
     ]);
+  });
+
+  afterEach(async () => {
+    await Farm.destroy({ where: {} });
   });
 
   it('gets farm record by id', async () => {
