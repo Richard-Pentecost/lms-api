@@ -4,8 +4,6 @@ const { Farm } = require('../src/models');
 const app = require('../src/app');
 
 describe('GET /farms', () => {
-  let farms;
-
   before(async () => Farm.sequelize.sync());
 
   afterEach(async () => {
@@ -13,7 +11,7 @@ describe('GET /farms', () => {
   });
 
   it('gets all farm records', async () => {
-    farms = await Promise.all([
+    const farms = await Promise.all([
       Farm.create({
         farmName: 'New Farm',
         postcode: 'NE3 4RM',
