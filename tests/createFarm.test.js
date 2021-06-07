@@ -15,7 +15,6 @@ describe('POST /farms', () => {
     postcode: 'NE3 4RM',
     contactName: 'Farmer Giles',
     contactNumber: '01234567890',
-    deliveryMethod: 'IBC',
   };
 
   it('creates a new farm in the database', async () => {
@@ -32,7 +31,6 @@ describe('POST /farms', () => {
     expect(response.body.postcode).to.equal('NE3 4RM');
     expect(response.body.contactName).to.equal('Farmer Giles');
     expect(response.body.contactNumber).to.equal('01234567890');
-    expect(response.body.deliveryMethod).to.equal('IBC');
     expect(response.body.status).to.equal(1);
     expect(response.body.accessCodes).to.equal('access codes');
     expect(response.body.comments).to.equal('comments')
@@ -49,7 +47,6 @@ describe('POST /farms', () => {
     expect(response.body.postcode).to.equal('NE3 4RM');
     expect(response.body.contactName).to.equal('Farmer Giles');
     expect(response.body.contactNumber).to.equal('01234567890');
-    expect(response.body.deliveryMethod).to.equal('IBC');
     expect(response.body.status).to.equal(1);
     expect(response.body.accessCodes).to.be.null;
     expect(response.body.comments).to.be.null;
@@ -87,13 +84,5 @@ describe('POST /farms', () => {
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal("Contact number must be given.");
-  });
-
-  it('returns 401 when the delivery method field is empty', async () => {
-    const { deliveryMethod, ...noDeliveryMethod } = newFarm;  
-    const response = await request(app).post('/farms').send(noDeliveryMethod);
-
-    expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal("Delivery method must be given.");
   });
 });

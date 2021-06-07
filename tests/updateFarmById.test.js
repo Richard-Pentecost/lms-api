@@ -14,7 +14,6 @@ describe('PATCH /farms/:id', () => {
         postcode: 'NE3 4RM',
         contactName: 'Farmer Giles',
         contactNumber: '01234567890',
-        deliveryMethod: 'IBC',
       })
     );
   });
@@ -35,7 +34,6 @@ describe('PATCH /farms/:id', () => {
     expect(updatedFarm.postcode).to.equal('OL0 4RM');
     expect(updatedFarm.contactName).to.equal('Farmer Giles');
     expect(updatedFarm.contactNumber).to.equal('01234567890');
-    expect(updatedFarm.deliveryMethod).to.equal('IBC');
   });  
 
   it('returns a 401 if the farm does not exist', async () => {

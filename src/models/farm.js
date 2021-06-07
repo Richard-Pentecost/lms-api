@@ -28,13 +28,6 @@ module.exports = (connection, DataTypes) => {
         notNull: { msg: 'Contact number must be given.'}
       },
     },
-    deliveryMethod: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'Delivery method must be given.'}
-      },
-    },
     status: {
       type: DataTypes.INTEGER,
       defaultValue: 1,

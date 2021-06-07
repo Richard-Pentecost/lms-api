@@ -15,14 +15,12 @@ describe('POST /farms/:id', () => {
         postcode: 'NE3 4RM',
         contactName: 'Farmer Giles',
         contactNumber: '01234567890',
-        deliveryMethod: 'IBC',
       }),
       Farm.create({
         farmName: 'Second Farm',
         postcode: 'SE0 4RM',
         contactName: 'Farmer Smith',
         contactNumber: '019876543210',
-        deliveryMethod: 'Drum',
       }),
     ]);
   });
@@ -40,7 +38,6 @@ describe('POST /farms/:id', () => {
     expect(response.body.postcode).to.equal('NE3 4RM');
     expect(response.body.contactName).to.equal('Farmer Giles');
     expect(response.body.contactNumber).to.equal('01234567890');
-    expect(response.body.deliveryMethod).to.equal('IBC');
     expect(response.body.status).to.equal(1);
     expect(response.body.accessCodes).to.be.null;
     expect(response.body.comments).to.be.null;
