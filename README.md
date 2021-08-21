@@ -6,3 +6,7 @@ Creating an api using a MySQL database.
 
 Run:
 ```docker run -d -p 3307:3306 --name lms_mysql -e MYSQL_ROOT_PASSWORD=password mysql```
+
+## Create migrations
+
+

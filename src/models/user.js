@@ -1,5 +1,16 @@
 module.exports = (connection, DataTypes) => {
   const schema = {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    uuid: {
+      type: DataTypes.UUID,
+      unique: true,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -9,6 +20,7 @@ module.exports = (connection, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: false,
       validate: {
         isEmail: { msg: 'Must be a valid email address.' },

@@ -1,5 +1,16 @@
 module.exports = (connection, DataTypes) => {
   const schema = {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    uuid: {
+      type: DataTypes.UUID,
+      unique: true,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4,
+    },
     farmName: {
       type: DataTypes.STRING,
       allowNull: false,

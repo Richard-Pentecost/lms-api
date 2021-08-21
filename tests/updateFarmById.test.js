@@ -25,7 +25,7 @@ describe('PATCH /farms/:id', () => {
   it('updates farm by id', async () => {
     const response = await request(app)
       .patch(`/farms/${farm.id}`)
-      .send({ farmName: 'Old Farm', postcode: 'OL0 4RM' });
+      .send({ farm: { farmName: 'Old Farm', postcode: 'OL0 4RM' }});
 
     const updatedFarm = await Farm.findByPk(farm.id, { raw: true });
     

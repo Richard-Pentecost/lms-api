@@ -2,10 +2,10 @@ const { Farm } = require('../models');
 
 const updateFarmById = async (req, res) => {
   const { id } = req.params;
-  const updateData = req.body;
+  const updatedData = req.body.farm;
 
   try {
-    const [ updatedRows ] = await Farm.update(updateData, { where: { id } });
+    const [ updatedRows ] = await Farm.update(updatedData, { where: { id } });
     if (updatedRows > 0) {
       res.sendStatus(201);
     } else {
