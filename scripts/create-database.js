@@ -26,7 +26,7 @@ const setupDatabase = async () => {
       password: DB_PASSWORD,
       port: DB_PORT,
     });
-
+    
     // create the database if it doesn't exist
     await db.query(`CREATE DATABASE IF NOT EXISTS ${DB_NAME}`);
     db.close();

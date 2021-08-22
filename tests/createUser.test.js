@@ -18,7 +18,7 @@ describe('POST /users', () => {
       permissionLevel: 'admin',
     };
 
-    const response = await request(app).post('/users').send(newUser);
+    const response = await request(app).post('/users').send({ user: newUser });
     const newUserRecord = await User.findByPk(response.body.id, { raw: true });
 
     expect(response.status).to.equal(201);
@@ -29,7 +29,7 @@ describe('POST /users', () => {
 
     expect(newUserRecord.name).to.equal('Joe Bloggs');
     expect(newUserRecord.email).to.equal('Joe@email.com');
-    expect(newUserRecord.password).to.equal('password');
+    expect(newUserRecord.password).to.have.length(60);
     expect(newUserRecord.permissionLevel).to.equal('admin');
   });
 
@@ -40,7 +40,7 @@ describe('POST /users', () => {
       password: 'longerPassword',
     };
 
-    const response = await request(app).post('/users').send(newUser);
+    const response = await request(app).post('/users').send({ user: newUser });
     const newUserRecord = await User.findByPk(response.body.id, { raw: true });
 
     expect(response.status).to.equal(201);
@@ -51,7 +51,7 @@ describe('POST /users', () => {
 
     expect(newUserRecord.name).to.equal('Joe Bloggs');
     expect(newUserRecord.email).to.equal('Joe@email.com');
-    expect(newUserRecord.password).to.equal('longerPassword');
+    expect(newUserRecord.password).to.have.length(60);
     expect(newUserRecord.permissionLevel).to.equal('user');
   });
 
@@ -60,7 +60,7 @@ describe('POST /users', () => {
       email: 'Joe@email.com',
       password: 'password',
     };
-    const response = await request(app).post('/users').send(noNameUser);
+    const response = await request(app).post('/users').send({ user: noNameUser });
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal("Name must be given.");
@@ -71,7 +71,7 @@ describe('POST /users', () => {
       name: 'Joe Bloggs',
       password: 'password',
     };
-    const response = await request(app).post('/users').send(noEmailUser);
+    const response = await request(app).post('/users').send({ user: noEmailUser });
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal("Email must be given.");
@@ -82,31 +82,31 @@ describe('POST /users', () => {
       name: 'Joe Bloggs',
       email: 'Joe@email.com',
     };
-    const response = await request(app).post('/users').send(noPasswordUser);
+    const response = await request(app).post('/users').send({ user: noPasswordUser });
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal("Password must be given.");
   });
 
   it('returns 401 if an invalid email is given', async () => {
-    const noPasswordUser = {
+    const invalidEmailUser = {
       name: 'Joe Bloggs',
       email: 'invalid email',
       password: 'password'
     };
-    const response = await request(app).post('/users').send(noPasswordUser);
+    const response = await request(app).post('/users').send({ user: invalidEmailUser });
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal('Must be a valid email address.');
   });
 
   it('returns 401 if the password does not have at least 8 characters', async () => {
-    const noPasswordUser = {
+    const invalidPasswordUser = {
       name: 'Joe Bloggs',
       email: 'Joe@email.com',
       password: 'asdf'
     };
-    const response = await request(app).post('/users').send(noPasswordUser);
+    const response = await request(app).post('/users').send({ user: invalidPasswordUser });
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal('Password must be at least 8 characters long.');

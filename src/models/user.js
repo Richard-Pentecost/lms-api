@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 module.exports = (connection, DataTypes) => {
   const schema = {
     id: {
@@ -39,11 +41,24 @@ module.exports = (connection, DataTypes) => {
       },
     },
     permissionLevel: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
       defaultValue: 'user',
-    }
+      values: ['admin', 'user'],
+    },
   };
 
   const UserModel = connection.define('User', schema);
+
+  const generateHash = async (user) => {
+    const salt = await bcrypt.genSaltSync(10);
+    user.password = await bcrypt.hash(user.password, salt);
+  }
+
+  UserModel.beforeCreate(generateHash);
+
+  UserModel.prototype.validatePassword = async function(password) {
+    return bcrypt.compareSync(password, this.password);
+  }
+
   return UserModel;
 };
