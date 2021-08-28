@@ -19,14 +19,16 @@ describe('POST /users', () => {
     };
 
     const response = await request(app).post('/users').send({ user: newUser });
-    const newUserRecord = await User.findByPk(response.body.id, { raw: true });
+    const newUserRecord = await User.findByPk(response.body.user.id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(response.body.name).to.equal('Joe Bloggs');
-    expect(response.body.email).to.equal('Joe@email.com');
-    expect(!!response.body.password).to.be.false;
-    expect(response.body.permissionLevel).to.equal('admin');
+    expect(response.body.user.uuid).to.have.length(36);
+    expect(response.body.user.name).to.equal('Joe Bloggs');
+    expect(response.body.user.email).to.equal('Joe@email.com');
+    expect(!!response.body.user.password).to.be.false;
+    expect(response.body.user.permissionLevel).to.equal('admin');
 
+    expect(newUserRecord).to.have.property('uuid');
     expect(newUserRecord.name).to.equal('Joe Bloggs');
     expect(newUserRecord.email).to.equal('Joe@email.com');
     expect(newUserRecord.password).to.have.length(60);
@@ -41,21 +43,23 @@ describe('POST /users', () => {
     };
 
     const response = await request(app).post('/users').send({ user: newUser });
-    const newUserRecord = await User.findByPk(response.body.id, { raw: true });
+    const newUserRecord = await User.findByPk(response.body.user.id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(response.body.name).to.equal('Joe Bloggs');
-    expect(response.body.email).to.equal('Joe@email.com');
-    expect(!!response.body.password).to.be.false;
-    expect(response.body.permissionLevel).to.equal('user');
+    expect(response.body.user.uuid).to.have.length(36);
+    expect(response.body.user.name).to.equal('Joe Bloggs');
+    expect(response.body.user.email).to.equal('Joe@email.com');
+    expect(!!response.body.user.password).to.be.false;
+    expect(response.body.user.permissionLevel).to.equal('user');
 
+    expect(newUserRecord).to.have.property('uuid');
     expect(newUserRecord.name).to.equal('Joe Bloggs');
     expect(newUserRecord.email).to.equal('Joe@email.com');
     expect(newUserRecord.password).to.have.length(60);
     expect(newUserRecord.permissionLevel).to.equal('user');
   });
 
-  it('returns 401 when the name field is empty', async () => {
+  it('returns 401 when the name field is null', async () => {
     const noNameUser = {
       email: 'Joe@email.com',
       password: 'password',
@@ -66,7 +70,19 @@ describe('POST /users', () => {
     expect(response.body.error.errors[0].message).to.equal("Name must be given.");
   });
 
-  it('returns 401 when the email field is empty', async () => {
+  it('returns 401 when the name field is empty', async () => {
+    const emptyNameUser = {
+      name: '',
+      email: 'Joe@email.com',
+      password: 'password',
+    };
+    const response = await request(app).post('/users').send({ user: emptyNameUser });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error.errors[0].message).to.equal("Name must be given.");
+  });
+
+  it('returns 401 when the email field is null', async () => {
     const noEmailUser = {
       name: 'Joe Bloggs',
       password: 'password',
@@ -75,17 +91,6 @@ describe('POST /users', () => {
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal("Email must be given.");
-  });
-
-  it('returns 401 when the password field is empty', async () => {
-    const noPasswordUser = {
-      name: 'Joe Bloggs',
-      email: 'Joe@email.com',
-    };
-    const response = await request(app).post('/users').send({ user: noPasswordUser });
-
-    expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal("Password must be given.");
   });
 
   it('returns 401 if an invalid email is given', async () => {
@@ -98,6 +103,17 @@ describe('POST /users', () => {
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal('Must be a valid email address.');
+  });
+
+  it('returns 401 when the password field is null', async () => {
+    const noPasswordUser = {
+      name: 'Joe Bloggs',
+      email: 'Joe@email.com',
+    };
+    const response = await request(app).post('/users').send({ user: noPasswordUser });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error.errors[0].message).to.equal("Password must be given.");
   });
 
   it('returns 401 if the password does not have at least 8 characters', async () => {

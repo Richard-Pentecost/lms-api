@@ -23,38 +23,38 @@ describe('POST /farms', () => {
       accessCodes: 'access codes',
       comments: 'comments',
     };
-    const response = await request(app).post('/farms').send({farm: newCompleteFarm });
-    const newFarmRecord = await Farm.findByPk(response.body.id, { raw: true });
+    const response = await request(app).post('/farms').send({ farm: newCompleteFarm });
+    const newFarmRecord = await Farm.findByPk(response.body.farm.id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(response.body.farmName).to.equal('New Farm');
-    expect(response.body.postcode).to.equal('NE3 4RM');
-    expect(response.body.contactName).to.equal('Farmer Giles');
-    expect(response.body.contactNumber).to.equal('01234567890');
-    expect(response.body.status).to.equal(1);
-    expect(response.body.accessCodes).to.equal('access codes');
-    expect(response.body.comments).to.equal('comments')
+    expect(response.body.farm.farmName).to.equal('New Farm');
+    expect(response.body.farm.postcode).to.equal('NE3 4RM');
+    expect(response.body.farm.contactName).to.equal('Farmer Giles');
+    expect(response.body.farm.contactNumber).to.equal('01234567890');
+    expect(response.body.farm.status).to.equal('enabled');
+    expect(response.body.farm.accessCodes).to.equal('access codes');
+    expect(response.body.farm.comments).to.equal('comments')
 
     expect(newFarmRecord).to.contain(newFarm);
   });
 
   it('creates a new farm in the database with access codes and comment section defaulting to null', async () => {
     const response = await request(app).post('/farms').send({ farm: newFarm });
-    const newFarmRecord = await Farm.findByPk(response.body.id, { raw: true });
+    const newFarmRecord = await Farm.findByPk(response.body.farm.id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(response.body.farmName).to.equal('New Farm');
-    expect(response.body.postcode).to.equal('NE3 4RM');
-    expect(response.body.contactName).to.equal('Farmer Giles');
-    expect(response.body.contactNumber).to.equal('01234567890');
-    expect(response.body.status).to.equal(1);
-    expect(response.body.accessCodes).to.be.null;
-    expect(response.body.comments).to.be.null;
+    expect(response.body.farm.farmName).to.equal('New Farm');
+    expect(response.body.farm.postcode).to.equal('NE3 4RM');
+    expect(response.body.farm.contactName).to.equal('Farmer Giles');
+    expect(response.body.farm.contactNumber).to.equal('01234567890');
+    expect(response.body.farm.status).to.equal('enabled');
+    expect(response.body.farm.accessCodes).to.be.null;
+    expect(response.body.farm.comments).to.be.null;
 
     expect(newFarmRecord).to.contain(newFarm);
   });
 
-  it('returns 401 when the farmName field is empty', async () => {
+  it('returns 401 when the farmName field is null', async () => {
     const { farmName, ...noFarmName } = newFarm;  
     const response = await request(app).post('/farms').send({ farm: noFarmName });
 
@@ -62,7 +62,15 @@ describe('POST /farms', () => {
     expect(response.body.error.errors[0].message).to.equal("Farm name must be given.");
   });
 
-  it('returns 401 when the postcode field is empty', async () => {
+  it('returns 401 when the farmName field is empty string', async () => {
+    const farmEmptyName = { ...newFarm, farmName: '' };
+    const response = await request(app).post('/farms').send({ farm: farmEmptyName });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error.errors[0].message).to.equal("Farm name must be given.");
+  });
+
+  it('returns 401 when the postcode field is null', async () => {
     const { postcode, ...noPostcode } = newFarm;  
     const response = await request(app).post('/farms').send({ farm: noPostcode });
 
@@ -70,7 +78,15 @@ describe('POST /farms', () => {
     expect(response.body.error.errors[0].message).to.equal("Postcode must be given.");
   });
 
-  it('returns 401 when the contactName field is empty', async () => {
+  it('returns 401 when the postcode field is empty', async () => {
+    const farmEmptyPostcode = { ...newFarm, postcode: '' };
+    const response = await request(app).post('/farms').send({ farm: farmEmptyPostcode });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error.errors[0].message).to.equal("Postcode must be given.");
+  });
+
+  it('returns 401 when the contactName field is null', async () => {
     const { contactName, ...noContactName } = newFarm;  
     const response = await request(app).post('/farms').send({ farm: noContactName });
 
@@ -78,9 +94,25 @@ describe('POST /farms', () => {
     expect(response.body.error.errors[0].message).to.equal("Contact name must be given.");
   });
 
-  it('returns 401 when the contact number field is empty', async () => {
+  it('returns 401 when the contactName field is empty', async () => {
+    const farmEmptyContactName = { ...newFarm, contactName: '' };
+    const response = await request(app).post('/farms').send({ farm: farmEmptyContactName});
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error.errors[0].message).to.equal("Contact name must be given.");
+  });
+
+  it('returns 401 when the contactNumber field is null', async () => {
     const { contactNumber, ...noContactNumber } = newFarm;  
     const response = await request(app).post('/farms').send({ farm: noContactNumber });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error.errors[0].message).to.equal("Contact number must be given.");
+  });
+
+  it('returns 401 when the contactNumber field is empty', async () => {
+    const farmEmptyContactNumber = { ...newFarm, contactNumber: '' };
+    const response = await request(app).post('/farms').send({ farm: farmEmptyContactNumber });
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal("Contact number must be given.");

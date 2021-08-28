@@ -6,13 +6,12 @@ const loginUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ where: { email } });
-
     if (!user) {
-      res.status(401).json({ error: 'Incorrect email' });
+      return res.status(401).json({ error: 'Incorrect email' });
     } 
-
+    
     if (!await user.validatePassword(password)) {
-      res.status(401).json({ error: 'Incorrect password' });
+      return res.status(401).json({ error: 'Incorrect password' });
     }
     
     const { permissionLevel, uuid } = user;
@@ -20,11 +19,11 @@ const loginUser = async (req, res) => {
     const token = await jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '12h' });;
     
     if (!token) {
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
     res.status(201).json({ token });
-  } catch (err) {
-    console.log(error);
+  } catch (error) {
+    console.error(error);
     res.sendStatus(500);
   }
 }

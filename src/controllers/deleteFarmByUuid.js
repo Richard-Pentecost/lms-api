@@ -1,10 +1,10 @@
 const { Farm } = require('../models');
 
 const deleteFarmById = async (req, res) => {
-  const { id } = req.params;
+  const { uuid } = req.params;
   
   try {
-    const deletedRow = await Farm.destroy({ where: { id }});
+    const deletedRow = await Farm.destroy({ where: { uuid }});
     if (deletedRow !== 0) {
       res.sendStatus(204);
     } else {

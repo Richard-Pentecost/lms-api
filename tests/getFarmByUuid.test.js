@@ -3,7 +3,7 @@ const request = require('supertest');
 const { Farm } = require('../src/models');
 const app = require('../src/app');
 
-describe('POST /farms/:id', () => {
+describe('POST /farms/:uiid', () => {
   let farms;
 
   before(async () => Farm.sequelize.sync());
@@ -29,18 +29,19 @@ describe('POST /farms/:id', () => {
     await Farm.destroy({ where: {} });
   });
 
-  it('gets farm record by id', async () => {
+  it('gets farm record by uuid', async () => {
     const farm = farms[0];
-    const response = await request(app).get(`/farms/${farm.id}`);
-
+    const response = await request(app).get(`/farms/${farm.uuid}`);
+    
     expect(response.status).to.equal(201);
-    expect(response.body.farmName).to.equal('New Farm');
-    expect(response.body.postcode).to.equal('NE3 4RM');
-    expect(response.body.contactName).to.equal('Farmer Giles');
-    expect(response.body.contactNumber).to.equal('01234567890');
-    expect(response.body.status).to.equal(1);
-    expect(response.body.accessCodes).to.be.null;
-    expect(response.body.comments).to.be.null;
+    expect(response.body.farm.farmName).to.equal('New Farm');
+    expect(response.body.farm.postcode).to.equal('NE3 4RM');
+    expect(response.body.farm.uuid).to.have.length(36);
+    expect(response.body.farm.contactName).to.equal('Farmer Giles');
+    expect(response.body.farm.contactNumber).to.equal('01234567890');
+    expect(response.body.farm.status).to.equal('enabled');
+    expect(response.body.farm.accessCodes).to.be.null;
+    expect(response.body.farm.comments).to.be.null;
   });
 
   it('returns 401 if the farm does not exist', async () => {

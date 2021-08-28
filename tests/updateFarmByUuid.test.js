@@ -3,7 +3,7 @@ const request = require('supertest');
 const { Farm } = require('../src/models');
 const app = require('../src/app');
 
-describe('PATCH /farms/:id', () => {
+describe('PATCH /farms/:uuid', () => {
   let farm;
   before(async () => Farm.sequelize.sync());
 
@@ -22,9 +22,9 @@ describe('PATCH /farms/:id', () => {
     await Farm.destroy({ where: {} })
   });
 
-  it('updates farm by id', async () => {
+  it('updates farm by :uuid', async () => {
     const response = await request(app)
-      .patch(`/farms/${farm.id}`)
+      .patch(`/farms/${farm.dataValues.uuid}`)
       .send({ farm: { farmName: 'Old Farm', postcode: 'OL0 4RM' }});
 
     const updatedFarm = await Farm.findByPk(farm.id, { raw: true });

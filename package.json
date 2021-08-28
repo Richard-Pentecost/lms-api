@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "docker": "docker run -d -p 3307:3306 --name lms_mysql -e MYSQL_ROOT_PASSWORD=password mysql",
     "pretest": "node scripts/create-database.js test",
     "test": "mocha tests/**/*.js --exit --recursive --timeout 60000 --file ./tests/test-setup.js",
     "posttest": "node scripts/drop-database.js",
