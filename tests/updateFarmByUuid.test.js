@@ -22,7 +22,7 @@ describe('PATCH /farms/:uuid', () => {
     await Farm.destroy({ where: {} })
   });
 
-  it('updates farm by :uuid', async () => {
+  it('updates farm by uuid', async () => {
     const response = await request(app)
       .patch(`/farms/${farm.dataValues.uuid}`)
       .send({ farm: { farmName: 'Old Farm', postcode: 'OL0 4RM' }});
@@ -30,6 +30,7 @@ describe('PATCH /farms/:uuid', () => {
     const updatedFarm = await Farm.findByPk(farm.id, { raw: true });
     
     expect(response.status).to.equal(201);
+    expect(updatedFarm.uuid).to.equal(farm.uuid);
     expect(updatedFarm.farmName).to.equal('Old Farm');
     expect(updatedFarm.postcode).to.equal('OL0 4RM');
     expect(updatedFarm.contactName).to.equal('Farmer Giles');
