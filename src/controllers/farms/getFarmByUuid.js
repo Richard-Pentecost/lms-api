@@ -1,4 +1,4 @@
-const { Farm } = require('../models');
+const { Farm } = require('../../models');
 
 const getFarmById = async (req, res) => {
   const { uuid } = req.params;
@@ -7,7 +7,7 @@ const getFarmById = async (req, res) => {
     if (farm) {
       res.status(201).json({ farm });
     } else {
-      res.status(401).json({ error: 'The farm could not be found.' });
+      res.status(401).json({ error: 'The farm could not be found' });
     }
   } catch (error) {
     console.error(error);

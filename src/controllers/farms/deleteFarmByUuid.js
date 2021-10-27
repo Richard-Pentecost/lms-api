@@ -1,4 +1,4 @@
-const { Farm } = require('../models');
+const { Farm } = require('../../models');
 
 const deleteFarmById = async (req, res) => {
   const { uuid } = req.params;
@@ -8,10 +8,10 @@ const deleteFarmById = async (req, res) => {
     if (deletedRow !== 0) {
       res.sendStatus(204);
     } else {
-      res.status(401).json({ error: 'The farm could not be found.' });
+      res.status(401).json({ error: 'The farm could not be found' });
     };
   } catch (err) {
-    res.status(500).json({ error: 'There was an error connecting to the database. '});
+    res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 };
 

@@ -45,6 +45,6 @@ describe('GET /users/:uuid', () => {
     const response = await request(app).get('/users/12345');
 
     expect(response.status).to.equal(401);
-    expect(response.body.error).to.equal('User could not be found.');
+    expect(response.body.error).to.equal('User could not be found');
   })
 });

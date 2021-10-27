@@ -67,7 +67,7 @@ describe('POST /users', () => {
     const response = await request(app).post('/users').send({ user: noNameUser });
 
     expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal("Name must be given.");
+    expect(response.body.error.errors[0].message).to.equal("Name must be given");
   });
 
   it('returns 401 when the name field is empty', async () => {
@@ -79,7 +79,7 @@ describe('POST /users', () => {
     const response = await request(app).post('/users').send({ user: emptyNameUser });
 
     expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal("Name must be given.");
+    expect(response.body.error.errors[0].message).to.equal("Name must be given");
   });
 
   it('returns 401 when the email field is null', async () => {
@@ -90,7 +90,7 @@ describe('POST /users', () => {
     const response = await request(app).post('/users').send({ user: noEmailUser });
 
     expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal("Email must be given.");
+    expect(response.body.error.errors[0].message).to.equal("Email must be given");
   });
 
   it('returns 401 if an invalid email is given', async () => {
@@ -102,7 +102,7 @@ describe('POST /users', () => {
     const response = await request(app).post('/users').send({ user: invalidEmailUser });
 
     expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal('Must be a valid email address.');
+    expect(response.body.error.errors[0].message).to.equal('Must be a valid email address');
   });
 
   it('returns 401 when the password field is null', async () => {
@@ -113,7 +113,7 @@ describe('POST /users', () => {
     const response = await request(app).post('/users').send({ user: noPasswordUser });
 
     expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal("Password must be given.");
+    expect(response.body.error.errors[0].message).to.equal("Password must be given");
   });
 
   it('returns 401 if the password does not have at least 8 characters', async () => {
@@ -125,6 +125,6 @@ describe('POST /users', () => {
     const response = await request(app).post('/users').send({ user: invalidPasswordUser });
 
     expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal('Password must be at least 8 characters long.');
+    expect(response.body.error.errors[0].message).to.equal('Password must be at least 8 characters long');
   });
 });

@@ -43,6 +43,6 @@ describe('PATCH /farms/:uuid', () => {
       .send({ farmName: 'Old Farm', postcode: 'OL0 4RM' });
     
     expect(response.status).to.equal(401);
-    expect(response.body.error).to.equal('The farm could not be found.');
+    expect(response.body.error).to.equal('The farm could not be found');
   });
 });

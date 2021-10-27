@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User } = require('../../models');
 
 const updateUserByUuid = async (req, res) => {
   const { uuid } = req.params;
@@ -9,7 +9,7 @@ const updateUserByUuid = async (req, res) => {
     if (updatedRows > 0) {
       res.sendStatus(201);
     } else {
-      res.status(401).json({ error: 'The user could not be found.' });
+      res.status(401).json({ error: 'The user could not be found' });
     }
   } catch (error) {
     console.error(error);

@@ -1,9 +1,9 @@
 const express = require('express');
 const userController = require('../controllers/user');
-const createUser = require('../controllers/createUser');
-const getAllUsers = require('../controllers/getAllUsers');
-const getUserByUuid = require('../controllers/getUserByUuid');
-const updateUserByUuid = require('../controllers/updateUserByUuid');
+const createUser = require('../controllers/users/createUser');
+const getAllUsers = require('../controllers/users/getAllUsers');
+const getUserByUuid = require('../controllers/users/getUserByUuid');
+const updateUserByUuid = require('../controllers/users/updateUserByUuid');
 
 const router = express.Router();
 

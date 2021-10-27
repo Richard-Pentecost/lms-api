@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User } = require("../../models");
 
 const getUserByUuid = async (req, res) => {
   const { uuid } = req.params;
@@ -7,7 +7,7 @@ const getUserByUuid = async (req, res) => {
     if (user) {
       res.status(201).json({ user });
     } else {
-      res.status(401).json({ error: 'User could not be found.' });
+      res.status(401).json({ error: 'User could not be found' });
     }
   } catch (error) {
     console.error(error);

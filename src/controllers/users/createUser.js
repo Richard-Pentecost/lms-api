@@ -1,5 +1,5 @@
-const { User } = require('../models');
-const { removePassword } = require('../utils/helpers');
+const { User } = require('../../models');
+const { removePassword } = require('../../utils/helpers');
 
 const createUser = async (req, res) => {
 

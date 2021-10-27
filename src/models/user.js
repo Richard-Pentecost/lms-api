@@ -17,8 +17,8 @@ module.exports = (connection, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Name must be given.' },
-        notEmpty: { msg: 'Name must be given.' },
+        notNull: { msg: 'Name must be given' },
+        notEmpty: { msg: 'Name must be given' },
       },
     },
     email: {
@@ -26,8 +26,8 @@ module.exports = (connection, DataTypes) => {
       unique: true,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Email must be given.' },
-        isEmail: { msg: 'Must be a valid email address.' },
+        notNull: { msg: 'Email must be given' },
+        isEmail: { msg: 'Must be a valid email address' },
       },
     },
     password: {
@@ -36,9 +36,9 @@ module.exports = (connection, DataTypes) => {
       validate: {
         len: {
           args: 8,
-          msg: 'Password must be at least 8 characters long.',
+          msg: 'Password must be at least 8 characters long',
         },
-        notNull: { msg: 'Password must be given.' },
+        notNull: { msg: 'Password must be given' },
       },
     },
     permissionLevel: {

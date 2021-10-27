@@ -15,32 +15,32 @@ module.exports = (connection, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Farm name must be given.'},
-        notEmpty: { msg: 'Farm name must be given.'}
+        notNull: { msg: 'Farm name must be given' },
+        notEmpty: { msg: 'Farm name must be given' }
       },
     },
     postcode: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Postcode must be given.'},
-        notEmpty: { msg: 'Postcode must be given.'},
+        notNull: { msg: 'Postcode must be given' },
+        notEmpty: { msg: 'Postcode must be given' },
       },
     },
     contactName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Contact name must be given.'},
-        notEmpty: { msg: 'Contact name must be given.'},
+        notNull: { msg: 'Contact name must be given' },
+        notEmpty: { msg: 'Contact name must be given' },
       },
     },
     contactNumber: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: { msg: 'Contact number must be given.'},
-        notEmpty: { msg: 'Contact number must be given.'},
+        notNull: { msg: 'Contact number must be given' },
+        notEmpty: { msg: 'Contact number must be given' },
       },
     },
     status: {

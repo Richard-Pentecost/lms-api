@@ -1,9 +1,9 @@
 const express = require('express');
-const createFarm = require('../controllers/createFarm');
-const getAllFarms = require('../controllers/getAllFarms');
-const getFarmByUuid = require('../controllers/getFarmByUuid');
-const updateFarmByUuid = require('../controllers/updateFarmByUuid');
-const deleteFarmByUuid = require('../controllers/deleteFarmByUuid');
+const createFarm = require('../controllers/farms/createFarm');
+const getAllFarms = require('../controllers/farms/getAllFarms');
+const getFarmByUuid = require('../controllers/farms/getFarmByUuid');
+const updateFarmByUuid = require('../controllers/farms/updateFarmByUuid');
+const deleteFarmByUuid = require('../controllers/farms/deleteFarmByUuid');
 
 const router = express.Router();
 

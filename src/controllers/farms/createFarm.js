@@ -1,4 +1,4 @@
-const { Farm } = require('../models');
+const { Farm } = require('../../models');
 
 const createFarm = async (req, res) => {
   try {
