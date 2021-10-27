@@ -117,9 +117,12 @@ module.exports = (connection, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notNull: { msg: 'The float before delivery must be given' },
-        notEmpty: { msg: 'The float before delivery must be given' },
+        notNull: { msg: 'The float after delivery must be given' },
+        notEmpty: { msg: 'The float after delivery must be given' },
         min: { args: [0], msg: 'The float after delivery cannot be a negative number' },
+        greaterThanBeforeFloat (value) {
+          if (value < this.floatBeforeDelivery) throw new Error('The float after delivery cannot be a less than the float before delivery');
+        }
       }
     },
     comments: {
