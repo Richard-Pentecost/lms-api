@@ -29,6 +29,7 @@
     "faker": "^5.5.3",
     "mocha": "^8.4.0",
     "sequelize-cli": "^6.2.0",
+    "sinon": "^11.1.2",
     "supertest": "^6.1.3"
   }
 }
