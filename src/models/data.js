@@ -127,9 +127,15 @@ module.exports = (connection, DataTypes) => {
     comments: {
       type: DataTypes.TEXT,
     },
-  }
+  };
 
-  const DataModel = connection.define('Data', schema);
+  const options = {
+    defaultScope: { attributes: { exclude: ['id'] } },
+    createdAt: false,
+    updatedAt: false,
+  };
+
+  const DataModel = connection.define('Data', schema, options);
 
   DataModel.associate = function (models) {
     DataModel.belongsTo(models.Farm, {
