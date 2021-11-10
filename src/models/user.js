@@ -48,7 +48,15 @@ module.exports = (connection, DataTypes) => {
     },
   };
 
-  const UserModel = connection.define('User', schema);
+  const UserModel = connection.define(
+    'User',
+    schema,
+    {
+      defaultScope: { attributes: { exclude: ['password'] } },
+      createdAt: false,
+      updatedAt: false,
+    },
+  );
 
   const generateHash = async (user) => {
     const salt = await bcrypt.genSaltSync(10);

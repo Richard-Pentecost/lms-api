@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const request = require('supertest');
-const { User } = require('../src/models');
-const app = require('../src/app');
+const { User } = require('../../src/models');
+const app = require('../../src/app');
 
 describe('GET /users/:uuid', () => {
   let users;

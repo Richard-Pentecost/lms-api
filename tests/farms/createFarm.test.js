@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const request = require('supertest');
-const { Farm } = require('../src/models');
-const app = require('../src/app');
+const { Farm } = require('../../src/models');
+const app = require('../../src/app');
 
 describe('POST /farms', () => {
   before(async () => Farm.sequelize.sync());

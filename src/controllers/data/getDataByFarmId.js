@@ -4,7 +4,7 @@ const getDataByFarmId = async (req, res) => {
   const { farmId } = req.params;
 
   try {
-    const farm = await Farm.findOne({ where: { uuid: farmId }});
+    const farm = await Farm.findOne({ where: { uuid: farmId } });
 
     if (!farm) {
       res.status(401).json({ error: 'The farm could not be found' });

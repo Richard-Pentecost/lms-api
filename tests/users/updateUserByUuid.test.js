@@ -1,9 +1,9 @@
 const { expect } = require('chai');
 const request = require('supertest');
-const { User } = require('../src/models');
-const app = require('../src/app');
+const { User } = require('../../src/models');
+const app = require('../../src/app');
 
-describe.only('PATCH /users/:uuid', () => {
+describe('PATCH /users/:uuid', () => {
   let user;
   before(async () => User.sequelize.sync());
 
