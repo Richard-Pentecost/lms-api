@@ -13,6 +13,9 @@ const updateDataByDataId = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
+    if (error.errors) {
+      res.status(401).json({ error: error.errors[0].message });
+    }
     res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 }

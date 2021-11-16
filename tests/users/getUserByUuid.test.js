@@ -5,7 +5,7 @@ const { User } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 
-describe.only('GET /users/:uuid', () => {
+describe('GET /users/:uuid', () => {
   let users;
 
   before(async () => User.sequelize.sync());

@@ -21,7 +21,7 @@ module.exports = (connection, DataTypes) => {
       validate: {
         notNull: { msg: 'The date must be given' },
         notEmpty: { msg: 'The date must be given' },
-        notFutureDate(value) {
+        notFutureDate (value) {
           if (value > new Date()) {
             throw new Error('Cannot input a future date');
           }
@@ -120,7 +120,7 @@ module.exports = (connection, DataTypes) => {
         notNull: { msg: 'The float after delivery must be given' },
         notEmpty: { msg: 'The float after delivery must be given' },
         greaterThanBeforeFloat (value) {
-          if (value < this.floatBeforeDelivery) throw new Error('The float after delivery cannot be a less than the float before delivery');
+          if (value < this.floatBeforeDelivery) throw new Error('The float after delivery cannot be less than the float before delivery');
         }
       }
     },

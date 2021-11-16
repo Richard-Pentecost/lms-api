@@ -63,6 +63,29 @@ describe('PATCH /farms/:farmId/data/:dataId', () => {
     expect(response.body.error).to.equal('There was an error updating the data');
   });
 
+  it('should return a 401 if the date given is in the future', async () => {
+    const futureDate = new Date();
+    const newData = { ...dataData, date: futureDate.setDate(futureDate.getDate() + 5) };
+
+    const response = await request(app)
+      .patch(`/farms/${farm.uuid}/data/${data.uuid}`)
+      .send({ data: newData });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error).to.equal('Cannot input a future date');
+  });
+
+  it('should return a 401 if the float after delivery is less than the float before', async () => {
+    const newData = { ...dataData, floatAfterDelivery: dataData.floatBeforeDelivery - 1 };
+
+    const response = await request(app)
+      .patch(`/farms/${farm.uuid}/data/${data.uuid}`)
+      .send({ data: newData });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error).to.equal('The float after delivery cannot be less than the float before delivery');
+  });
+
   it('should return a 500 if an error is thrown', async () => {
     sinon.stub(Data, 'update').throws(() => new Error());
 

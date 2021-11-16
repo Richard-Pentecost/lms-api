@@ -346,7 +346,7 @@ describe('POST /farms/:farmId/data', () => {
       const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: dataSmallerFloatAfterDelivery });
   
       expect(response.status).to.equal(401);
-      expect(response.body.error.errors[0].message).to.equal("The float after delivery cannot be a less than the float before delivery");
+      expect(response.body.error.errors[0].message).to.equal("The float after delivery cannot be less than the float before delivery");
     });
   });
 });
