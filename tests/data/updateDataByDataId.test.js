@@ -5,7 +5,7 @@ const { Data, Farm } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 
-describe.only('PATCH /farms/:farmId/data/:dataId', () => {
+describe('PATCH /farms/:farmId/data/:dataId', () => {
   let farm;
   let data;
   let dataData;

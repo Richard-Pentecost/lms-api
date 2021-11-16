@@ -53,6 +53,11 @@ module.exports = (connection, DataTypes) => {
     schema,
     {
       defaultScope: { attributes: { exclude: ['password'] } },
+      scopes: {
+        withPassword: {
+          attributes: { include: ['password'] },
+        },
+      },
       createdAt: false,
       updatedAt: false,
     },

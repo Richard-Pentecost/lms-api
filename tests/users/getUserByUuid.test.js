@@ -1,32 +1,25 @@
 const { expect } = require('chai');
 const request = require('supertest');
+const sinon = require('sinon');
 const { User } = require('../../src/models');
+const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 
-describe('GET /users/:uuid', () => {
+describe.only('GET /users/:uuid', () => {
   let users;
 
   before(async () => User.sequelize.sync());
 
   beforeEach(async () => {
     users = await Promise.all([
-      User.create({ 
-        name: "Joe Bloggs",
-        email: 'Joe@email.com', 
-        password: 'password',
-        permissionLevel: 'admin',
-      }),
-      User.create({ 
-        name: "John Doe",
-        email: 'JohnDoe@email.com', 
-        password: 'password',
-        permissionLevel: 'user',
-      }),
+      User.create(DataFactory.user()),
+      User.create(DataFactory.user()),
     ]);
   });
 
   afterEach(async () => {
     await User.destroy({ where: {} });
+    sinon.restore();
   });
 
   it('gets user record by uuid', async () => {
@@ -35,16 +28,26 @@ describe('GET /users/:uuid', () => {
 
     expect(response.status).to.equal(201);
     expect(response.body.user).to.not.have.property('password');
-    expect(response.body.user.name).to.equal('Joe Bloggs');
-    expect(response.body.user.email).to.equal('Joe@email.com');
-    expect(response.body.user.permissionLevel).to.equal('admin');
+    expect(response.body.user.name).to.equal(user.name);
+    expect(response.body.user.email).to.equal(user.email);
+    expect(response.body.user.permissionLevel).to.equal(user.permissionLevel);
     expect(response.body.user.uuid).to.equal(user.uuid);
   });
 
-  it('returns a 401 if the user does not exist', async () => {
+  it('should return a 401 if the user does not exist', async () => {
     const response = await request(app).get('/users/12345');
 
     expect(response.status).to.equal(401);
     expect(response.body.error).to.equal('User could not be found');
-  })
+  });
+
+  it('should return a 500 if an error is thrown', async () => {
+    const user = users[0];
+    sinon.stub(User, 'findByUuid').throws(() => new Error());
+
+    const response = await request(app).get(`/users/${user.uuid}`);
+
+    expect(response.status).to.equal(500);
+    expect(response.body.error).to.equal('There was an error connecting to the database');
+  });
 });

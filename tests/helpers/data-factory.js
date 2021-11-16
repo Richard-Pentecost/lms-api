@@ -5,6 +5,7 @@ exports.user = (options = {}) => ({
   name: options.firstName || faker.name.findName(),
   email: options.email || faker.internet.email(),
   password: options.password || faker.internet.password(),
+  permissionLevel: options.permissionLevel || 'admin',
 });
 
 exports.farm = (options = {}) => ({
