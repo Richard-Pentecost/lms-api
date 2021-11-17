@@ -17,7 +17,7 @@ describe('PATCH /users/:uuid', () => {
   });
 
   afterEach(async () => {
-    await User.destroy({ where: {} })
+    await User.destroy({ where: {} });
     sinon.restore();
   });
 

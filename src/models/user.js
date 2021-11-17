@@ -81,5 +81,10 @@ module.exports = (connection, DataTypes) => {
     });
   };
 
+  UserModel.updatePassword = async function (uuid, data) {
+    await generateHash(data);
+    return await this.update(data, { where: { uuid } });
+  }
+
   return UserModel;
 };
