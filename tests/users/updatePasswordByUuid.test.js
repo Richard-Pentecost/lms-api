@@ -33,7 +33,7 @@ describe('PATCH /users/:uuid/security', () => {
     const { password: updatedPassword } = await User.scope('withPassword').findByPk(user.id);
 
     expect(response.status).to.equal(201);
-    expect(updatedPassword).to.not.equal(previousPassword);
+    expect(updatedPassword).not.to.equal(previousPassword);
     expect(updatedPassword.length).to.equal(60);
   });
 

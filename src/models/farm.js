@@ -1,3 +1,5 @@
+const user = require("./user");
+
 module.exports = (connection, DataTypes) => {
   const schema = {
     id: {
@@ -48,6 +50,10 @@ module.exports = (connection, DataTypes) => {
       defaultValue: 'enabled',
       values: ['enabled', 'disabled']
     },
+    region: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     accessCodes: {
       type: DataTypes.STRING,
       defaultValue: null,
@@ -58,6 +64,22 @@ module.exports = (connection, DataTypes) => {
     },
   }
 
-  const FarmModel = connection.define('Farm', schema);
+  const FarmModel = connection.define(
+    'Farm',
+    schema,
+    {
+      defaultScope: { attributes: { exclude: ['id'] } },
+      createdAt: false,
+      updatedAt: false,
+    },
+  );
+
+  FarmModel.associate = function (models) {
+    FarmModel.hasOne(models.Region, {
+      foreignKey: 'region',
+      targetKey: 'region'
+    })
+  }
+
   return FarmModel;
 };

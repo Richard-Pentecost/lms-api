@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const UserModel = require('./user');
 const FarmModel = require('./farm');
 const DataModel = require('./data');
+const RegionModel = require('./region');
 
 const { DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_PORT } = process.env;
 
@@ -16,12 +17,14 @@ const setupDatabase = () => {
   const User = UserModel(connection, Sequelize);
   const Farm = FarmModel(connection, Sequelize);
   const Data = DataModel(connection, Sequelize);
+  const Region = RegionModel(connection, Sequelize);
 
   connection.sync({ alter: true });
   return {
     User,
     Farm,
     Data,
+    Region,
   };
 };
 

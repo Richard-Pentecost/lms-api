@@ -92,9 +92,9 @@ describe('/GET /farms/:farmId/data', () => {
     it('should return a farm without the id, createdAt or updatedAt field', async () => {
       const response = await request(app).get(`/farms/${farm.uuid}/data`);
 
-      expect(response.body.data[0]).to.not.have.property('id');
-      expect(response.body.data[0]).to.not.have.property('createdAt');
-      expect(response.body.data[0]).to.not.have.property('updatedAt');
+      expect(response.body.data[0]).not.to.have.property('id');
+      expect(response.body.data[0]).not.to.have.property('createdAt');
+      expect(response.body.data[0]).not.to.have.property('updatedAt');
     });
   });
 });

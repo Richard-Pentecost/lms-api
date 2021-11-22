@@ -30,7 +30,7 @@ describe('GET /users', () => {
 
     response.body.forEach(user => {
       const expected = users.find(u => u.id === user.id);
-      expect(user).to.not.have.property('password');
+      expect(user).not.to.have.property('password');
       expect(user.uuid).to.equal(expected.uuid);
       expect(user.name).to.equal(expected.name);
       expect(user.email).to.equal(expected.email);

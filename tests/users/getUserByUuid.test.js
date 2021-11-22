@@ -27,7 +27,7 @@ describe('GET /users/:uuid', () => {
     const response = await request(app).get(`/users/${user.uuid}`);
 
     expect(response.status).to.equal(201);
-    expect(response.body.user).to.not.have.property('password');
+    expect(response.body.user).not.to.have.property('password');
     expect(response.body.user.name).to.equal(user.name);
     expect(response.body.user.email).to.equal(user.email);
     expect(response.body.user.permissionLevel).to.equal(user.permissionLevel);

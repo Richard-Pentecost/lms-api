@@ -23,7 +23,7 @@ describe('POST /users', () => {
 
     expect(response.status).to.equal(201);
     
-    expect(newUserRecord).to.not.have.property('password');
+    expect(newUserRecord).not.to.have.property('password');
     expect(newUserRecord.uuid).to.equal(newUser.uuid);
     expect(newUserRecord.name).to.equal(newUser.name);
     expect(newUserRecord.email).to.equal(newUser.email);
@@ -37,7 +37,7 @@ describe('POST /users', () => {
     const newUserRecord = await User.findByPk(response.body.user.id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(newUserRecord).to.not.have.property('password');
+    expect(newUserRecord).not.to.have.property('password');
     expect(newUserRecord.uuid).to.equal(newUser.uuid);
     expect(newUserRecord.name).to.equal(newUser.name);
     expect(newUserRecord.email).to.equal(newUser.email);

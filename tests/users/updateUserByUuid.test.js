@@ -29,7 +29,7 @@ describe('PATCH /users/:uuid', () => {
     const updatedUser = await User.findByPk(user.id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(updatedUser).to.not.have.property('password');
+    expect(updatedUser).not.to.have.property('password');
     expect(updatedUser.uuid).to.equal(user.uuid);
     expect(updatedUser.name).to.equal('Jane Doe');
     expect(updatedUser.email).to.equal(userData.email);

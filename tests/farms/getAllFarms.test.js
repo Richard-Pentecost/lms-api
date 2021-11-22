@@ -32,7 +32,7 @@ describe('GET /farms', () => {
     expect(response.body.length).to.equal(2);
 
     response.body.forEach(farm => {
-      const expected = farms.find(f => f.id === farm.id);
+      const expected = farms.find(f => f.uuid === farm.uuid);
       expect(farm.farmName).to.equal(expected.farmName);
       expect(farm.postcode).to.equal(expected.postcode);
       expect(farm.contactName).to.equal(expected.contactName);
