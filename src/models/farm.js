@@ -45,10 +45,9 @@ module.exports = (connection, DataTypes) => {
         notEmpty: { msg: 'Contact number must be given' },
       },
     },
-    status: {
-      type: DataTypes.ENUM,
-      defaultValue: 'enabled',
-      values: ['enabled', 'disabled']
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
     region: {
       type: DataTypes.STRING,

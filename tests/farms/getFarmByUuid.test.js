@@ -39,7 +39,7 @@ describe('POST /farms/:uiid', () => {
     expect(response.body.farm.uuid).to.have.length(36);
     expect(response.body.farm.contactName).to.equal('Farmer Giles');
     expect(response.body.farm.contactNumber).to.equal('01234567890');
-    expect(response.body.farm.status).to.equal('enabled');
+    expect(response.body.farm.isActive).to.equal(true);
     expect(response.body.farm.accessCodes).to.be.null;
     expect(response.body.farm.comments).to.be.null;
   });

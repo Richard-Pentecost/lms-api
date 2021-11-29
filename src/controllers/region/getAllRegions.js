@@ -12,7 +12,7 @@ const getAllRegions = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'There was an error connecting to the database' });
+    res.status(501).json({ error: 'There was an error connecting to the database' });
   }
 };
 

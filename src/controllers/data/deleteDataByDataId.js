@@ -3,9 +3,9 @@ const { Data } = require('../../models');
 const deleteDataByDataId = async (req, res) => {
   const { dataId } = req.params;
   try {
-    const response = await Data.destroy({ where: { uuid: dataId } });
+    const deletedRows = await Data.destroy({ where: { uuid: dataId } });
 
-    if (response === 0) {
+    if (deletedRows === 0) {
       res.status(401).json({ error: 'There was an error deleting the data' });
     } else {
       res.sendStatus(201);

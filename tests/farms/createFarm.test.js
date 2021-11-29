@@ -31,7 +31,7 @@ describe('POST /farms', () => {
     expect(response.body.farm.postcode).to.equal('NE3 4RM');
     expect(response.body.farm.contactName).to.equal('Farmer Giles');
     expect(response.body.farm.contactNumber).to.equal('01234567890');
-    expect(response.body.farm.status).to.equal('enabled');
+    expect(response.body.farm.isActive).to.equal(true);
     expect(response.body.farm.accessCodes).to.equal('access codes');
     expect(response.body.farm.comments).to.equal('comments')
 
@@ -47,7 +47,7 @@ describe('POST /farms', () => {
     expect(response.body.farm.postcode).to.equal('NE3 4RM');
     expect(response.body.farm.contactName).to.equal('Farmer Giles');
     expect(response.body.farm.contactNumber).to.equal('01234567890');
-    expect(response.body.farm.status).to.equal('enabled');
+    expect(response.body.farm.isActive).to.equal(true);
     expect(response.body.farm.accessCodes).to.be.null;
     expect(response.body.farm.comments).to.be.null;
 

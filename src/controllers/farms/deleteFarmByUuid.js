@@ -4,13 +4,14 @@ const deleteFarmById = async (req, res) => {
   const { uuid } = req.params;
   
   try {
-    const deletedRow = await Farm.destroy({ where: { uuid }});
-    if (deletedRow !== 0) {
-      res.sendStatus(204);
+    const deletedRows = await Farm.destroy({ where: { uuid } });
+    if (deletedRows === 0) {
+      res.status(401).json({ error: 'There was an error deleting the farm' });
     } else {
-      res.status(401).json({ error: 'The farm could not be found' });
+      res.sendStatus(201);
     };
-  } catch (err) {
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 };

@@ -15,7 +15,7 @@ describe('DELETE /farms/:farmId/data/:dataId', () => {
   afterEach(async () => {
     sinon.restore();
     await Data.destroy({ where: {} });
-    await Data.destroy({ where: {} });
+    await Farm.destroy({ where: {} });
   });
 
   beforeEach(async () => {

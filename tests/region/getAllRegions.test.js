@@ -45,7 +45,7 @@ describe('GET /regions', () => {
     sinon.stub(Region, 'findAll').throws(() => new Error());
     const response = await request(app).get('/regions');
 
-    expect(response.status).to.equal(500);
+    expect(response.status).to.equal(501);
     expect(response.body.error).to.equal('There was an error connecting to the database');
   });
 });
