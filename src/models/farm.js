@@ -49,7 +49,11 @@ module.exports = (connection, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-    region: {
+    regionFk: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
+    product: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -75,9 +79,23 @@ module.exports = (connection, DataTypes) => {
 
   FarmModel.associate = function (models) {
     FarmModel.hasOne(models.Region, {
-      foreignKey: 'region',
-      targetKey: 'region'
+      foreignKey: 'regionFk',
+      targetKey: 'uuid'
     })
+    FarmModel.hasMany(models.Product, {
+      foreignKey: 'product',
+      targetKey: 'product',
+    })
+  }
+
+  FarmModel.fetchFarms = function () {
+    return this.findAll({
+      include: [{
+        model: sequelize.models.Region,
+        attributes: ['regionName'],
+        as: 'regionName',
+      }],
+    });
   }
 
   return FarmModel;

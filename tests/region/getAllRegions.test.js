@@ -16,8 +16,8 @@ describe('GET /regions', () => {
 
   beforeEach(async () => {
     regions = await Promise.all([
-      Region.create({ region: 'North West' }),
-      Region.create({ region: 'South East' }),
+      Region.create({ regionName: 'North West' }),
+      Region.create({ regionName: 'South East' }),
     ]);
   });
 
@@ -29,7 +29,7 @@ describe('GET /regions', () => {
     
     response.body.forEach(region => {
       const expected = regions.find(r => r.uuid === region.uuid);
-      expect(region.region).to.equal(expected.region);
+      expect(region.regionName).to.equal(expected.regionName);
     });
   });
 

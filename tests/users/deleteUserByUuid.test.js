@@ -5,7 +5,7 @@ const { User } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 
-describe.only('DELETE /users/:uuid', () => {
+describe('DELETE /users/:uuid', () => {
   let user;
 
   before(async () => User.sequelize.sync());

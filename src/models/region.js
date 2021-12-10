@@ -11,9 +11,10 @@ module.exports = (connection, DataTypes) => {
       allowNull: false,
       defaultValue: DataTypes.UUIDV4,
     },
-    region: {
+    regionName: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         notNull: { msg: 'The region must be given' },
         notEmpty: { msg: 'The region must be given' },

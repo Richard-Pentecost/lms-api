@@ -24,7 +24,7 @@ describe('POST /users', () => {
     expect(response.status).to.equal(201);
     
     expect(newUserRecord).not.to.have.property('password');
-    expect(newUserRecord.uuid).to.equal(newUser.uuid);
+    expect(newUserRecord).to.have.property('uuid');
     expect(newUserRecord.name).to.equal(newUser.name);
     expect(newUserRecord.email).to.equal(newUser.email);
     expect(newUserRecord.permissionLevel).to.equal(newUser.permissionLevel);
@@ -38,7 +38,7 @@ describe('POST /users', () => {
 
     expect(response.status).to.equal(201);
     expect(newUserRecord).not.to.have.property('password');
-    expect(newUserRecord.uuid).to.equal(newUser.uuid);
+    expect(newUserRecord).to.have.property('uuid')
     expect(newUserRecord.name).to.equal(newUser.name);
     expect(newUserRecord.email).to.equal(newUser.email);
     expect(newUserRecord.permissionLevel).to.equal('user');

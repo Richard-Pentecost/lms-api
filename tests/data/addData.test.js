@@ -29,14 +29,14 @@ describe('POST /farms/:farmId/data', () => {
 
     expect(response.status).to.equal(201);
 
-    expect(newDataRecord.uuid).to.equal(newData.uuid);
+    expect(newDataRecord).to.have.property('uuid');
     // expect(new Date(newData.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
     expect(newDataRecord.product).to.equal(newData.product);
     expect(newDataRecord.quantity).to.equal(newData.quantity);
     expect(newDataRecord.meterReading).to.equal(newData.meterReading);
     expect(newDataRecord.waterUsage).to.equal(newData.waterUsage);
-    expect(newData.pumpDial).to.equal(newData.pumpDial);
+    expect(newDataRecord.pumpDial).to.equal(newData.pumpDial);
     expect(newDataRecord.floatBeforeDelivery).to.equal(newData.floatBeforeDelivery);
     expect(newDataRecord.kgActual).to.equal(newData.kgActual);
     expect(newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
@@ -53,14 +53,14 @@ describe('POST /farms/:farmId/data', () => {
 
     expect(response.status).to.equal(201);
 
-    expect(newDataRecord.uuid).to.equal(newData.uuid);
-    expect(new Date(newData.date)).to.deep.equal(newData.date);
+    expect(newDataRecord).to.have.property('uuid');
+    // expect(new Date(newData.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
     expect(newDataRecord.product).to.equal(newData.product);
     expect(newDataRecord.quantity).to.equal(newData.quantity);
     expect(newDataRecord.meterReading).to.equal(newData.meterReading);
     expect(newDataRecord.waterUsage).to.equal(newData.waterUsage);
-    expect(newData.pumpDial).to.equal(newData.pumpDial);
+    expect(newDataRecord.pumpDial).to.equal(newData.pumpDial);
     expect(newDataRecord.floatBeforeDelivery).to.equal(newData.floatBeforeDelivery);
     expect(newDataRecord.kgActual).to.equal(newData.kgActual);
     expect(newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);

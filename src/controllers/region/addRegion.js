@@ -2,7 +2,7 @@ const { Region } = require('../../models');
 
 const addRegion = async (req, res) => {
   try {
-    const region = await Region.create({ region: req.body.region });
+    const region = await Region.create(req.body.region);
     res.status(201).json({ region });
   } catch (error) {
     console.error(error);

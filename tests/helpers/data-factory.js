@@ -19,9 +19,9 @@ exports.farm = (options = {}) => {
     contactName: options.contactName || faker.name.findName(),
     contactNumber: options.contactNumber || faker.phone.phoneNumber('07#########'),
     isActive: options.isActive,
-    region: options.region || null,
-    accessCodes: options.accessCodes || faker.lorem.sentence(),
-    comments: options.comments || faker.lorem.sentence(),
+    regionFk: options.region || null,
+    accessCodes: options.accessCodes || null,
+    comments: options.comments || null,
   };
   
   return farm;
