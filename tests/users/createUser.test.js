@@ -4,7 +4,7 @@ const { User } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 
-describe('POST /users', () => {
+describe.only('POST /users', () => {
   let newUser;
 
   before(async () => User.sequelize.sync());

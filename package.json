@@ -4,12 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docker": "docker run -d -p 3307:3306 --name lms_mysql -e MYSQL_ROOT_PASSWORD=password mysql",
-    "pretest": "node scripts/create-database.js test",
     "test": "mocha tests/**/*.js --exit --recursive --timeout 60000 --file ./tests/test-setup.js",
-    "posttest": "node scripts/drop-database.js",
-    "prestart": "node scripts/create-database.js",
-    "start": "nodemon -r dotenv/config index.js"
+    "start": "nodemon -r dotenv/config index.js",
+    "db:migrate": "sequelize db:migrate",
+    "db:migrate:undo": "sequelize db:migrate:undo"
   },
   "author": "",
   "license": "ISC",
@@ -19,9 +17,10 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
-    "sequelize": "^6.6.2",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.11.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -1,35 +1,38 @@
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
 const Sequelize = require('sequelize');
-const UserModel = require('./user');
-const FarmModel = require('./farm');
-const DataModel = require('./data');
-const RegionModel = require('./region');
-const ProductModel = require('./product');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.js')[env];
+const db = {};
 
-const { DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_PORT } = process.env;
+let sequelize;
 
-const setupDatabase = () => {
-  const connection = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-    host: DB_HOST,
-    port: DB_PORT,
-    dialect: 'mysql',
-    logging: false,
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
+
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
   });
-  
-  const User = UserModel(connection, Sequelize);
-  const Farm = FarmModel(connection, Sequelize);
-  const Data = DataModel(connection, Sequelize);
-  const Region = RegionModel(connection, Sequelize);
-  const Product = ProductModel(connection, Sequelize);
 
-  connection.sync({ alter: true });
-  return {
-    User,
-    Farm,
-    Data,
-    Region,
-    Product,
-  };
-};
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
-module.exports = setupDatabase();
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
+module.exports = db;

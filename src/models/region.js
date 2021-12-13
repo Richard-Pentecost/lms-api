@@ -1,30 +1,25 @@
-module.exports = (connection, DataTypes) => {
-  const schema = {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    uuid: {
-      type: DataTypes.UUID,
-      unique: true,
-      allowNull: false,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    regionName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        notNull: { msg: 'The region must be given' },
-        notEmpty: { msg: 'The region must be given' },
-      }
-    },
-  };
+'use strict';
 
-  const RegionModel = connection.define(
-    'Region', 
-    schema,
+module.exports = (sequelize, DataTypes) => {
+  const Region = sequelize.define(
+    'Region',
+    {
+      uuid: {
+        unique: true,
+        allowNull: false,
+        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.UUID
+      },
+      regionName: {
+        unique: true,
+        allowNull: false,
+        type: DataTypes.STRING,
+        validate: {
+          notNull: { msg: 'The region must be given' },
+          notEmpty: { msg: 'The region must be given' },
+        }
+      },
+    },
     {
       defaultScope: { attributes: { exclude: ['id'] } },
       createdAt: false,
@@ -32,9 +27,12 @@ module.exports = (connection, DataTypes) => {
     },
   );
 
-  RegionModel.associate = function (models) {
-    RegionModel.belongsTo(models.Farm, { onDelete: 'CASCADE', onUpdate: 'CASCADE' });
-  }
+  // Region.associate = function (models) {
+  //   Region.belongsTo(models.Farm,
+  //     foreignKey: 'regionFk',
+  //      targetKey: 'uuid'
+  //   )
+  // };
 
-  return RegionModel;
+  return Region;
 };
