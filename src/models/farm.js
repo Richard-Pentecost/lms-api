@@ -47,10 +47,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: true,
       },
       accessCodes: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       comments: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
     },
     {

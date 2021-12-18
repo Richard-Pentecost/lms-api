@@ -12,3 +12,4 @@ To create models and migrations together
 
 ```sequelize model:generate --name User --attributes name:string,email:string etc.```
 
+```sequelize seed:generate --name User```
