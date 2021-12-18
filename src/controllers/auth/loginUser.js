@@ -14,8 +14,8 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Incorrect password' });
     }
     
-    const { permissionLevel, uuid } = user;
-    const payload = { permissionLevel, uuid };
+    const { isAdmin, uuid } = user;
+    const payload = { isAdmin, uuid };
     const token = await jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '12h' });;
     
     if (!token) {
@@ -23,7 +23,7 @@ const loginUser = async (req, res) => {
     }
     res.status(201).json({ token });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.sendStatus(500);
   }
 }

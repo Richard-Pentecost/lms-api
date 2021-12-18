@@ -38,10 +38,11 @@ describe('PATCH /users/:uuid/security', () => {
   });
 
   it('should return 401 if the user does not exist in the db', async () => {
+    const invalidUuid = DataFactory.uuid;
     const existingPassword = userData.password;
     const newPassword = 'newPassword';
     const response = await request(app)
-      .patch('/users/1234/security')
+      .patch(`/users/${invalidUuid}/security`)
       .send({ existingPassword, newPassword });
     
     expect(response.status).to.equal(401);

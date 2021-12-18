@@ -22,7 +22,7 @@ const updatePasswordByUuid = async (req, res) => {
       res.status(401).json({ error: 'There was an error updating your password' });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: 'There was an error connecting to the database'});
   }
   

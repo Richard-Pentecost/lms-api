@@ -76,10 +76,11 @@ describe('PATCH /farms/:farmId/data/:dataId', () => {
   });
 
   it('should return a 401 if the data does not exist', async () => {
+    const invalidUuid = DataFactory.uuid;
     const newData = { ...dataData, noOfCows: dataData.noOfCows + 3 };
 
     const response = await request(app)
-      .patch(`/farms/${farm.uuid}/data/12345`)
+      .patch(`/farms/${farm.uuid}/data/${invalidUuid}`)
       .send({ data: newData });
 
     expect(response.status).to.equal(401);

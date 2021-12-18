@@ -1,12 +1,16 @@
 const faker = require('faker');
-const farm = require('../../src/models/farm');
 
-exports.user = (options = {}) => ({
-  name: options.firstName || faker.name.findName(),
-  email: options.email || faker.internet.email(),
-  password: options.password || faker.internet.password(),
-  permissionLevel: options.permissionLevel || 'admin',
-});
+exports.uuid = faker.datatype.uuid();
+
+exports.user = (options = {}) => {
+  return {
+    name: options.firstName || faker.name.findName(),
+    email: options.email || faker.internet.email(),
+    password: options.password || faker.internet.password(),
+    isAdmin: options.isAdmin,
+  }
+};
+  
 
 exports.farm = (options = {}) => {
   if (!options.hasOwnProperty('isActive')) {

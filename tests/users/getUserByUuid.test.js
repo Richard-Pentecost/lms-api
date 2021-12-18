@@ -30,12 +30,13 @@ describe('GET /users/:uuid', () => {
     expect(response.body.user).not.to.have.property('password');
     expect(response.body.user.name).to.equal(user.name);
     expect(response.body.user.email).to.equal(user.email);
-    expect(response.body.user.permissionLevel).to.equal(user.permissionLevel);
+    expect(response.body.user.isAdmin).to.equal(user.isAdmin);
     expect(response.body.user.uuid).to.equal(user.uuid);
   });
 
   it('should return a 401 if the user does not exist', async () => {
-    const response = await request(app).get('/users/12345');
+    const invalidUuid = DataFactory.uuid; 
+    const response = await request(app).get(`/users/${invalidUuid}`);
 
     expect(response.status).to.equal(401);
     expect(response.body.error).to.equal('User could not be found');

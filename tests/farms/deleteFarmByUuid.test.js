@@ -28,7 +28,8 @@ describe('DELETE /farms/:farmId', () => {
   });
 
   it('should return a 401 if the farm does not exist', async () => {
-    const response = await request(app).delete('/farms/12345');
+    const invalidUuid = DataFactory.uuid;
+    const response = await request(app).delete(`/farms/${invalidUuid}`);
 
     expect(response.status).to.equal(401);
     expect(response.body.error).to.equal('There was an error deleting the farm');

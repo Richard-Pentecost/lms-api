@@ -4,7 +4,7 @@ const { User } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 
-describe.only('POST /users', () => {
+describe('POST /users', () => {
   let newUser;
 
   before(async () => User.sequelize.sync());
@@ -17,7 +17,7 @@ describe.only('POST /users', () => {
     newUser = DataFactory.user();
   });
 
-  it('creates a new user in the database', async () => {
+  it('creates a new user in the database, with isAdmin defaulting to null', async () => {
     const response = await request(app).post('/users').send({ user: newUser });
     const newUserRecord = await User.findByPk(response.body.user.id, { raw: true });
 
@@ -27,21 +27,21 @@ describe.only('POST /users', () => {
     expect(newUserRecord).to.have.property('uuid');
     expect(newUserRecord.name).to.equal(newUser.name);
     expect(newUserRecord.email).to.equal(newUser.email);
-    expect(newUserRecord.permissionLevel).to.equal(newUser.permissionLevel);
+    expect(newUserRecord.isAdmin).to.be.false;
   });
 
-  it('creates a new user in the database with default permission level if not provided', async () => {
-    const { permissionLevel, ...noPermissionLevel } = newUser;
+  it('creates a new user in the database, with isAdmin set to true', async () => {
 
-    const response = await request(app).post('/users').send({ user: noPermissionLevel });
+    const response = await request(app).post('/users').send({ user: { ...newUser, isAdmin: true } });
     const newUserRecord = await User.findByPk(response.body.user.id, { raw: true });
-
+    
     expect(response.status).to.equal(201);
+    
     expect(newUserRecord).not.to.have.property('password');
-    expect(newUserRecord).to.have.property('uuid')
+    expect(newUserRecord).to.have.property('uuid');
     expect(newUserRecord.name).to.equal(newUser.name);
     expect(newUserRecord.email).to.equal(newUser.email);
-    expect(newUserRecord.permissionLevel).to.equal('user');
+    expect(newUserRecord.isAdmin).to.be.true;
   });
 
   it('returns 401 when the name field is null', async () => {

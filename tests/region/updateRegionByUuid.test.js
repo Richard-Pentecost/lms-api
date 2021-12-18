@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const request = require('supertest');
 const sinon = require('sinon');
+const DataFactory = require('../helpers/data-factory');
 const { Region } = require('../../src/models');
 const app = require('../../src/app');
 
@@ -31,8 +32,9 @@ describe('PATCH /regions/:uuid', () => {
   });
 
   it('should return a 401 if the region does not exist', async () => {
+    const invalidUuid = DataFactory.uuid;
     const response = await request(app)
-      .patch('/regions/12345')
+      .patch(`/regions/${invalidUuid}`)
       .send({ region: { regionName: 'South West' }});
 
     expect(response.status).to.equal(401);

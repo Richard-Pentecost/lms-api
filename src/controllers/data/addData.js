@@ -8,7 +8,7 @@ const addData = async (req, res) => {
     const data = await Data.create(req.body.data);
     res.status(201).json({ data });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(401).json({ error });
   }
 }

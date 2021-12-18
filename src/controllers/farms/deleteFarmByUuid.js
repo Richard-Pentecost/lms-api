@@ -1,6 +1,6 @@
 const { Farm } = require('../../models');
 
-const deleteFarmById = async (req, res) => {
+const deleteFarmByUuid = async (req, res) => {
   const { uuid } = req.params;
   
   try {
@@ -11,9 +11,9 @@ const deleteFarmById = async (req, res) => {
       res.sendStatus(201);
     };
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 };
 
-module.exports = deleteFarmById;
+module.exports = deleteFarmByUuid;

@@ -12,7 +12,7 @@ const updateDataByDataId = async (req, res) => {
       res.status(401).json({ error: 'There was an error updating the data' });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     if (error.errors) {
       res.status(401).json({ error: error.errors[0].message });
     }

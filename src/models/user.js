@@ -57,13 +57,13 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const generateHash = async user => {
-    const salt = await bcrtyt.genSaltSync(10);
+    const salt = await bcrypt.genSaltSync(10);
     user.password = await bcrypt.hash(user.password, salt);
   };
 
   User.beforeCreate(generateHash);
 
-  User.validatePassword = async function (password) {
+  User.prototype.validatePassword = async function (password) {
     return bcrypt.compareSync(password, this.password);
   };
 

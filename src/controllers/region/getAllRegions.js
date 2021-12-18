@@ -11,7 +11,7 @@ const getAllRegions = async (req, res) => {
       res.status(401).json({ error: 'Could not retrieve regions' });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(501).json({ error: 'There was an error connecting to the database' });
   }
 };

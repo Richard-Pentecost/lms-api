@@ -34,7 +34,7 @@ describe('GET /users', () => {
       expect(user.uuid).to.equal(expected.uuid);
       expect(user.name).to.equal(expected.name);
       expect(user.email).to.equal(expected.email);
-      expect(user.permissionLevel).to.equal(expected.permissionLevel);
+      expect(user.isAdmin).to.equal(expected.isAdmin);
     });
   });
 

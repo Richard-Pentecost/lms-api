@@ -11,7 +11,7 @@ const deleteRegionByUuid = async (req, res) => {
       res.sendStatus(201);
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 };

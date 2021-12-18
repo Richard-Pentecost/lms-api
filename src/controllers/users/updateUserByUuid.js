@@ -12,7 +12,7 @@ const updateUserByUuid = async (req, res) => {
       res.status(401).json({ error: 'The user could not be found' });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 } 

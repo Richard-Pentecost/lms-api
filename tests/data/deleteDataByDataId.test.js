@@ -34,7 +34,8 @@ describe('DELETE /farms/:farmId/data/:dataId', () => {
   });
 
   it('should return a 401 if the data does not exist', async () => {
-    const response = await request(app).delete(`/farms/${farm.uuid}/data/12345`)
+    const invalidUuid = DataFactory.uuid;
+    const response = await request(app).delete(`/farms/${farm.uuid}/data/${invalidUuid}`)
     
     expect(response.status).to.equal(401);
     expect(response.body.error).to.equal('There was an error deleting the data');

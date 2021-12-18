@@ -17,8 +17,8 @@ describe('PATCH /users/:uuid', () => {
   });
 
   afterEach(async () => {
-    await User.destroy({ where: {} });
     sinon.restore();
+    await User.destroy({ where: {} });
   });
 
   it('updates a users name when given a new name and the uuid', async () => {
@@ -33,12 +33,13 @@ describe('PATCH /users/:uuid', () => {
     expect(updatedUser.uuid).to.equal(user.uuid);
     expect(updatedUser.name).to.equal('Jane Doe');
     expect(updatedUser.email).to.equal(userData.email);
-    expect(updatedUser.permissionLevel).to.equal(userData.permissionLevel);
+    expect(updatedUser.isAdmin).to.be.false;
   });
 
   it('should return a 401 if the user does not exist', async () => {
+    const invalidUuid = DataFactory.uuid;
     const response = await request(app)
-      .patch('/users/12345')
+      .patch(`/users/${invalidUuid}`)
       .send({ user: { name: 'Jane Doe' } });
     
       expect(response.status).to.equal(401);

@@ -6,6 +6,7 @@ const updateFarmByUuid = async (req, res) => {
 
   try {
     const [ updatedRows ] = await Farm.update(updatedData, { where: { uuid } });
+
     if (updatedRows > 0) {
       res.sendStatus(201);
     } else {

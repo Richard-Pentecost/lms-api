@@ -8,6 +8,7 @@ module.exports = {
     port: parseInt(process.env.DB_PORT) || 5432,
     database: process.env.DB_DATABASE || 'lms-dev-db',
     dialect: 'postgres',
+    logging: console.log,
   },
   test: {
     username: process.env.DB_TEST_USERNAME || 'postgres',
@@ -16,6 +17,7 @@ module.exports = {
     port: parseInt(process.env.DB_TEST_PORT) || 5433,
     database: process.env.DB_TEST_DATABASE || 'lms-test-db',
     dialect: 'postgres',
+    logging: false,
   },
   // production: {
     //   url: process.env.DATABASE_URL,

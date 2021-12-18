@@ -13,7 +13,7 @@ const updateRegionByUuid = async (req, res) => {
       res.status(401).json({ error: 'The region could not be found' });
     }
   } catch(error) {
-    console.error(error);
+    // console.error(error);
     if (error.errors) {
       res.status(401).json({ error: 'The region already exists' });
     } else {

@@ -1,8 +1,6 @@
 const { User } = require('../../models');
-const { removePassword } = require('../../utils/helpers');
 
 const createUser = async (req, res) => {
-
   try {
     const user = await User.create(req.body.user);
     res.status(201).json({ user });
