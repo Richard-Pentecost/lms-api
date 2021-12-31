@@ -32,41 +32,41 @@ module.exports = {
       },
       quantity: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       meterReading: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       waterUsage: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       averageWaterIntake: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       pumpDial: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       floatBeforeDelivery: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       kgActual: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       targetFeedRate: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       actualFeedRate: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       floatAfterDelivery: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       comments: {
         type: Sequelize.TEXT,

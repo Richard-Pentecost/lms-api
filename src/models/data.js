@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       quantity: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
           notNull: { msg: 'The product quantity must be given' },
@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       meterReading: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
           notNull: { msg: 'The meter reading must be given' },
@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       waterUsage: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
           notNull: { msg: 'The water usage must be given' },
@@ -76,10 +76,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       averageWaterIntake: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
       },
       pumpDial: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
           notNull: { msg: 'The pump dial must be given' },
@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       floatBeforeDelivery: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
           notNull: { msg: 'The float before delivery must be given' },
@@ -97,7 +97,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       kgActual: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
           notNull: { msg: 'The kg actual must be given' },
@@ -106,7 +106,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       targetFeedRate: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
           notNull: { msg: 'The target feed rate must be given' },
@@ -115,10 +115,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       actualFeedRate: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
       },
       floatAfterDelivery: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
           notNull: { msg: 'The float after delivery must be given' },

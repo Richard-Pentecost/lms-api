@@ -10,7 +10,8 @@
     "db:migrate": "sequelize db:migrate",
     "db:migrate:undo": "sequelize db:migrate:undo",
     "db:seed:all": "sequelize db:seed:all",
-    "db:seed:undo:all": "sequelize db:seed:undo:all"
+    "db:seed:undo:all": "sequelize db:seed:undo:all",
+    "db:seed": "sequelize db:seed --seed"
   },
   "author": "",
   "license": "ISC",
