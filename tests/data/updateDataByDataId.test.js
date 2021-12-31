@@ -39,14 +39,14 @@ describe('PATCH /farms/:farmId/data/:dataId', () => {
     expect(updatedData).to.have.property('date');
     expect(updatedData.noOfCows).to.equal(newData.noOfCows);
     expect(updatedData.product).to.equal(newData.product);
-    expect(updatedData.quantity).to.equal(newData.quantity);
-    expect(updatedData.meterReading).to.equal(newData.meterReading);
-    expect(updatedData.waterUsage).to.equal(newData.waterUsage);
-    expect(updatedData.pumpDial).to.equal(newData.pumpDial);
-    expect(updatedData.floatBeforeDelivery).to.equal(newData.floatBeforeDelivery);
-    expect(updatedData.kgActual).to.equal(newData.kgActual);
-    expect(updatedData.targetFeedRate).to.equal(newData.targetFeedRate);
-    expect(updatedData.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
+    expect(parseInt(updatedData.quantity)).to.equal(newData.quantity);
+    expect(parseInt(updatedData.meterReading)).to.equal(newData.meterReading);
+    expect(parseInt(updatedData.waterUsage)).to.equal(newData.waterUsage);
+    expect(parseInt(updatedData.pumpDial)).to.equal(newData.pumpDial);
+    expect(parseInt(updatedData.floatBeforeDelivery)).to.equal(newData.floatBeforeDelivery);
+    expect(parseInt(updatedData.kgActual)).to.equal(newData.kgActual);
+    expect(parseInt(updatedData.targetFeedRate)).to.equal(newData.targetFeedRate);
+    expect(parseInt(updatedData.floatAfterDelivery)).to.equal(newData.floatAfterDelivery);
     expect(updatedData.comments).to.equal(newData.comments);
   });
 
@@ -64,14 +64,14 @@ describe('PATCH /farms/:farmId/data/:dataId', () => {
     expect(updatedData).to.have.property('date');
     expect(updatedData.noOfCows).to.equal(newData.noOfCows);
     expect(updatedData.product).to.equal(dataData.product);
-    expect(updatedData.quantity).to.equal(dataData.quantity);
-    expect(updatedData.meterReading).to.equal(dataData.meterReading);
-    expect(updatedData.waterUsage).to.equal(dataData.waterUsage);
-    expect(updatedData.pumpDial).to.equal(dataData.pumpDial);
-    expect(updatedData.floatBeforeDelivery).to.equal(dataData.floatBeforeDelivery);
-    expect(updatedData.kgActual).to.equal(dataData.kgActual);
-    expect(updatedData.targetFeedRate).to.equal(dataData.targetFeedRate);
-    expect(updatedData.floatAfterDelivery).to.equal(dataData.floatAfterDelivery);
+    expect(parseInt(updatedData.quantity)).to.equal(dataData.quantity);
+    expect(parseInt(updatedData.meterReading)).to.equal(dataData.meterReading);
+    expect(parseInt(updatedData.waterUsage)).to.equal(dataData.waterUsage);
+    expect(parseInt(updatedData.pumpDial)).to.equal(dataData.pumpDial);
+    expect(parseInt(updatedData.floatBeforeDelivery)).to.equal(dataData.floatBeforeDelivery);
+    expect(parseInt(updatedData.kgActual)).to.equal(dataData.kgActual);
+    expect(parseInt(updatedData.targetFeedRate)).to.equal(dataData.targetFeedRate);
+    expect(parseInt(updatedData.floatAfterDelivery)).to.equal(dataData.floatAfterDelivery);
     expect(updatedData.comments).to.equal(dataData.comments);
   });
 
