@@ -2,10 +2,12 @@ const { Farm } = require('../../models');
 
 const updateFarmByUuid = async (req, res) => {
   const { uuid } = req.params;
-  const updatedData = req.body.farm;
+  const { farm }= req.body;
+
+  !farm.regionFk && (farm.regionFk = null);
 
   try {
-    const [ updatedRows ] = await Farm.update(updatedData, { where: { uuid } });
+    const [ updatedRows ] = await Farm.update(farm, { where: { uuid } });
 
     if (updatedRows > 0) {
       res.sendStatus(201);
@@ -13,6 +15,7 @@ const updateFarmByUuid = async (req, res) => {
       res.status(401).json({ error: 'The farm could not be found' });
     }
   } catch (error) {
+    // console.error(error);
     res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 };

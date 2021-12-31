@@ -13,6 +13,7 @@ describe('DELETE /regions/:uuid', () => {
   afterEach(async () => {
     sinon.restore();
     await Region.destroy({ where: {} });
+    await Farm.destroy({ where: {} });
   });
 
   beforeEach(async () => {
@@ -43,14 +44,14 @@ describe('DELETE /regions/:uuid', () => {
     expect(response.body.error).to.equal('There was an error connecting to the database');
   });
 
-  // it('should delete the region in any farms that have the association', async () => {
-  //   const farmData = DataFactory.farm();
-  //   const farmWithRegion = { ...farmData, regionFk: region.uuid };
-  //   const farm = await Farm.create(farmWithRegion);
-  //   console.log(farm);
-  //   await request(app).delete(`/regions/${region.uuid}`);
-  //   const updatedFarm = await Farm.findByPk(farm.id, { raw: true });
-  //   console.log(updatedFarm);
-  //   expect(updatedFarm.regionFk).to.be.null;
-  // });
+  it('should delete the region in any farms that have the association', async () => {
+    const farmData = DataFactory.farm();
+    const farmWithRegion = { ...farmData, regionFk: region.uuid };
+    const farm = await Farm.create(farmWithRegion);
+
+    await request(app).delete(`/regions/${region.uuid}`);
+
+    const updatedFarm = await Farm.findByPk(farm.id, { raw: true });
+    expect(updatedFarm.regionFk).to.be.null;
+  });
 });

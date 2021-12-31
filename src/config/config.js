@@ -8,7 +8,7 @@ module.exports = {
     port: parseInt(process.env.DB_PORT) || 5432,
     database: process.env.DB_DATABASE || 'lms-dev-db',
     dialect: 'postgres',
-    logging: console.log,
+    logging: false,
   },
   test: {
     username: process.env.DB_TEST_USERNAME || 'postgres',

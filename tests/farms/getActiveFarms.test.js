@@ -40,7 +40,7 @@ describe('GET /farms/active', () => {
       expect(farm.contactName).to.equal(expected.contactName);
       expect(farm.contactNumber).to.equal(expected.contactNumber);
       expect(farm.isActive).to.be.true;
-      expect(farm.region).to.equal(expected.region);
+      expect(farm.regionFk).to.equal(expected.regionFk);
       expect(farm.accessCodes).to.equal(expected.accessCodes);
       expect(farm.comments).to.equal(expected.comments);
     });

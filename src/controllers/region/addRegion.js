@@ -5,7 +5,7 @@ const addRegion = async (req, res) => {
     const region = await Region.create(req.body.region);
     res.status(201).json({ region });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     if (error.errors) {
       res.status(401).json({ error });
     } else {

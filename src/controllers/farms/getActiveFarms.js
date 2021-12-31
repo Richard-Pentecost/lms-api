@@ -2,7 +2,10 @@ const { Farm } = require('../../models');
 
 const getActiveFarms = async (req, res) => {
   try {
-    const farms = await Farm.findAll({ where: { isActive: true } });
+    const isActive = true;
+    const farms = await Farm.fetchFarms(isActive);
+    // console.log("***********")
+    // console.log(farms);
     res.status(201).json(farms);
   } catch (error) {
     // console.error(error);

@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
   const Farm = sequelize.define(
     'Farm',
     {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       uuid: {
         type: DataTypes.UUID,
         unique: true,
@@ -52,23 +57,44 @@ module.exports = (sequelize, DataTypes) => {
       comments: {
         type: DataTypes.TEXT,
       },
+      regionFk: {
+        type: DataTypes.UUID,
+      }
     },
     {
       defaultScope: { attributes: { exclude: ['id'] } },
-      createdAt: false,
-      updatedAt: false,
+      timestamps: false,
     },
   );
 
   Farm.associate = function (models) {
-    Farm.hasMany(models.Data, {
-      foreignKey: 'farmFk',
-      as: 'data',
-    })
+    Farm.belongsTo(models.Region, {
+      as: 'region',
+      foreignKey: 'regionFk',
+      targetKey: 'uuid',
+    });
+    // Farm.hasMany(models.Data, {
+    //   foreignKey: 'farmFk',
+    //   targetKey: 'uuid',
+    //   as: 'data',
+    // });
+    // Farm.hasOne(models.Region, {
+    //   foreignKey: 'regionFk',
+    //   targetKey: 'uuid',
+      // as: 'region',
+    // })
   };
 
-  Farm.fetchFarms = function () {
-    return this.findAll();
+  Farm.fetchFarms = function (isActive = false) {
+    const param = isActive ? { isActive: true } : {};
+    return this.findAll({ 
+      where: param,
+      include: [{
+        model: sequelize.models.Region,
+        attributes: ['regionName'],
+        as: 'region',
+      }]
+    });
   };
   
   return Farm;

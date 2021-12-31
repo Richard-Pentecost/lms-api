@@ -24,6 +24,7 @@ describe('POST /farms/:farmId/data', () => {
 
   it('adds a new set of data to the database', async () => {
     const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData });
+
     const { id } = response.body.data; 
     const newDataRecord = await Data.findByPk(id, { raw: true });
 

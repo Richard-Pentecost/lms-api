@@ -37,7 +37,7 @@ describe('PATCH /farms/:uuid', () => {
     const invalidUuid = DataFactory.uuid;
     const response = await request(app)
       .patch(`/farms/${invalidUuid}`)
-      .send({ farmName: 'Old Farm', postcode: 'OL0 4RM' });
+      .send({ farm: { farmName: 'Old Farm', postcode: 'OL0 4RM' } });
     
     expect(response.status).to.equal(401);
     expect(response.body.error).to.equal('The farm could not be found');
@@ -48,7 +48,7 @@ describe('PATCH /farms/:uuid', () => {
 
     const response = await request(app)
       .patch(`/farms/${farm.uuid}`)
-      .send({ farmName: 'Old Farm', postcode: 'OLO 4RM' });
+      .send({ farm: { farmName: 'Old Farm', postcode: 'OLO 4RM' } });
 
     expect(response.status).to.equal(500);
     expect(response.body.error).to.equal('There was an error connecting to the database');

@@ -16,7 +16,7 @@ module.exports = {
       },
       farmFk: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       date: {
         allowNull: false,

@@ -2,10 +2,10 @@ const { User } = require('../../models');
 
 const updateUserByUuid = async (req, res) => {
   const { uuid } = req.params;
-  const updatedData = req.body.user;
+  const { user } = req.body;
 
   try {
-    const [ updatedRows ] = await User.update(updatedData, { where: { uuid } });
+    const [ updatedRows ] = await User.update(user, { where: { uuid } });
     if (updatedRows > 0) {
       res.sendStatus(201);
     } else {

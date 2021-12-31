@@ -25,20 +25,20 @@ describe('POST /regions', () => {
 
   it('should return a 401 when the region is null', async () => {
     const response = await request(app).post('/regions').send(null);
-  
+
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal('The region must be given');
   });
 
   it('should return a 401 when the region is empty', async () => {
     const response = await request(app).post('/regions').send({ region: { regionName: '' } });
-  
+
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal('The region must be given');
   });
 
   it('should return a 401 if a region with the same name already exists', async () => {
-    await Region.create({ regionName: 'Devon' });
+    const region = await Region.create({ regionName: 'Devon' });
 
     const response = await request(app).post('/regions').send({ region: { regionName: 'Devon' } });
     expect(response.status).to.equal(401);

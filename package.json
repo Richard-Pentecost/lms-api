@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "pretest": "NODE_ENV=test npm run db:migrate",
     "test": "mocha tests/**/*.js --exit --recursive --timeout 60000 --file ./tests/test-setup.js",
     "start": "nodemon -r dotenv/config index.js",
     "db:migrate": "sequelize db:migrate",
-    "db:migrate:undo": "sequelize db:migrate:undo"
+    "db:migrate:undo": "sequelize db:migrate:undo",
+    "db:seed:all": "sequelize db:seed:all",
+    "db:seed:undo:all": "sequelize db:seed:undo:all"
   },
   "author": "",
   "license": "ISC",

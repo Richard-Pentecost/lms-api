@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
   const Data = sequelize.define(
     'Data',
     {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       uuid: {
         type: DataTypes.UUID,
         unique: true,

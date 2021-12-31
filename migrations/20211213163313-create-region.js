@@ -15,6 +15,7 @@ module.exports = {
       },
       regionName: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
     });

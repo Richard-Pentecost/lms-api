@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
   const Region = sequelize.define(
     'Region',
     {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       uuid: {
         unique: true,
         allowNull: false,
@@ -22,17 +27,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       defaultScope: { attributes: { exclude: ['id'] } },
-      createdAt: false,
-      updatedAt: false,
+      timestamps: false,
     },
   );
 
-  // Region.associate = function (models) {
-  //   Region.belongsTo(models.Farm,
-  //     foreignKey: 'regionFk',
-  //      targetKey: 'uuid'
-  //   )
-  // };
+  Region.associate = function (models) {
+    Region.hasMany(models.Farm, {
+      as: 'farms',
+      foreignKey: 'regionFk',
+      targetKey: 'uuid',
+    });
+  }
 
   return Region;
 };
