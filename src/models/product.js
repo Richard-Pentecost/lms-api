@@ -31,5 +31,14 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
+  Product.associate = function (models) {
+    Product.belongsToMany(models.Farm, {
+      through: 'FarmProducts',
+      as: 'farms',
+      foreignKey: 'productId',
+      otherKey: 'farmId',
+    });
+  }
+
   return Product;
 };

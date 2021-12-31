@@ -73,6 +73,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'regionFk',
       targetKey: 'uuid',
     });
+    Farm.belongsToMany(models.Product, {
+      through: 'FarmProducts',
+      as: 'products',
+      foreignKey: 'farmId',
+      otherKey: 'productId',
+    });
     // Farm.hasMany(models.Data, {
     //   foreignKey: 'farmFk',
     //   targetKey: 'uuid',
