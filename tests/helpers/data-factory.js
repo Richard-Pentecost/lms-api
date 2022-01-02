@@ -52,3 +52,10 @@ exports.data = (options = {}) => {
   
   return data;  
 };
+
+exports.product = (options = {}) => {
+  return {
+    productName: options.productName || faker.random.word(),
+    specificGravity: options.specificGravity || faker.datatype.number(),
+  };
+};

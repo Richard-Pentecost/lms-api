@@ -40,5 +40,11 @@ module.exports = (sequelize, DataTypes) => {
     });
   }
 
+  Product.fetchProducts = function () {
+    return this.findAll({
+      attributes: ['uuid', 'productName', 'specificGravity'],
+    });
+  }
+
   return Product;
 };

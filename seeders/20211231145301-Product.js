@@ -8,7 +8,7 @@ module.exports = {
       [
         { 
           uuid: uuidv4(),
-          productName: 'SeTi-IBC',
+          productName: 'Se&I-IBC',
           specificGravity: 1.0,
         },
         { 
