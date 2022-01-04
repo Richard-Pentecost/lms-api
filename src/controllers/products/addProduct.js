@@ -1,9 +1,9 @@
-const { Region } = require('../../models');
+const { Product } = require('../../models');
 
-const addRegion = async (req, res) => {
+const addProduct = async (req, res) => {
   try {
-    const region = await Region.create(req.body.region);
-    res.status(201).json({ region });
+    const product = await Product.create(req.body.product)
+    res.status(201).json({ product });
   } catch (error) {
     // console.error(error);
     if (error.errors) {
@@ -12,6 +12,6 @@ const addRegion = async (req, res) => {
       res.status(500).json({ error: 'There was an error connecting to the database' });
     }
   }
-} 
+}
 
-module.exports = addRegion;
+module.exports = addProduct;

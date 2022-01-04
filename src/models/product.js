@@ -19,10 +19,19 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         type: DataTypes.STRING,
+        validate: {
+          notNull: { msg: 'A product must be given' },
+          notEmpty: { msg: 'A product must be given' },
+        }
       },
       specificGravity: {
         allowNull: false,
         type: DataTypes.DECIMAL,
+        validate: {
+          notNull: { msg: 'A specific gravity must be given' },
+          notEmpty: { msg: 'A specific gravity must be given' },
+          min: { args: [0], msg: 'The target feed rate cannot be a negative number' },
+        }
       }
     },
     {

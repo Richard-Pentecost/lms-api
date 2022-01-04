@@ -5,7 +5,6 @@ const { Region } = require('../../src/models');
 const app = require('../../src/app');
 
 describe('POST /regions', () => {
-  before(async () => Region.sequelize.sync());
 
   afterEach(async () => {
     sinon.restore();
@@ -38,7 +37,7 @@ describe('POST /regions', () => {
   });
 
   it('should return a 401 if a region with the same name already exists', async () => {
-    const region = await Region.create({ regionName: 'Devon' });
+    await Region.create({ regionName: 'Devon' });
 
     const response = await request(app).post('/regions').send({ region: { regionName: 'Devon' } });
     expect(response.status).to.equal(401);
