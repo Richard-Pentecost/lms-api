@@ -10,11 +10,21 @@ module.exports = {
       },
       productId: {
         allowNull: false,
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: {
+          model: 'Products',
+          key: 'uuid',
+        },
+        onDelete: 'CASCADE',
       },
       farmId: {
         allowNull: false,
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: {
+          model: 'Farms',
+          key: 'uuid',
+        },
+        onDelete: 'CASCADE',
       },
     });
   },
