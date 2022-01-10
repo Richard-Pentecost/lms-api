@@ -1,29 +1,33 @@
 const { expect } = require('chai');
 const request = require('supertest');
-const { Data, Farm } = require('../../src/models');
+const sinon = require('sinon');
+const { Data, Farm, Product } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 
 describe('POST /farms/:farmId/data', () => {
   let farm;
+  let previousData;
   let newData;
 
-  before(async () => Data.sequelize.sync());
-
   afterEach(async () => {
+    sinon.restore();
     await Data.destroy({ where: {} });
     await Farm.destroy({ where: {} });
+    await Product.destroy({ where: {} });
   });
 
   beforeEach(async () => {
     const farmData = DataFactory.farm();
-    const response = await request(app).post('/farms').send({ farm: farmData });
+    const product = await Product.create(DataFactory.product());
+    const response = await request(app).post('/farms').send({ farm: farmData, products: [product.uuid] });
     farm = response.body.farm;
+    previousData = await Data.create(DataFactory.data({ farmFk: farm.uuid }));
     newData = DataFactory.data({ farmFk: farm.uuid });
   });
 
   it('adds a new set of data to the database', async () => {
-    const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData });
+    const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData, previousData: previousData.uuid });
 
     const { id } = response.body.data; 
     const newDataRecord = await Data.findByPk(id, { raw: true });
@@ -31,6 +35,9 @@ describe('POST /farms/:farmId/data', () => {
     expect(response.status).to.equal(201);
 
     expect(newDataRecord).to.have.property('uuid');
+    expect(newDataRecord.averageWaterIntake).not.to.be.null;
+    expect(newDataRecord.actualFeedRate).not.to.be.null;
+    expect(newDataRecord.farmFk).to.equal(newData.farmFk);
     // expect(new Date(newData.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
     expect(newDataRecord.product).to.equal(newData.product);
@@ -348,6 +355,16 @@ describe('POST /farms/:farmId/data', () => {
   
       expect(response.status).to.equal(401);
       expect(response.body.error.errors[0].message).to.equal("The float after delivery cannot be less than the float before delivery");
+    });
+  });
+
+  describe('error thrown', () => {
+    it('should return 500 if an error is thrown', async () => {
+      sinon.stub(Data, 'create').throws(() => new Error());
+      const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData, previousData: previousData.uuid });
+
+      expect(response.status).to.equal(500);
+      expect(response.body.error).to.equal('There was an error connecting to the database');
     });
   });
 });

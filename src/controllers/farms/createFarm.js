@@ -18,7 +18,9 @@ const createFarm = async (req, res) => {
     }
 
     await Promise.all(products.map(async item => {
-      const product = await Product.findOne({ where: { uuid: item.uuid } });
+      // console.log("***********************");
+      // console.log(item);
+      const product = await Product.findOne({ where: { uuid: item } });
 
       if (!product) {
         return res.status(401).json({ error: 'The product could not be found' });
