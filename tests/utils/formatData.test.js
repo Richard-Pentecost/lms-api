@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const DataFactory = require('../helpers/data-factory');
 const { formatData, actualFeedRate, averageWaterIntake } = require('../../src/utils/formatData');
 
-describe.only('formatData.js', () => {
+describe('formatData.js', () => {
   describe('formatData', () => {
     it('should return the data object with calculated values', () => {
       const farmFk = DataFactory.uuid;

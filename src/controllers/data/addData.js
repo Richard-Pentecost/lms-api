@@ -1,17 +1,28 @@
-const { Data } = require('../../models');
-const { averageWaterIntake, actualFeedRate } = require('../../utils/formatData');
+const { Data, Product } = require('../../models');
+const { formatData } = require('../../utils/formatData');
 
 const addData = async (req, res) => {
+  const { data, previousDataUuid } = req.body;
+
   try {
-    // formatData(req.body.data);
-    // console.log(req.body.data);
-    const previousData = await Data.fetchPreviousDataForCalculations(req.body.previousData);
+    let message = 'success';
+    let dataObj = data;
+    if (previousDataUuid) {
+      const previousData = await Data.fetchPreviousDataForCalculations(previousDataUuid);
+      const product = await Product.fetchProductByName(data.product);
+      
+      if (!previousData || !product) {
+        message = 'Data was added, but there was an error with the calculations'
+      }
 
-    const averageWaterIntake = averageWaterIntake(meterReading, previousMeterReading, cows, days);
-    const actualFeedRate = actualFeedRate();
+      if (previousData && product) {
+        dataObj = formatData(data, previousData, product.specificGravity) 
+      } 
+    }
 
-    const data = await Data.create(req.body.data);
-    res.status(201).json({ data });
+    const dataResponse = await Data.create(dataObj);
+
+    res.status(201).json({ data: dataResponse, message });
   } catch (error) {
     // console.error(error);
     if (error.errors) {

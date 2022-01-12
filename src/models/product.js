@@ -47,13 +47,20 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'productId',
       otherKey: 'farmId',
     });
-  }
+  };
 
   Product.fetchProducts = function () {
     return this.findAll({
       attributes: ['uuid', 'productName', 'specificGravity'],
     });
-  }
+  };
+
+  Product.fetchProductByName = function (productName) {
+    return this.findOne({
+      where: { productName },
+      attributes: ['specificGravity'],
+    });
+  };
 
   return Product;
 };

@@ -148,7 +148,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Data.fetchPreviousDataForCalculations = function (uuid) {
     return this.findOne({
-      where: uuid,
+      where: { uuid },
       attributes: ['date', 'floatAfterDelivery', 'meterReading']
     });
   };
