@@ -30,7 +30,7 @@ describe('GET /farms/allFarms', () => {
 
     expect(response.status).to.equal(201);
     expect(response.body.length).to.equal(3);
-
+  
     expect(response.body[0].region).to.exist;
     expect(response.body[1].region).to.be.null;
     expect(response.body[2].region).to.be.null;
@@ -48,7 +48,7 @@ describe('GET /farms/allFarms', () => {
   });
 
   it('should return a 500 if an error is thrown', async () => {
-    sinon.stub(Farm, 'findAll').throws(() => new Error());
+    sinon.stub(Farm, 'fetchAllFarms').throws(() => new Error());
 
     const response = await request(app).get('/farms');
 

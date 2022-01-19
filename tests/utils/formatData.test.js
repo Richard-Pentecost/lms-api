@@ -25,6 +25,7 @@ describe('formatData.js', () => {
 
       const formattedDataObj = formatData(data, previousData, specificGravity);
 
+      console.log(data.product);
       const expectedDataObj = {
         farmFk,
         date: new Date('10/01/2021'),

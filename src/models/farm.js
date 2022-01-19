@@ -63,6 +63,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       defaultScope: { attributes: { exclude: ['id'] } },
+      scopes: {
+        withId: {
+          attributes: { include: ['id'] },
+        }
+      },
       timestamps: false,
     },
   );
@@ -74,7 +79,7 @@ module.exports = (sequelize, DataTypes) => {
       targetKey: 'uuid',
     });
     Farm.belongsToMany(models.Product, {
-      through: 'FarmProducts',
+      through: models.FarmProduct,
       as: 'products',
       foreignKey: 'farmId',
       otherKey: 'productId',
@@ -91,16 +96,38 @@ module.exports = (sequelize, DataTypes) => {
     // })
   };
 
-  Farm.fetchFarms = function (isActive = false) {
-    const param = isActive ? { isActive: true } : {};
+  Farm.fetchActiveFarms = function () {
     return this.findAll({ 
-      where: param,
-      include: [{
-        model: sequelize.models.Region,
-        attributes: ['regionName'],
-        as: 'region',
-      }]
+      where: { isActive: true },
+      include: [
+        {
+          model: sequelize.models.Region,
+          attributes: ['regionName'],
+          as: 'region',
+        },
+        {
+          model: sequelize.models.Product,
+          attributes: ['productName', 'uuid', 'specificGravity'],
+          as: 'products',
+        }
+      ]
     });
+  };
+
+  Farm.fetchAllFarms = function() {
+    return this.findAll({
+      include: [
+        {
+          model: sequelize.models.Region,
+          attributes: ['regionName'],
+          as: 'region',
+        },
+      ]
+    });
+  }
+
+  Farm.fetchFarmByUuid = function (uuid) {
+    return this.findOne({ where: { uuid } });
   };
   
   return Farm;

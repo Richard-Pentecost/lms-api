@@ -5,7 +5,7 @@ const { Data, Farm, Product } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 
-describe.only('POST /farms/:farmId/data', () => {
+describe('POST /farms/:farmId/data', () => {
   let farm;
   let previousData;
   let newData;
@@ -201,7 +201,24 @@ describe.only('POST /farms/:farmId/data', () => {
       const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: noFarmFk });
   
       expect(response.status).to.equal(401);
-      expect(response.body.error.errors[0].message).to.equal("Data.farmFk cannot be null");
+      expect(response.body.error).to.equal("Farm foreign key must be given");
+    });
+
+    it('returns 401 when the farmFk is invalid', async () => {
+      const invalidFarmId = DataFactory.uuid;
+      const invalidFarmFk = { ...newData, farmFk: invalidFarmId };  
+      const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: invalidFarmFk });
+  
+      expect(response.status).to.equal(401);
+      expect(response.body.error).to.equal("The farm this data is associated with, could not be found");
+    });
+
+    it('returns 401 when the farmFk is empty', async () => {
+      const dataEmptyFarmFk = { ...newData, farmFk: '' } 
+      const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: dataEmptyFarmFk });
+  
+      expect(response.status).to.equal(401);
+      expect(response.body.error).to.equal("Farm foreign key must be given");
     });
   });
 
@@ -480,6 +497,14 @@ describe.only('POST /farms/:farmId/data', () => {
   describe('error thrown', () => {
     it('should return 500 if an error is thrown creating the data', async () => {
       sinon.stub(Data, 'create').throws(() => new Error());
+      const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData });
+
+      expect(response.status).to.equal(500);
+      expect(response.body.error).to.equal('There was an error connecting to the database');
+    });
+
+    it('should return 500 if an error is thrown fetching the farm', async () => {
+      sinon.stub(Farm, 'fetchFarmByUuid').throws(() => new Error());
       const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData });
 
       expect(response.status).to.equal(500);

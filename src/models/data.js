@@ -32,20 +32,20 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      noOfCows: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notNull: { msg: 'The number of cows must be given' },
-          notEmpty: { msg: 'The number of cows must be given' },
-        }
-      },
       product: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: 'The product must be given' },
           notEmpty: { msg: 'The product must be given' },
+        }
+      },
+      noOfCows: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: { msg: 'The number of cows must be given' },
+          notEmpty: { msg: 'The number of cows must be given' },
         }
       },
       quantity: {

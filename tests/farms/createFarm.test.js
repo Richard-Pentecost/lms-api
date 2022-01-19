@@ -8,6 +8,7 @@ const app = require('../../src/app');
 describe('POST /farms', () => {
   let farm;
   let products;
+  let productsCreated;
 
   afterEach(async () => {
     sinon.restore();
@@ -19,12 +20,12 @@ describe('POST /farms', () => {
 
   beforeEach(async () => {
     farm = DataFactory.farm();
-    const productsCreated = await Promise.all([ 
+    productsCreated = await Promise.all([ 
       Product.create(DataFactory.product()),
       Product.create(DataFactory.product()),
     ]);
     products = productsCreated.map(product => {
-      return product.uuid
+      return product.uuid;
     });
   });
 
@@ -73,14 +74,14 @@ describe('POST /farms', () => {
 
   it('should add association between products and farm to FarmProduct table', async () => {
     const response = await request(app).post('/farms').send({ farm, products });
-    const associations = await FarmProduct.findAll({ where: { farmId: response.body.farm.uuid } });
+    const associations = await FarmProduct.findAll({ where: { farmId: response.body.farm.id } });
 
     expect(response.status).to.equal(201);
     expect(associations.length).to.equal(2);
 
     associations.forEach(association => {
-      expect(association.farmId).to.equal(response.body.farm.uuid);
-      expect(products.find(product => product === association.productId)).to.exist;
+      expect(association.farmId).to.equal(response.body.farm.id);
+      expect(productsCreated.find(product => product.id === association.productId)).to.exist;
     })
   });
 
@@ -191,7 +192,7 @@ describe('POST /farms', () => {
   });
 
   it('should return 500 if an error is thrown trying to find product', async () => {
-    sinon.stub(Product, 'findOne').throws(() => new Error());
+    sinon.stub(Product, 'fetchProductByUuid').throws(() => new Error());
     const response = await request(app).post('/farms').send({ farm, products });
 
     expect(response.status).to.equal(500);

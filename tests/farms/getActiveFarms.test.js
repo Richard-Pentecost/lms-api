@@ -8,8 +8,6 @@ const app = require('../../src/app');
 describe('GET /farms/active', () => {
   let farms;
 
-  before(async () => Farm.sequelize.sync());
-
   afterEach(async () => {
     sinon.restore();
     await Farm.destroy({ where: {} });
@@ -47,7 +45,7 @@ describe('GET /farms/active', () => {
   });
 
   it('should return a 500 if an error is thrown',  async () => {
-    sinon.stub(Farm, 'findAll').throws(() => new Error());
+    sinon.stub(Farm, 'fetchActiveFarms').throws(() => new Error());
 
     const response = await request(app).get('/farms/active');
 

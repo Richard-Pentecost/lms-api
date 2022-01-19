@@ -10,19 +10,19 @@ module.exports = {
       },
       productId: {
         allowNull: false,
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Products',
-          key: 'uuid',
+          key: 'id',
         },
         onDelete: 'CASCADE',
       },
       farmId: {
         allowNull: false,
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Farms',
-          key: 'uuid',
+          key: 'id',
         },
         onDelete: 'CASCADE',
       },

@@ -10,25 +10,23 @@ const createFarm = async (req, res) => {
       }
     }
 
-    const farm = await Farm.create(req.body.farm);
+    const farm = await Farm.scope('withId').create(req.body.farm);
 
     const { products } = req.body;
     if (!products) {
       return res.status(401).json({ error: 'There are no products associated with this farm' });
     }
 
-    await Promise.all(products.map(async item => {
-      // console.log("***********************");
-      // console.log(item);
-      const product = await Product.findOne({ where: { uuid: item } });
+    await Promise.all(products.map(async uuid => {
+      const product = await Product.scope('withId').fetchProductByUuid(uuid);
 
       if (!product) {
         return res.status(401).json({ error: 'The product could not be found' });
       }
 
       const association = { 
-        farmId: farm.uuid, 
-        productId: product.uuid 
+        farmId: farm.id, 
+        productId: product.id 
       };
       await FarmProduct.create(association);
     }));

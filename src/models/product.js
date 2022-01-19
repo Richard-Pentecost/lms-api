@@ -36,13 +36,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       defaultScope: { attributes: { exclude: ['id'] } },
+      scopes: {
+        withId: {
+          attributes: { include: ['id'] },
+        }
+      },
       timestamps: false,
     },
   );
 
   Product.associate = function (models) {
     Product.belongsToMany(models.Farm, {
-      through: 'FarmProducts',
+      through: models.FarmProduct,
       as: 'farms',
       foreignKey: 'productId',
       otherKey: 'farmId',
@@ -60,6 +65,10 @@ module.exports = (sequelize, DataTypes) => {
       where: { productName },
       attributes: ['specificGravity'],
     });
+  };
+
+  Product.fetchProductByUuid = function (uuid) {
+    return this.findOne({ where: { uuid } });
   };
 
   return Product;

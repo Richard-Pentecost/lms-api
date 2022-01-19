@@ -10,17 +10,21 @@ module.exports = (sequelize, DataTypes) => {
       },
       productId: {
         allowNull: false,
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
       },
       farmId: {
         allowNull: false,
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
       }
     },
     {
       timestamps: false,
     },
   );
+
+  FarmProduct.fetchAssociationsByFarmId = function (id) {
+    return this.findAll({ where: { farmId: id }});
+  };
 
   return FarmProduct;
 };

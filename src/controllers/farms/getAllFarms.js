@@ -2,7 +2,7 @@ const { Farm } = require('../../models');
 
 const getAllFarms = async (req, res) => {
   try {
-    const farms = await Farm.fetchFarms();
+    const farms = await Farm.fetchAllFarms();
     res.status(201).json(farms);
   } catch (error) {
     // console.error(error);
