@@ -5,7 +5,7 @@ const DataFactory = require('../helpers/data-factory');
 const { Farm, Region, Product, FarmProduct } = require('../../src/models');
 const app = require('../../src/app');
 
-describe.only('PATCH /farms/:uuid', () => {
+describe('PATCH /farms/:uuid', () => {
   let farm;
   let products;
   let farmProductAssociations;
@@ -149,7 +149,7 @@ describe.only('PATCH /farms/:uuid', () => {
   });
 
   //  In progress
-  it.only('should have removed and added a FarmProduct association if there are the same number of products, they have been changed', async () => {
+  it.skip('should have removed and added a FarmProduct association if there are the same number of products, they have been changed', async () => {
     const newProduct = await Product.create(DataFactory.product());
     const newProducts = [products[0], newProduct.uuid];
     console.log("**************");

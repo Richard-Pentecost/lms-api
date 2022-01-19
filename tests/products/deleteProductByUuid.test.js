@@ -30,8 +30,8 @@ describe('DELETE /product/:uuid', () => {
   it('should delete the all entries in the FarmProduct table with the product id', async () => {
     const farm = await Farm.create(DataFactory.farm());
     const secondProduct = await Product.create(DataFactory.product());
-    const associationOne = await FarmProduct.create({ farmId: farm.uuid, productId: product.uuid });
-    const associationTwo = await FarmProduct.create({ farmId: farm.uuid, productId: secondProduct.uuid }); 
+    const associationOne = await FarmProduct.create({ farmId: farm.id, productId: product.id });
+    const associationTwo = await FarmProduct.create({ farmId: farm.id, productId: secondProduct.id }); 
 
     const response = await request(app).delete(`/products/${product.uuid}`);
     const associationOneEntry = await FarmProduct.findByPk(associationOne.id, { raw: true });
@@ -39,7 +39,7 @@ describe('DELETE /product/:uuid', () => {
 
     expect(response.status).to.equal(201);
     expect(associationOneEntry).to.be.null;
-    expect(associationTwoEntry).to.deep.equal({ id: associationTwo.id, farmId: farm.uuid, productId: secondProduct.uuid });
+    expect(associationTwoEntry).to.deep.equal({ id: associationTwo.id, farmId: farm.id, productId: secondProduct.id });
   });
 
   it('should return a 401 if the product does not exist', async () => {

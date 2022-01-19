@@ -10,6 +10,10 @@ const updateFarmByUuid = async (req, res) => {
 
     const foundFarm = await Farm.scope('withId').fetchFarmByUuid(uuid);
 
+    if (!foundFarm) {
+      return res.status(401).json({ error: 'The farm could not be found' });
+    }
+    
     const existingAssociations = await FarmProduct.fetchAssociationsByFarmId(foundFarm.id);
     
     await Promise.all(products.map(async itemUuid => {
@@ -30,21 +34,21 @@ const updateFarmByUuid = async (req, res) => {
     }));
 
     // Check to see if an existing association needs to be delete
-    const productArrWithId = await Promise.all(products.map(async itemUuid => {
-      return await Product.scope('withId').fetchProductByUuid(itemUuid);
-    }));
+    // const productArrWithId = await Promise.all(products.map(async itemUuid => {
+    //   return await Product.scope('withId').fetchProductByUuid(itemUuid);
+    // }));
 
-    await Promise.all(existingAssociations.map(async association => {
+    // await Promise.all(existingAssociations.map(async association => {
 
-      const exists = productArrWithId.find(async product => {
-        console.log(association.productId);
-        console.log(product.id);
-        console.log(association.farmId);
-        console.log(foundFarm.id);
-        const bool = association.productId === product.id && association.farmId === foundFarm.id;
-        console.log(bool);
-        return bool;
-      });
+    //   const exists = productArrWithId.find(async product => {
+    //     console.log(association.productId);
+    //     console.log(product.id);
+    //     console.log(association.farmId);
+    //     console.log(foundFarm.id);
+    //     const bool = association.productId === product.id && association.farmId === foundFarm.id;
+    //     console.log(bool);
+    //     return bool;
+    //   });
       // const exists = products.find(async itemUuid => {
       //   const product = await Product.scope('withId').fetchProductByUuid(itemUuid);
       //   console.log(product);
@@ -52,12 +56,12 @@ const updateFarmByUuid = async (req, res) => {
       //   return association.productId === product.id && association.farmId === foundFarm.id;
       // });
 
-      console.log("**********");
-      console.log(exists);
-      if (!exists) {
-        await FarmProduct.destroy({ where: { id: association.id } });
-      }
-    }));
+    //   console.log("**********");
+    //   console.log(exists);
+    //   if (!exists) {
+    //     await FarmProduct.destroy({ where: { id: association.id } });
+    //   }
+    // }));
 
     const [ updatedRows ] = await Farm.update(farm, { where: { uuid } });
 
