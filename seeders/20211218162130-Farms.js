@@ -15,6 +15,7 @@ module.exports = {
           isActive: true,
           accessCodes: 'Some codes',
           comments: 'Some comments about this farm',
+          regionFk: 'ae3ce38c-0ae1-4117-abb5-30c1dca824b8',
         },
         {
           uuid: uuidv4(),
@@ -23,6 +24,7 @@ module.exports = {
           contactName: 'John Doe',
           contactNumber: '01234567809',
           isActive: true,
+          regionFk: 'ae3ce38c-0ae1-4117-abb5-30c1dca824b8',
         },
         {
           uuid: uuidv4(),
@@ -31,6 +33,7 @@ module.exports = {
           contactName: 'Jane Doe',
           contactNumber: '01234567098',
           isActive: true,
+          regionFk: '4c811657-179c-41a8-a2cf-3e613c857f76',
         },
         {
           uuid: uuidv4(),

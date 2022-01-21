@@ -14,16 +14,19 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Incorrect password' });
     }
     
-    const { isAdmin, uuid } = user;
+    
+    const { isAdmin, uuid, name, email: userEmail } = user;
     const payload = { isAdmin, uuid };
     const token = await jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '12h' });;
     
     if (!token) {
       return res.sendStatus(500);
-    }
-    res.status(201).json({ token });
+    };
+
+    const userObj = { uuid, email: userEmail, name, isAdmin };
+    res.status(201).json({ token, user: userObj });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     res.sendStatus(500);
   }
 }
