@@ -4,16 +4,16 @@ const sinon = require('sinon');
 const { User } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('PATCH /users/:uuid/security', () => {
   let userData;
   let user;
 
-  before(async () => User.sequelize.sync());
-
   beforeEach(async () => {
     userData = DataFactory.user();
     user = await User.create(userData);
+    sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
   afterEach(async () => {

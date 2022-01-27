@@ -3,8 +3,13 @@ const request = require('supertest');
 const sinon = require('sinon');
 const { Region } = require('../../src/models');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('POST /regions', () => {
+
+  beforeEach(() => {
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
+  });
 
   afterEach(async () => {
     sinon.restore();

@@ -4,11 +4,10 @@ const sinon = require('sinon');
 const { Farm, Region } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('GET /farms/allFarms', () => {
   let farms;
-
-  before(async () => Farm.sequelize.sync());
 
   afterEach(async () => {
     sinon.restore();
@@ -23,6 +22,7 @@ describe('GET /farms/allFarms', () => {
       Farm.create(DataFactory.farm()),
       Farm.create(DataFactory.farm({ isActive: false })),
     ]);
+    sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
   it('gets all farm records', async () => {

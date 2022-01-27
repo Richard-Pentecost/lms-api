@@ -19,9 +19,9 @@ exports.farm = (options = {}) => {
 
   const farm = {
     farmName: options.farmName || faker.random.word(),
-    postcode: options.postcode || faker.address.zipCode(),
+    postcode: options.postcode || 'AB1 2CD',
     contactName: options.contactName || faker.name.findName(),
-    contactNumber: options.contactNumber || faker.phone.phoneNumber('07#########'),
+    contactNumber: options.contactNumber || faker.phone.phoneNumber('07### ######'),
     isActive: options.isActive,
     regionFk: options.region || null,
     accessCodes: options.accessCodes || null,

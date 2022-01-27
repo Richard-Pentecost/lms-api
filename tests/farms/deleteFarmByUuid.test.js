@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const { Farm } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('DELETE /farms/:farmId', () => {
   let farm;
@@ -17,6 +18,7 @@ describe('DELETE /farms/:farmId', () => {
 
   beforeEach(async () => {
     farm = await Farm.create(DataFactory.farm());
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   });
 
   it('should delete the farm in the database', async () => {

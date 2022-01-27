@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const { Product, FarmProduct, Farm } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('DELETE /product/:uuid', () => {
   let product;
@@ -16,6 +17,7 @@ describe('DELETE /product/:uuid', () => {
   });
 
   beforeEach(async () => {
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
     product = await Product.create(DataFactory.product());
   });
 

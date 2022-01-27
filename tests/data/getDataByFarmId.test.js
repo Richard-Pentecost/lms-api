@@ -4,12 +4,11 @@ const sinon = require('sinon');
 const { Data, Farm } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('/GET /farms/:farmId/data', () => {
   let farm;
   let newData;
-
-  before(async () => Data.sequelize.sync());
 
   afterEach(async () => {
     await Data.destroy({ where: {} });
@@ -18,6 +17,7 @@ describe('/GET /farms/:farmId/data', () => {
   });
 
   beforeEach(async () => {
+    sinon.stub(jwt, 'verify').returns({ isAdmin: false });
     const farmData = DataFactory.farm();
     farm = await Farm.create(farmData);
     const dataData = DataFactory.data({ farmFk: farm.uuid });

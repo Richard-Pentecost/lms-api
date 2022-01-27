@@ -1,4 +1,5 @@
 const { Farm, Region, Product, FarmProduct } = require('../../models');
+const { formatFarm } = require('../../utils/formatFarm');
 
 const createFarm = async (req, res) => {
   try {
@@ -10,7 +11,9 @@ const createFarm = async (req, res) => {
       }
     }
 
-    const farm = await Farm.scope('withId').create(req.body.farm);
+    const formattedFarm = formatFarm(req.body.farm);
+
+    const farm = await Farm.scope('withId').create(formattedFarm);
 
     const { products } = req.body;
     if (!products) {

@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const { Data, Farm } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('PATCH /farms/:farmId/data/:dataId', () => {
   let farm;
@@ -23,6 +24,7 @@ describe('PATCH /farms/:farmId/data/:dataId', () => {
     farm = await Farm.create(farmData);
     dataData = DataFactory.data({ farmFk: farm.uuid });
     data = await Data.create(dataData);
+    sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
   it('should update the all data fields in the database when they have all been changed', async () => {

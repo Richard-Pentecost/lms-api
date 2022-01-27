@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const { User } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('GET /users', () => {
   let users;
@@ -20,6 +21,7 @@ describe('GET /users', () => {
       User.create(DataFactory.user()),
       User.create(DataFactory.user()),
     ]);
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   });
 
   it('gets all user records', async () => {

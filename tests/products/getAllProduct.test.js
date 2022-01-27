@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const { Product } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('GET /products', () => {
   let products;
@@ -18,6 +19,7 @@ describe('GET /products', () => {
       Product.create(DataFactory.product()),
       Product.create(DataFactory.product()),
     ]);
+    sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
   it('gets all the products', async () => {

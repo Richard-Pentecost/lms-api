@@ -3,11 +3,10 @@ const request = require('supertest');
 const sinon = require('sinon');
 const { Region } = require('../../src/models');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('GET /regions', () => {
   let regions;
-
-  before(async () => Region.sequelize.sync());
 
   afterEach(async () => {
     sinon.restore();
@@ -19,6 +18,8 @@ describe('GET /regions', () => {
       Region.create({ regionName: 'North West' }),
       Region.create({ regionName: 'South East' }),
     ]);
+
+    sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
   it('gets all regions', async () => {

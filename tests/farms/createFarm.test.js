@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const { Farm, Region, Product, FarmProduct } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('POST /farms', () => {
   let farm;
@@ -27,6 +28,7 @@ describe('POST /farms', () => {
     products = productsCreated.map(product => {
       return product.uuid;
     });
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   });
 
   it('creates a new farm in the database with region, access codes and comment section defaulting to null', async () => {

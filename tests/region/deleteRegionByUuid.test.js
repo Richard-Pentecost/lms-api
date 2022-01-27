@@ -4,11 +4,10 @@ const sinon = require('sinon');
 const { Region, Farm } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('DELETE /regions/:uuid', () => {
   let region;
-
-  before(async () => Region.sequelize.sync());
 
   afterEach(async () => {
     sinon.restore();
@@ -18,6 +17,7 @@ describe('DELETE /regions/:uuid', () => {
 
   beforeEach(async () => {
     region = await Region.create({ regionName: 'South West' });
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   });
   
   it('should delete the region in the database', async () => {

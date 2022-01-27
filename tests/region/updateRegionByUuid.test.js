@@ -4,14 +4,14 @@ const sinon = require('sinon');
 const DataFactory = require('../helpers/data-factory');
 const { Region } = require('../../src/models');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('PATCH /regions/:uuid', () => {
   let region;
 
-  before(async () => Region.sequelize.sync());
-
   beforeEach(async () => {
     region = await Region.create({ regionName: 'South East' });
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   });
 
   afterEach(async () => {

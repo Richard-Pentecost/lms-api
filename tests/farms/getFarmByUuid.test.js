@@ -4,17 +4,17 @@ const sinon = require('sinon');
 const DataFactory = require('../helpers/data-factory');
 const { Farm } = require('../../src/models');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('POST /farms/:uiid', () => {
   let farms;
-
-  before(async () => Farm.sequelize.sync());
 
   beforeEach(async () => {
     farms = await Promise.all([
       Farm.create(DataFactory.farm()),
       Farm.create(DataFactory.farm()),
     ]);
+    sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
   afterEach(async () => {

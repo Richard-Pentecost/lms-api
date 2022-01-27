@@ -1,20 +1,22 @@
 const { expect } = require('chai');
 const request = require('supertest');
+const sinon = require('sinon');
 const { User } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('POST /users', () => {
   let newUser;
 
-  before(async () => User.sequelize.sync());
-
   afterEach(async () => {
+    sinon.restore();
     await User.destroy({ where: {} });
   });
 
   beforeEach(async () => {
     newUser = DataFactory.user();
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   });
 
   it('creates a new user in the database, with isAdmin defaulting to null', async () => {
@@ -31,7 +33,6 @@ describe('POST /users', () => {
   });
 
   it('creates a new user in the database, with isAdmin set to true', async () => {
-
     const response = await request(app).post('/users').send({ user: { ...newUser, isAdmin: true } });
     const newUserRecord = await User.findByPk(response.body.user.id, { raw: true });
     
@@ -46,7 +47,6 @@ describe('POST /users', () => {
 
   it('returns 401 when the name field is null', async () => {
     const { name, ...noName } = newUser;
-    
     const response = await request(app).post('/users').send({ user: noName });
 
     expect(response.status).to.equal(401);
@@ -54,7 +54,7 @@ describe('POST /users', () => {
   });
 
   it('returns 401 when the name field is empty', async () => {
-    const response = await request(app).post('/users').send({ user: { ...newUser, name: '' } });
+    const response = await request(app).post('/users').send({ user: { ...newUser, name: ' ' } });
 
     expect(response.status).to.equal(401);
     expect(response.body.error.errors[0].message).to.equal("Name must be given");

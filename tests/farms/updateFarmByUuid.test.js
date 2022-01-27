@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const DataFactory = require('../helpers/data-factory');
 const { Farm, Region, Product, FarmProduct } = require('../../src/models');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('PATCH /farms/:uuid', () => {
   let farm;
@@ -22,6 +23,7 @@ describe('PATCH /farms/:uuid', () => {
       FarmProduct.create({ farmId: farm.id, productId: productsCreated[1].id })
     ]);
     products = productsCreated.map(product => product.uuid);
+    sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
   afterEach(async () => {

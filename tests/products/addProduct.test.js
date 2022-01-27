@@ -4,12 +4,14 @@ const sinon = require('sinon');
 const { Product } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('POST /products', () => {
   let product;
 
   beforeEach(async () => {
     product = DataFactory.product();
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   })
   
   afterEach(async () => {
@@ -24,7 +26,7 @@ describe('POST /products', () => {
 
     expect(response.status).to.equal(201);
     expect(newProduct.productName).to.equal(product.productName);
-    expect(parseInt(newProduct.specificGravity)).to.equal(product.specificGravity)
+    expect(+newProduct.specificGravity).to.equal(product.specificGravity)
     expect(newProduct).to.have.property('uuid');
     expect(newProduct).not.to.have.property('id');
   });

@@ -4,11 +4,10 @@ const sinon = require('sinon');
 const { User } = require('../../src/models');
 const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
+const jwt = require('jsonwebtoken');
 
 describe('DELETE /users/:uuid', () => {
   let user;
-
-  before(async () => User.sequelize.sync());
 
   afterEach(async () => {
     sinon.restore();
@@ -17,6 +16,7 @@ describe('DELETE /users/:uuid', () => {
 
   beforeEach(async () => {
     user = await User.create(DataFactory.user());
+    sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   });
   
   it('should delete the user in the database', async () => {
