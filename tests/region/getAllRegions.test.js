@@ -34,14 +34,6 @@ describe('GET /regions', () => {
     });
   });
 
-  it('should return a 401 if the regions are not retrieved', async () => {
-    sinon.stub(Region, 'findAll').returns(null);
-    const response = await request(app).get('/regions');
-
-    expect(response.status).to.equal(401);
-    expect(response.body.error).to.equal('Could not retrieve regions');
-  });
-
   it('should return a 501 if an error is thrown', async () => {
     sinon.stub(Region, 'findAll').throws(() => new Error());
     const response = await request(app).get('/regions');

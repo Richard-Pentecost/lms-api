@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   FarmProduct.fetchAssociationsByFarmId = function (id) {
-    return this.findAll({ where: { farmId: id }});
+    return this.findAll({ where: { farmId: id } });
   };
 
   return FarmProduct;

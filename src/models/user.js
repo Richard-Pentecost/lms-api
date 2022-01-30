@@ -84,5 +84,11 @@ module.exports = (sequelize, DataTypes) => {
     return await this.update(data, { where: { uuid } });
   };
 
+  User.fetchUsers = function () {
+    return this.findAll({
+      order: [['name', 'ASC']],
+    });
+  }
+
   return User;
 };

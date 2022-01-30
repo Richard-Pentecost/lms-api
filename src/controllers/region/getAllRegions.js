@@ -3,13 +3,9 @@ const { Region } = require('../../models');
 const getAllRegions = async (req, res) => {
 
   try {
-    const regions = await Region.findAll();
+    const regions = await Region.fetchRegions();
 
-    if (regions) {
-      res.status(201).json(regions);
-    } else {
-      res.status(401).json({ error: 'Could not retrieve regions' });
-    }
+    res.status(201).json(regions);
   } catch (error) {
     // console.error(error);
     res.status(501).json({ error: 'There was an error connecting to the database' });

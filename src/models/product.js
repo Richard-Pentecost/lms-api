@@ -56,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Product.fetchProducts = function () {
     return this.findAll({
+      order: [['productName', 'ASC']],
       attributes: ['uuid', 'productName', 'specificGravity'],
     });
   };

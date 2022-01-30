@@ -39,5 +39,11 @@ module.exports = (sequelize, DataTypes) => {
     });
   }
 
+  Region.fetchRegions = function () {
+    return this.findAll({
+      order: [['regionName', 'ASC']],
+    });
+  };
+
   return Region;
 };

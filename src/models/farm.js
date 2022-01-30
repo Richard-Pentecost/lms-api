@@ -99,6 +99,7 @@ module.exports = (sequelize, DataTypes) => {
   Farm.fetchActiveFarms = function () {
     return this.findAll({ 
       where: { isActive: true },
+      order: [['farmName', 'ASC']],
       include: [
         {
           model: sequelize.models.Region,
@@ -116,6 +117,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Farm.fetchAllFarms = function() {
     return this.findAll({
+      order: [['farmName', 'ASC']],
       include: [
         {
           model: sequelize.models.Region,

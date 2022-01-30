@@ -2,7 +2,7 @@ const { User } = require('../../models');
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.fetchUsers();
     res.status(201).json(users);
   } catch (error) {
     // console.log(error);
