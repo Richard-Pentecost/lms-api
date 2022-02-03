@@ -8,30 +8,30 @@ const updateFarmByUuid = async (req, res) => {
 
   try {
 
-    const foundFarm = await Farm.scope('withId').fetchFarmByUuid(uuid);
+    // const foundFarm = await Farm.scope('withId').fetchFarmByUuid(uuid);
 
-    if (!foundFarm) {
-      return res.status(401).json({ error: 'The farm could not be found' });
-    }
+    // if (!foundFarm) {
+    //   return res.status(401).json({ error: 'The farm could not be found' });
+    // }
     
-    const existingAssociations = await FarmProduct.fetchAssociationsByFarmId(foundFarm.id);
+    // const existingAssociations = await FarmProduct.fetchAssociationsByFarmId(foundFarm.id);
     
-    await Promise.all(products.map(async itemUuid => {
-      const product = await Product.scope('withId').fetchProductByUuid(itemUuid);
+    // await Promise.all(products.map(async itemUuid => {
+    //   const product = await Product.scope('withId').fetchProductByUuid(itemUuid);
 
-      const checkExistingAssociations = existingAssociations.find(existingAssociation => {
-        return existingAssociation.productId === product.id && existingAssociation.farmId === foundFarm.id;
-      });
+    //   const checkExistingAssociations = existingAssociations.find(existingAssociation => {
+    //     return existingAssociation.productId === product.id && existingAssociation.farmId === foundFarm.id;
+    //   });
 
-      if (!checkExistingAssociations) {
-        const association = {
-          farmId: foundFarm.id,
-          productId: product.id,
-        };
+    //   if (!checkExistingAssociations) {
+    //     const association = {
+    //       farmId: foundFarm.id,
+    //       productId: product.id,
+    //     };
   
-        await FarmProduct.create(association);
-      }
-    }));
+    //     await FarmProduct.create(association);
+    //   }
+    // }));
 
     // Check to see if an existing association needs to be delete
     // const productArrWithId = await Promise.all(products.map(async itemUuid => {
