@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
+  
   try {
     const user = await User.scope('withPassword').findOne({ where: { email } });
     if (!user) {
@@ -13,7 +13,6 @@ const loginUser = async (req, res) => {
     if (!await user.validatePassword(password)) {
       return res.status(401).json({ error: 'Incorrect password' });
     }
-    
     
     const { isAdmin, uuid, name, email: userEmail } = user;
     const payload = { isAdmin, uuid };
