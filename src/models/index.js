@@ -10,6 +10,9 @@ const db = {};
 
 let sequelize;
 
+console.log("************");
+console.log(config);
+
 if (config.use_env_variable) {
   sequelize = new Sequelize(config.use_env_variable, config);
 } else {

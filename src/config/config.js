@@ -24,7 +24,7 @@ module.exports = {
     username: process.env.DB_PRODUCTION_USERNAME,
     password: process.env.DB_PRODUCTION_PASSWORD,
     host: process.env.DB_PRODUCTION_HOST,
-    port: process.env.DB_PRODUCTION_PORT,
+    port: parseInt(process.env.DB_PRODUCTION_PORT),
     database: process.env.DB_PRODUCTION_DATABASE,
     dialect: 'postgres',
     protocol: 'postgres',
