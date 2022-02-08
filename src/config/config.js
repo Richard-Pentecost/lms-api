@@ -28,6 +28,7 @@ module.exports = {
     database: process.env.DB_PRODUCTION_DATABASE,
     dialect: 'postgres',
     protocol: 'postgres',
+    url: process.env.DATABASE_URL,
     dialectOptions: {
       ssl: {
         require: true,
