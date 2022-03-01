@@ -6,7 +6,7 @@ const { Farm, Region, Product, FarmProduct } = require('../../src/models');
 const app = require('../../src/app');
 const jwt = require('jsonwebtoken');
 
-describe.only('PATCH /farms/:uuid', () => {
+describe('PATCH /farms/:uuid', () => {
   let farm;
   let products;
   let farmProductAssociations;
@@ -290,7 +290,7 @@ describe.only('PATCH /farms/:uuid', () => {
   });
 
   it('should return a 500 if an error is thrown fetching farm product associations', async () => {
-    sinon.stub(Farm, 'fetchFarmByUuid').throws(() => new Error());
+    sinon.stub(FarmProduct, 'fetchAssociationsByFarmId').throws(() => new Error());
 
     const response = await request(app)
       .patch(`/farms/${farm.uuid}`)
@@ -301,7 +301,7 @@ describe.only('PATCH /farms/:uuid', () => {
   });
 
   it('should return a 500 if an error is thrown fetching a product', async () => {
-    sinon.stub(Farm, 'fetchFarmByUuid').throws(() => new Error());
+    sinon.stub(Product, 'fetchProductsByUuid').throws(() => new Error());
 
     const response = await request(app)
       .patch(`/farms/${farm.uuid}`)

@@ -1,4 +1,5 @@
-const { Farm, Product, Region, FarmProduct } = require('../../models');
+const { Farm, Product, FarmProduct } = require('../../models');
+const { productsToAdd, productsToRemove } = require('../../utils/farmProductUtils');
 
 const updateFarmByUuid = async (req, res) => {
   const { uuid } = req.params;
@@ -20,37 +21,23 @@ const updateFarmByUuid = async (req, res) => {
   
     const existingAssociations = await FarmProduct.fetchAssociationsByFarmId(foundFarm.id);
     
-    await Promise.all(products.map(async itemUuid => {
-      const product = await Product.scope('withId').fetchProductByUuid(itemUuid);
+    const productsWithId = await Product.scope('withId').fetchProductsByUuid(products);
 
-      if (product) {
-        const checkExistingAssociations = existingAssociations.find(existingAssociation => {
-          return existingAssociation.productId === product.id && existingAssociation.farmId === foundFarm.id;
-        });
-  
-        if (!checkExistingAssociations) {
-          const association = {
-            farmId: foundFarm.id,
-            productId: product.id,
-          };
-    
-          await FarmProduct.create(association);
-        }
-      }
-    }));
+    const productsForAdding = productsToAdd(productsWithId, existingAssociations, foundFarm.id);
 
-    const productsArrWithId = await Promise.all(products.map(async itemUuid => {
-      const product = await Product.scope('withId').fetchProductByUuid(itemUuid);
-      return !!product && product;
-    }));
-
-    const productsForDeleting = existingAssociations.filter(association => {
-      return !productsArrWithId.find(product => product.id === association.productId) && association;
+    productsForAdding.forEach(async product => {
+      const association = { 
+        farmId: foundFarm.id,
+        productId: product.id,
+      };
+      await FarmProduct.create(association);
     });
 
-    productsForDeleting.forEach(async product => {
+    const productsForRemoving = productsToRemove(productsWithId, existingAssociations, foundFarm.id);
+
+    productsForRemoving.forEach(async product => {
       await FarmProduct.destroy({ where: { id: product.id } });
-    })
+    });
 
     await Farm.update(farm, { where: { uuid } });
     res.sendStatus(201);

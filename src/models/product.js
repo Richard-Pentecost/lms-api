@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
@@ -71,6 +72,16 @@ module.exports = (sequelize, DataTypes) => {
   Product.fetchProductByUuid = function (uuid) {
     return this.findOne({ where: { uuid } });
   };
+
+  Product.fetchProductsByUuid = function (uuids) {
+    return this.findAll({
+      where: {
+        uuid: {
+          [Op.in]: uuids,
+        }
+      }
+    })
+  }
 
   return Product;
 };
