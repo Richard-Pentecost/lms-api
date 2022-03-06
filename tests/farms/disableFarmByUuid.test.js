@@ -6,7 +6,7 @@ const { Farm } = require('../../src/models');
 const app = require('../../src/app');
 const jwt = require('jsonwebtoken');
 
-describe.only('PATCH /farms/:uuid/disable', () => {
+describe('PATCH /farms/:uuid/disable', () => {
   let activeFarm;
   let inactiveFarm;
 
