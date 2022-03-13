@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   const Farm = sequelize.define(
@@ -96,9 +97,26 @@ module.exports = (sequelize, DataTypes) => {
     // })
   };
 
-  Farm.fetchActiveFarms = function () {
+  Farm.fetchActiveFarms = function (searchString) {
+    const search = searchString ?
+      { 
+        [Op.or]: [
+          {
+            farmName: { [Op.iLike]: `%${searchString}%` },
+          },
+          {
+            contactName: { [Op.iLike]: `%${searchString}%` },
+          },
+          {
+            postcode: { [Op.iLike]: `%${searchString}%` },
+          }
+        ]  
+      } : {};
     return this.findAll({ 
-      where: { isActive: true },
+      where: { 
+        isActive: true,
+        ...search, 
+      },
       order: [['farmName', 'ASC']],
       include: [
         {
