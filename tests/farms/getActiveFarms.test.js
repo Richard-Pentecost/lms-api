@@ -81,7 +81,7 @@ describe.only('GET /farms/active', () => {
     expect(response.body[0].comments).to.equal(expectedFarm.comments);
   });
 
-  it('should return the farm that has the same farm name as the search criteria and the search sting is upper case', async () => {
+  it('should return the farm that has the same farm name as the search criteria and the search string is upper case', async () => {
     const response = await request(app).get('/farms/active').query({ query: 'HEATH HILL' });
 
     const expectedFarm = farms[2];  
@@ -170,7 +170,7 @@ describe.only('GET /farms/active', () => {
     expect(response.body[0].comments).to.equal(expectedFarm.comments);
   });
 
-  it.skip('should return the farm that has the same postcode as the search criteria and the search sting has no spaces', async () => {
+  it('should return the farm that has the same postcode as the search criteria and the search string has no spaces', async () => {
     const response = await request(app).get('/farms/active').query({ query: 'HE61LL' });
 
     const expectedFarm = farms[2];  
@@ -259,7 +259,7 @@ describe.only('GET /farms/active', () => {
     expect(response.body[0].comments).to.equal(expectedFarm.comments);
   });
 
-  it('should return the farm that has the same contact name as the search criteria and the search sting is upper case', async () => {
+  it('should return the farm that has the same contact name as the search criteria and the search string is upper case', async () => {
     const response = await request(app).get('/farms/active').query({ query: 'ROB ROBSON' });
 
     const expectedFarm = farms[2]; 

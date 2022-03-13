@@ -107,9 +107,9 @@ module.exports = (sequelize, DataTypes) => {
           {
             contactName: { [Op.iLike]: `%${searchString}%` },
           },
-          {
-            postcode: { [Op.iLike]: `%${searchString}%` },
-          }
+          sequelize.where(sequelize.fn('REPLACE', sequelize.col('postcode'), ' ', ''), {
+            [Op.iLike]: `%${searchString.replace(/\s+/g, '')}%` }
+          )
         ]  
       } : {};
     return this.findAll({ 
