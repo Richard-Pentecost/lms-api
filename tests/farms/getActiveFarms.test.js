@@ -6,7 +6,7 @@ const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 const jwt = require('jsonwebtoken');
 
-describe.only('GET /farms/active', () => {
+describe('GET /farms/active', () => {
   let farms;
 
   afterEach(async () => {

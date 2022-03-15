@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const DataFactory = require('../helpers/data-factory');
-const { formatData, actualFeedRate, averageWaterIntake } = require('../../src/utils/formatData');
+const { formatData, actualFeedRate, averageWaterIntake, kgActual } = require('../../src/utils/formatData');
 
 describe('formatData.js', () => {
   describe('formatData', () => {
@@ -36,7 +36,7 @@ describe('formatData.js', () => {
         averageWaterIntake: 63.9,
         pumpDial: data.pumpDial,
         floatBeforeDelivery: 106,
-        kgActual: data.kgActual,
+        kgActual: 296.8,
         targetFeedRate: data.targetFeedRate,
         actualFeedRate: 39,
         floatAfterDelivery: 120,
@@ -71,4 +71,14 @@ describe('formatData.js', () => {
       expect(result).to.equal(39);
     });
   });
-})
+
+  describe('kgActual', () => {
+    it('should calculate the correct kg actual', () => {
+      const floatBeforeDelivery = 106;
+      const specGravity = 2.8;
+
+      const result = kgActual(floatBeforeDelivery, specGravity);
+      expect(result).to.equal(296.8);
+    });
+  });
+});

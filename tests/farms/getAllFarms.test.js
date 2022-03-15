@@ -18,7 +18,7 @@ describe('GET /farms/allFarms', () => {
   beforeEach(async () => {
     const region = await Region.create({ regionName: 'North West' });
     farms = await Promise.all([
-      Farm.create(DataFactory.farm({ region: region.uuid})),
+      Farm.create(DataFactory.farm({ farmName: 'First Farm', region: region.uuid})),
       Farm.create(DataFactory.farm()),
       Farm.create(DataFactory.farm({ isActive: false })),
     ]);
@@ -30,10 +30,6 @@ describe('GET /farms/allFarms', () => {
 
     expect(response.status).to.equal(201);
     expect(response.body.length).to.equal(3);
-  
-    expect(response.body[0].region).to.exist;
-    expect(response.body[1].region).to.be.null;
-    expect(response.body[2].region).to.be.null;
 
     response.body.forEach(farm => {
       const expected = farms.find(f => f.uuid === farm.uuid);
@@ -44,6 +40,11 @@ describe('GET /farms/allFarms', () => {
       expect(farm.isActive).to.equal(expected.isActive);
       expect(farm.accessCodes).to.equal(expected.accessCodes);
       expect(farm.comments).to.equal(expected.comments);
+      if (farm.farmName === 'First Farm') {
+        expect(farm.region).to.exist;
+      } else {
+        expect(farm.region).to.be.null;
+      }
     });
   });
 

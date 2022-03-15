@@ -18,13 +18,14 @@ const formatData = (data, previousData, specificGravity) => {
 
   const waterIntake = averageWaterIntake(currentMeterReading, lastMeterReading, cows, days);
   const feedRate = actualFeedRate(floatBeforeDelivery, lastFloatReading, specificGravity, cows, days);
-  
+  const kilos = kgActual(specificGravity, floatBeforeDelivery);
+
   return {
     ...data,
     averageWaterIntake: waterIntake,
     actualFeedRate: feedRate,
-  }
-  
+    kgActual: kilos,
+  };
 }
 
 const averageWaterIntake = (currentMeterReading, lastMeterReading, cows, days) => {
@@ -39,4 +40,8 @@ const actualFeedRate = (floatBeforeDelivery, lastFloatReading, specGravity, cows
   return Math.round(actualFeedRate);
 };
 
-module.exports = { formatData, averageWaterIntake, actualFeedRate }; 
+const kgActual = (specGravity, floatBeforeDelivery) => {
+  return Math.round(specGravity * floatBeforeDelivery * 10) / 10;
+};
+
+module.exports = { formatData, averageWaterIntake, actualFeedRate, kgActual }; 

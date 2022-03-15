@@ -44,7 +44,6 @@ exports.data = (options = {}) => {
     waterUsage: options.waterUsage || faker.datatype.number(),
     pumpDial: options.pumpDial || faker.datatype.number(),
     floatBeforeDelivery: options.floatBeforeDelivery || floatBeforeDelivery,
-    kgActual: options.kgActual || faker.datatype.number(),
     targetFeedRate: options.targetFeedRate || faker.datatype.number(),
     floatAfterDelivery: options.floatAfterDelivery || floatAfterDelivery,
     comments: options.comments || faker.lorem.sentence(),

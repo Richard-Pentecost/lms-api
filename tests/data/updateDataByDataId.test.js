@@ -46,7 +46,6 @@ describe('PATCH /farms/:farmId/data/:dataId', () => {
     expect(parseInt(updatedData.waterUsage)).to.equal(newData.waterUsage);
     expect(parseInt(updatedData.pumpDial)).to.equal(newData.pumpDial);
     expect(parseInt(updatedData.floatBeforeDelivery)).to.equal(newData.floatBeforeDelivery);
-    expect(parseInt(updatedData.kgActual)).to.equal(newData.kgActual);
     expect(parseInt(updatedData.targetFeedRate)).to.equal(newData.targetFeedRate);
     expect(parseInt(updatedData.floatAfterDelivery)).to.equal(newData.floatAfterDelivery);
     expect(updatedData.comments).to.equal(newData.comments);
@@ -71,7 +70,6 @@ describe('PATCH /farms/:farmId/data/:dataId', () => {
     expect(parseInt(updatedData.waterUsage)).to.equal(dataData.waterUsage);
     expect(parseInt(updatedData.pumpDial)).to.equal(dataData.pumpDial);
     expect(parseInt(updatedData.floatBeforeDelivery)).to.equal(dataData.floatBeforeDelivery);
-    expect(parseInt(updatedData.kgActual)).to.equal(dataData.kgActual);
     expect(parseInt(updatedData.targetFeedRate)).to.equal(dataData.targetFeedRate);
     expect(parseInt(updatedData.floatAfterDelivery)).to.equal(dataData.floatAfterDelivery);
     expect(updatedData.comments).to.equal(dataData.comments);
