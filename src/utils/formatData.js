@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const formatData = (data, previousData, specificGravity) => {
+const formatData = (data, specificGravity, previousData) => {
   const { 
     date, 
     meterReading: currentMeterReading, 
@@ -8,24 +8,36 @@ const formatData = (data, previousData, specificGravity) => {
     floatBeforeDelivery,
   } = data;
 
-  const { 
-    date: previousDate, 
-    meterReading: lastMeterReading, 
-    floatAfterDelivery: lastFloatReading 
-  } = previousData;
-
-  const days = dayjs(date).endOf('day').diff(dayjs(previousDate).endOf('day'), 'days');
-
-  const waterIntake = averageWaterIntake(currentMeterReading, lastMeterReading, cows, days);
-  const feedRate = actualFeedRate(floatBeforeDelivery, lastFloatReading, specificGravity, cows, days);
   const kilos = kgActual(specificGravity, floatBeforeDelivery);
 
-  return {
+  let dataObj = {
     ...data,
-    averageWaterIntake: waterIntake,
-    actualFeedRate: feedRate,
     kgActual: kilos,
   };
+
+  let waterIntake;
+  let feedRate;
+
+  if (previousData) {
+    const { 
+      date: previousDate, 
+      meterReading: lastMeterReading, 
+      floatAfterDelivery: lastFloatReading 
+    } = previousData;
+  
+    const days = dayjs(date).endOf('day').diff(dayjs(previousDate).endOf('day'), 'days');
+  
+    waterIntake = averageWaterIntake(currentMeterReading, lastMeterReading, cows, days);
+    feedRate = actualFeedRate(floatBeforeDelivery, lastFloatReading, specificGravity, cows, days);
+    
+    dataObj = {
+      ...dataObj,
+      averageWaterIntake: waterIntake,
+      actualFeedRate: feedRate,
+    };
+  };
+
+  return dataObj;
 }
 
 const averageWaterIntake = (currentMeterReading, lastMeterReading, cows, days) => {

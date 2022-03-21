@@ -23,7 +23,7 @@ describe('formatData.js', () => {
 
       const specificGravity = 2.8;
 
-      const formattedDataObj = formatData(data, previousData, specificGravity);
+      const formattedDataObj = formatData(data, specificGravity, previousData);
 
       const expectedDataObj = {
         farmFk,
@@ -39,6 +39,40 @@ describe('formatData.js', () => {
         kgActual: 296.8,
         targetFeedRate: data.targetFeedRate,
         actualFeedRate: 39,
+        floatAfterDelivery: 120,
+        comments: data.comments,
+      }
+
+      expect(formattedDataObj).to.deep.equal(expectedDataObj);
+    });
+
+    it('should return the data object without averageWaterIntake and actualFeedRate when there is no previous data', () => {
+      const farmFk = DataFactory.uuid;
+      const data = DataFactory.data({
+        farmFk,
+        meterReading: 1995,
+        noOfCows: 120,
+        date: new Date('10/01/2021'),
+        floatBeforeDelivery: 106, 
+        floatAfterDelivery: 120,
+      });
+
+      const specificGravity = 2.8;
+
+      const formattedDataObj = formatData(data, specificGravity);
+
+      const expectedDataObj = {
+        farmFk,
+        date: new Date('10/01/2021'),
+        noOfCows: 120,
+        product: data.product,
+        quantity: data.quantity,
+        meterReading: 1995,
+        waterUsage: data.waterUsage,
+        pumpDial: data.pumpDial,
+        floatBeforeDelivery: 106,
+        kgActual: 296.8,
+        targetFeedRate: data.targetFeedRate,
         floatAfterDelivery: 120,
         comments: data.comments,
       }

@@ -53,7 +53,6 @@ describe('POST /farms/:farmId/data', () => {
     const newDataRecord = await Data.findByPk(id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(response.body.message).to.equal('success');
     expect(newDataRecord).to.have.property('uuid');
     expect(newDataRecord.averageWaterIntake).not.to.be.null;
     expect(newDataRecord.actualFeedRate).not.to.be.null;
@@ -74,13 +73,12 @@ describe('POST /farms/:farmId/data', () => {
     expect(newDataRecord.comments).to.equal(newData.comments);
   });
 
-  it('adds a new set of data to the database with no averageWaterIntake, kgActual actualFeedRate when there is no previous data', async () => {
+  it('adds a new set of data to the database with no averageWaterIntake and no actualFeedRate when there is no previous data', async () => {
     const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData });
     const { id } = response.body.data; 
     const newDataRecord = await Data.findByPk(id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(response.body.message).to.equal('success');
     expect(newDataRecord).to.have.property('uuid');
     expect(newDataRecord.averageWaterIntake).to.be.null;
     expect(newDataRecord.actualFeedRate).to.be.null;
@@ -93,7 +91,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(+newDataRecord.waterUsage).to.equal(newData.waterUsage);
     expect(+newDataRecord.pumpDial).to.equal(newData.pumpDial);
     expect(+newDataRecord.floatBeforeDelivery).to.equal(newData.floatBeforeDelivery);
-    expect(newDataRecord.kgActual).not.to.exist;
+    expect(newDataRecord.kgActual).to.exist;
     expect(newDataRecord.averageWaterIntake).not.to.exist;
     expect(newDataRecord.actualFeedRate).not.to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
@@ -109,7 +107,6 @@ describe('POST /farms/:farmId/data', () => {
     const newDataRecord = await Data.findByPk(id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(response.body.message).to.equal('success');
     expect(newDataRecord).to.have.property('uuid');
     // expect(new Date(newData.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
@@ -127,7 +124,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(newDataRecord.comments).to.be.null;
   });
 
-  it('adds a new set of data to the database with no averageWaterIntake, kgActual or actualFeedRate when there is no previous data', async () => {
+  it('adds a new set of data to the database with no averageWaterIntake and no actualFeedRate when there is no previous data', async () => {
     const invalidUuid = DataFactory.uuid;
   
     const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData,  previousDataUuid: invalidUuid });
@@ -135,7 +132,6 @@ describe('POST /farms/:farmId/data', () => {
     const newDataRecord = await Data.findByPk(id, { raw: true });
 
     expect(response.status).to.equal(201);
-    expect(response.body.message).to.equal('Data was added, but there was an error with the calculations');
     expect(newDataRecord).to.have.property('uuid');
     expect(newDataRecord.averageWaterIntake).to.be.null;
     expect(newDataRecord.actualFeedRate).to.be.null;
@@ -148,7 +144,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(+newDataRecord.waterUsage).to.equal(newData.waterUsage);
     expect(+newDataRecord.pumpDial).to.equal(newData.pumpDial);
     expect(+newDataRecord.floatBeforeDelivery).to.equal(newData.floatBeforeDelivery);
-    expect(newDataRecord.kgActual).not.to.exist;
+    expect(newDataRecord.kgActual).to.exist;
     expect(newDataRecord.averageWaterIntake).not.to.exist;
     expect(newDataRecord.actualFeedRate).not.to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
@@ -156,32 +152,20 @@ describe('POST /farms/:farmId/data', () => {
     expect(newDataRecord.comments).to.equal(newData.comments);
   });
 
-  it('adds a new set of data to the database with no averageWaterIntake, kgActual or actualFeedRate when there is no specific gravity', async () => {
+  it('returns a 401 when the product name is invalid', async () => {
     const dataWithInvalidProduct = { ...newData, product: 'invalidProduct' };
     const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: dataWithInvalidProduct,  previousDataUuid: previousData.uuid });
-    const { id } = response.body.data; 
-    const newDataRecord = await Data.findByPk(id, { raw: true });
 
-    expect(response.status).to.equal(201);
-    expect(response.body.message).to.equal('Data was added, but there was an error with the calculations');
-    expect(newDataRecord).to.have.property('uuid');
-    expect(newDataRecord.averageWaterIntake).to.be.null;
-    expect(newDataRecord.actualFeedRate).to.be.null;
-    expect(newDataRecord.farmFk).to.equal(newData.farmFk);
-    // expect(new Date(newData.date)).to.deep.equal(newData.date);
-    expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
-    expect(newDataRecord.product).to.equal(dataWithInvalidProduct.product);
-    expect(+newDataRecord.quantity).to.equal(newData.quantity);
-    expect(+newDataRecord.meterReading).to.equal(newData.meterReading);
-    expect(+newDataRecord.waterUsage).to.equal(newData.waterUsage);
-    expect(+newDataRecord.pumpDial).to.equal(newData.pumpDial);
-    expect(+newDataRecord.floatBeforeDelivery).to.equal(newData.floatBeforeDelivery);
-    expect(newDataRecord.kgActual).not.to.exist;
-    expect(newDataRecord.averageWaterIntake).not.to.exist;
-    expect(newDataRecord.actualFeedRate).not.to.exist;
-    expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
-    expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
-    expect(newDataRecord.comments).to.equal(newData.comments);
+    expect(response.status).to.equal(401);
+    expect(response.body.error).to.equal('The product does not exist');
+  });
+
+  it('returns a 401 when there is no product in the sent data', async () => {
+    const { product, ...noProduct } = newData;
+    const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: noProduct,  previousDataUuid: previousData.uuid });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.error).to.equal('The product must be given');
   });
 
   describe('farmFk', () => {
@@ -254,24 +238,6 @@ describe('POST /farms/:farmId/data', () => {
   
       expect(response.status).to.equal(401);
       expect(response.body.error.errors[0].message).to.equal("The number of cows must be given");
-    });
-  });
-
-  describe('product', () => {
-    it('returns 401 when the product field is null', async () => {
-      const { product, ...noProduct } = newData; 
-      const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: noProduct });
-  
-      expect(response.status).to.equal(401);
-      expect(response.body.error.errors[0].message).to.equal("The product must be given");
-    });
-  
-    it('returns 401 when the product field is empty', async () => {
-      const dataEmptyProduct = { ...newData, product: '' } 
-      const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: dataEmptyProduct });
-  
-      expect(response.status).to.equal(401);
-      expect(response.body.error.errors[0].message).to.equal("The product must be given");
     });
   });
 
