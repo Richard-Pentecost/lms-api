@@ -51,7 +51,7 @@ const averageWaterIntake = (currentMeterReading, lastMeterReading, cows, days) =
 const actualFeedRate = (floatBeforeDelivery, lastFloatReading, specGravity, cows, days) => {
   const actualFeedRate = (lastFloatReading - floatBeforeDelivery) * specGravity / cows / days * 1000;
 
-  return Math.round(actualFeedRate);
+  return Math.round(actualFeedRate * 10) / 10;
 };
 
 const kgActual = (specGravity, floatBeforeDelivery) => {
