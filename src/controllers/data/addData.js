@@ -7,7 +7,7 @@ const addData = async (req, res) => {
   try {
     const farm = await Farm.fetchFarmByUuid(data.farmFk);
     if (!farm) {
-      return res.status(401).json({ error: 'The farm this data is associated with, could not be found' });
+      return res.status(401).json({ error: 'The farm this data is associated with could not be found' });
     }
 
     if (!data.product) {

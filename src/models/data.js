@@ -140,6 +140,13 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  Data.fetchDataByFarmId = function(farmId) {
+    return this.findAll({
+      where: { farmFk: farmId },
+      order: [['date', 'asc']],
+    });
+  };
+
   Data.fetchPreviousDataForCalculations = function (uuid) {
     return this.findOne({
       where: { uuid },

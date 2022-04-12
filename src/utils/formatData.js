@@ -13,6 +13,8 @@ const formatData = (data, specificGravity, previousData) => {
   let dataObj = {
     ...data,
     kgActual: kilos,
+    averageWaterIntake: null,
+    actualFeedRate: null,
   };
 
   let waterIntake;

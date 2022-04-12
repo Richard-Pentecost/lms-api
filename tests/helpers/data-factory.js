@@ -52,6 +52,29 @@ exports.data = (options = {}) => {
   return data;  
 };
 
+exports.fullData = (options = {}) => {
+  const data = {
+    farmFk: options.farmFk,
+    date: options.date || faker.date.recent(),
+    noOfCows: options.noOfCows || faker.datatype.number(),
+    product: options.product || faker.random.word(),
+    quantity: options.quantity || faker.datatype.number(),
+    meterReading: options.meterReading || faker.datatype.number(),
+    waterUsage: options.waterUsage || faker.datatype.number(),
+    pumpDial: options.pumpDial || faker.datatype.number(),
+    kgActual: options.kgActual,
+    floatBeforeDelivery: options.floatBeforeDelivery,
+    targetFeedRate: options.targetFeedRate || faker.datatype.number(),
+    averageWaterIntake: options.averageWaterIntake,
+    actualFeedRate: options.actualFeedRate,
+    floatBeforeDelivery: options.floatBeforeDelivery,
+    floatAfterDelivery: options.floatAfterDelivery,
+    comments: options.comments || faker.lorem.sentence(),
+  };
+  
+  return data;
+}
+
 exports.product = (options = {}) => {
   return {
     productName: options.productName || faker.random.word(),

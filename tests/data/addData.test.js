@@ -19,6 +19,7 @@ describe('POST /farms/:farmId/data', () => {
   });
 
   beforeEach(async () => {
+    // mock jwt token with isAdmin set to true, to allow post('/farms') to work
     sinon.stub(jwt, 'verify').returns({ isAdmin: true });
     const farmData = DataFactory.farm();
     const product = await Product.create(DataFactory.product({ specificGravity: 2.8 }));
@@ -43,6 +44,7 @@ describe('POST /farms/:farmId/data', () => {
       floatBeforeDelivery: 106,
       floatAfterDelivery: 120,
     });
+    // reset jwt token mock to set isAdmin to false for the data functionality
     sinon.restore();
     sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
@@ -54,8 +56,6 @@ describe('POST /farms/:farmId/data', () => {
 
     expect(response.status).to.equal(201);
     expect(newDataRecord).to.have.property('uuid');
-    expect(newDataRecord.averageWaterIntake).not.to.be.null;
-    expect(newDataRecord.actualFeedRate).not.to.be.null;
     expect(newDataRecord.farmFk).to.equal(newData.farmFk);
     // expect(new Date(newData.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
@@ -80,8 +80,6 @@ describe('POST /farms/:farmId/data', () => {
 
     expect(response.status).to.equal(201);
     expect(newDataRecord).to.have.property('uuid');
-    expect(newDataRecord.averageWaterIntake).to.be.null;
-    expect(newDataRecord.actualFeedRate).to.be.null;
     expect(newDataRecord.farmFk).to.equal(newData.farmFk);
     // expect(new Date(newData.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
@@ -124,7 +122,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(newDataRecord.comments).to.be.null;
   });
 
-  it('adds a new set of data to the database with no averageWaterIntake and no actualFeedRate when there is no previous data', async () => {
+  it('adds a new set of data to the database with no averageWaterIntake and no actualFeedRate when the previousData uuid is invalid', async () => {
     const invalidUuid = DataFactory.uuid;
   
     const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: newData,  previousDataUuid: invalidUuid });
@@ -133,8 +131,6 @@ describe('POST /farms/:farmId/data', () => {
 
     expect(response.status).to.equal(201);
     expect(newDataRecord).to.have.property('uuid');
-    expect(newDataRecord.averageWaterIntake).to.be.null;
-    expect(newDataRecord.actualFeedRate).to.be.null;
     expect(newDataRecord.farmFk).to.equal(newData.farmFk);
     // expect(new Date(newData.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
@@ -183,7 +179,7 @@ describe('POST /farms/:farmId/data', () => {
       const response = await request(app).post(`/farms/${farm.uuid}/data`).send({ data: invalidFarmFk });
   
       expect(response.status).to.equal(401);
-      expect(response.body.error).to.equal("The farm this data is associated with, could not be found");
+      expect(response.body.error).to.equal("The farm this data is associated with could not be found");
     });
 
     it('returns 401 when the farmFk is empty', async () => {

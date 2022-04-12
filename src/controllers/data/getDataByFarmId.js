@@ -11,7 +11,7 @@ const getDataByFarmId = async (req, res) => {
       return;
     };
 
-    const data = await Data.findAll({ where: { farmFk: farmId } });
+    const data = await Data.fetchDataByFarmId(farmId);
 
     if (data) {
       res.status(201).json({ data });
