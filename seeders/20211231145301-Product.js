@@ -14,7 +14,7 @@ module.exports = {
         { 
           uuid: uuidv4(),
           productName: 'Mag-Drum',
-          specificGravity: 2.6,
+          specificGravity: 2.8,
         },
         {
           uuid: uuidv4(),

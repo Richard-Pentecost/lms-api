@@ -98,12 +98,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       kgActual: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
-        validate: {
-          notNull: { msg: 'The kg actual must be given' },
-          notEmpty: { msg: 'The kg actual must be given' },
-          min: { args: [0], msg: 'The kg actual cannot be a negative number' },
-        }
       },
       targetFeedRate: {
         type: DataTypes.DECIMAL,
@@ -143,6 +137,13 @@ module.exports = (sequelize, DataTypes) => {
     Data.belongsTo(models.Farm, {
       foreignKey: 'farmFk',
       targetKey: 'uuid',
+    });
+  };
+
+  Data.fetchDataByFarmId = function(farmId) {
+    return this.findAll({
+      where: { farmFk: farmId },
+      order: [['date', 'asc']],
     });
   };
 
