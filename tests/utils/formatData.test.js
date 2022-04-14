@@ -130,7 +130,7 @@ describe('formatData.js', () => {
       const date = new Date('09/16/2021');
 
       const result = deliveryDate(kgActual, targetFeedRate, cows, date);
-      expect(result.getTime()).to.equal(new Date('03/15/2022').setHours(0, 0, 0, 0));
+      expect(result).to.deep.equal(new Date('03/15/2022'));
     });
 
     it('should calculate the correct date for next delivery with different values', () => {
@@ -140,7 +140,7 @@ describe('formatData.js', () => {
       const date = new Date('09/16/2021');
 
       const result = deliveryDate(kgActual, targetFeedRate, cows, date);
-      expect(result.getTime()).to.equal(new Date('12/01/2021').setHours(0, 0, 0, 0));
+      expect(result).to.deep.equal(new Date('12/01/2021'));
     });
 
     it('should calculate the correct date for next delivery with other values', () => {
@@ -150,8 +150,7 @@ describe('formatData.js', () => {
       const date = new Date('10/01/2021');
 
       const result = deliveryDate(kgActual, targetFeedRate, cows, date);
-
-      expect(result.getTime()).to.equal(new Date('12/01/2021').setHours(0, 0, 0, 0));
+      expect(result).to.deep.equal(new Date('12/01/2021'));
     });
   })
 });

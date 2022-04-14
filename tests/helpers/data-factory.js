@@ -69,6 +69,7 @@ exports.fullData = (options = {}) => {
     actualFeedRate: options.actualFeedRate,
     floatBeforeDelivery: options.floatBeforeDelivery,
     floatAfterDelivery: options.floatAfterDelivery,
+    deliveryDate: options.deliveryDate,
     comments: options.comments || faker.lorem.sentence(),
   };
   
