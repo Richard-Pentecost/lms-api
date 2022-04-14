@@ -13,6 +13,7 @@ describe('formatData.js', () => {
         date: new Date('10/01/2021'),
         floatBeforeDelivery: 106, 
         floatAfterDelivery: 120,
+        targetFeedRate: 40,
       });
 
       const previousData = { 
@@ -40,6 +41,7 @@ describe('formatData.js', () => {
         targetFeedRate: data.targetFeedRate,
         actualFeedRate: 38.9,
         floatAfterDelivery: 120,
+        deliveryDate: new Date('12/01/2021'),
         comments: data.comments,
       }
 
@@ -55,6 +57,7 @@ describe('formatData.js', () => {
         date: new Date('10/01/2021'),
         floatBeforeDelivery: 106, 
         floatAfterDelivery: 120,
+        targetFeedRate: 40,
       });
 
       const specificGravity = 2.8;
@@ -76,6 +79,7 @@ describe('formatData.js', () => {
         targetFeedRate: data.targetFeedRate,
         actualFeedRate: null,
         floatAfterDelivery: 120,
+        deliveryDate: new Date('12/01/2021'),
         comments: data.comments,
       }
 
@@ -126,7 +130,7 @@ describe('formatData.js', () => {
       const date = new Date('09/16/2021');
 
       const result = deliveryDate(kgActual, targetFeedRate, cows, date);
-      expect(result.getTime()).to.equal(new Date('03/15/2022').setHours(23, 59, 59, 999));
+      expect(result.getTime()).to.equal(new Date('03/15/2022').setHours(0, 0, 0, 0));
     });
 
     it('should calculate the correct date for next delivery with different values', () => {
@@ -136,7 +140,18 @@ describe('formatData.js', () => {
       const date = new Date('09/16/2021');
 
       const result = deliveryDate(kgActual, targetFeedRate, cows, date);
-      expect(result.getTime()).to.equal(new Date('12/01/2021').setHours(23, 59, 59, 999));
-    })
+      expect(result.getTime()).to.equal(new Date('12/01/2021').setHours(0, 0, 0, 0));
+    });
+
+    it('should calculate the correct date for next delivery with other values', () => {
+      const kgActual = 296.8;
+      const targetFeedRate = 40;
+      const cows = 120;
+      const date = new Date('10/01/2021');
+
+      const result = deliveryDate(kgActual, targetFeedRate, cows, date);
+
+      expect(result.getTime()).to.equal(new Date('12/01/2021').setHours(0, 0, 0, 0));
+    });
   })
 });

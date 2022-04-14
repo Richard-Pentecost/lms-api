@@ -123,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       deliveryDate: {
-        type: DataTypes.Date
+        type: DataTypes.DATE,
       },
       comments: {
         type: DataTypes.TEXT,
