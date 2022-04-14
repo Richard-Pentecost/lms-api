@@ -122,6 +122,9 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      deliveryDate: {
+        type: DataTypes.Date
+      },
       comments: {
         type: DataTypes.TEXT,
       },
