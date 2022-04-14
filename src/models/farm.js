@@ -85,16 +85,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'farmId',
       otherKey: 'productId',
     });
-    // Farm.hasMany(models.Data, {
-    //   foreignKey: 'farmFk',
-    //   targetKey: 'uuid',
-    //   as: 'data',
-    // });
-    // Farm.hasOne(models.Region, {
-    //   foreignKey: 'regionFk',
-    //   targetKey: 'uuid',
-      // as: 'region',
-    // })
+    Farm.hasMany(models.Data, {
+      as: 'data',
+      foreignKey: 'farmFk',
+      targetKey: 'uuid',
+    });
   };
 
   Farm.fetchActiveFarms = function (searchString) {
@@ -128,7 +123,12 @@ module.exports = (sequelize, DataTypes) => {
           model: sequelize.models.Product,
           attributes: ['productName', 'uuid', 'specificGravity'],
           as: 'products',
-        }
+        },
+        // {
+        //   model: sequelize.models.Data,
+        //   attributes: ['uuid'],
+        //   as: 'data',
+        // }
       ]
     });
   };

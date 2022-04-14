@@ -138,6 +138,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Data.associate = function (models) {
     Data.belongsTo(models.Farm, {
+      as: 'farm',
       foreignKey: 'farmFk',
       targetKey: 'uuid',
     });
