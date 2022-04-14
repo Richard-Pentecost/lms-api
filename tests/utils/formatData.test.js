@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const DataFactory = require('../helpers/data-factory');
-const { formatData, actualFeedRate, averageWaterIntake, kgActual } = require('../../src/utils/formatData');
+const { formatData, actualFeedRate, averageWaterIntake, kgActual, deliveryDate } = require('../../src/utils/formatData');
 
 describe('formatData.js', () => {
   describe('formatData', () => {
@@ -38,7 +38,7 @@ describe('formatData.js', () => {
         floatBeforeDelivery: 106,
         kgActual: 296.8,
         targetFeedRate: data.targetFeedRate,
-        actualFeedRate: 39,
+        actualFeedRate: 38.9,
         floatAfterDelivery: 120,
         comments: data.comments,
       }
@@ -46,7 +46,7 @@ describe('formatData.js', () => {
       expect(formattedDataObj).to.deep.equal(expectedDataObj);
     });
 
-    it('should return the data object without averageWaterIntake and actualFeedRate when there is no previous data', () => {
+    it('should return the data object with averageWaterIntake and actualFeedRate set to null when there is no previous data', () => {
       const farmFk = DataFactory.uuid;
       const data = DataFactory.data({
         farmFk,
@@ -69,10 +69,12 @@ describe('formatData.js', () => {
         quantity: data.quantity,
         meterReading: 1995,
         waterUsage: data.waterUsage,
+        averageWaterIntake: null,
         pumpDial: data.pumpDial,
         floatBeforeDelivery: 106,
         kgActual: 296.8,
         targetFeedRate: data.targetFeedRate,
+        actualFeedRate: null,
         floatAfterDelivery: 120,
         comments: data.comments,
       }
@@ -102,7 +104,7 @@ describe('formatData.js', () => {
       const days = 15;
 
       const result = actualFeedRate(floatBeforeDelivery, lastFloatDelivery, specGravity, cows, days);
-      expect(result).to.equal(39);
+      expect(result).to.equal(38.9);
     });
   });
 
@@ -115,4 +117,26 @@ describe('formatData.js', () => {
       expect(result).to.equal(296.8);
     });
   });
+
+  describe('deliveryDate', () => {
+    it('should calculate the correct date for next delivery', () => {
+      const kgActual = 108;
+      const targetFeedRate = 5;
+      const cows = 120;
+      const date = new Date('09/16/2021');
+
+      const result = deliveryDate(kgActual, targetFeedRate, cows, date);
+      expect(result.getTime()).to.equal(new Date('03/15/2022').setHours(23, 59, 59, 999));
+    });
+
+    it('should calculate the correct date for next delivery with different values', () => {
+      const kgActual = 366.8;
+      const targetFeedRate = 40;
+      const cows = 120;
+      const date = new Date('09/16/2021');
+
+      const result = deliveryDate(kgActual, targetFeedRate, cows, date);
+      expect(result.getTime()).to.equal(new Date('12/01/2021').setHours(23, 59, 59, 999));
+    })
+  })
 });

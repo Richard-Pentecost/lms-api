@@ -58,4 +58,12 @@ const kgActual = (specGravity, floatBeforeDelivery) => {
   return Math.round(specGravity * floatBeforeDelivery * 10) / 10;
 };
 
-module.exports = { formatData, averageWaterIntake, actualFeedRate, kgActual }; 
+const deliveryDate = (kgActual, targetFeedRate, noOfCows, currentDate) => {
+  const gActual = kgActual * 1000;
+  const totalFeedRate = targetFeedRate * noOfCows;
+  const noOfDaysOfFeed = gActual / totalFeedRate;
+
+  return new Date(dayjs(currentDate).endOf('day').add(noOfDaysOfFeed, 'day'));
+}
+
+module.exports = { formatData, averageWaterIntake, actualFeedRate, kgActual, deliveryDate }; 
