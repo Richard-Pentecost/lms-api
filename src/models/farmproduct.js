@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       farmId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+      },
+      retrievedOrder: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
       }
     },
     {
