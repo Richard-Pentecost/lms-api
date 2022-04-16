@@ -6,13 +6,16 @@ const formatData = (data, specificGravity, previousData) => {
     meterReading: currentMeterReading, 
     noOfCows: cows, 
     floatBeforeDelivery,
+    targetFeedRate,
   } = data;
 
   const kilos = kgActual(specificGravity, floatBeforeDelivery);
+  const delivery = deliveryDate(kilos, targetFeedRate, cows, date)
 
   let dataObj = {
     ...data,
     kgActual: kilos,
+    deliveryDate: delivery,
     averageWaterIntake: null,
     actualFeedRate: null,
   };
@@ -58,4 +61,12 @@ const kgActual = (specGravity, floatBeforeDelivery) => {
   return Math.round(specGravity * floatBeforeDelivery * 10) / 10;
 };
 
-module.exports = { formatData, averageWaterIntake, actualFeedRate, kgActual }; 
+const deliveryDate = (kgActual, targetFeedRate, noOfCows, currentDate) => {
+  const gActual = kgActual * 1000;
+  const totalFeedRate = targetFeedRate * noOfCows;
+  const noOfDaysOfFeed = Math.floor(gActual / totalFeedRate);
+
+  return new Date(dayjs(currentDate).startOf('day').add(noOfDaysOfFeed, 'day'));
+}
+
+module.exports = { formatData, averageWaterIntake, actualFeedRate, kgActual, deliveryDate }; 

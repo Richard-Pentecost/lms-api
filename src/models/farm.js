@@ -85,16 +85,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'farmId',
       otherKey: 'productId',
     });
-    // Farm.hasMany(models.Data, {
-    //   foreignKey: 'farmFk',
-    //   targetKey: 'uuid',
-    //   as: 'data',
-    // });
-    // Farm.hasOne(models.Region, {
-    //   foreignKey: 'regionFk',
-    //   targetKey: 'uuid',
-      // as: 'region',
-    // })
+    Farm.hasMany(models.Data, {
+      as: 'data',
+      foreignKey: 'farmFk',
+      sourceKey: 'uuid',
+    });
   };
 
   Farm.fetchActiveFarms = function (searchString) {
@@ -117,7 +112,7 @@ module.exports = (sequelize, DataTypes) => {
         isActive: true,
         ...search, 
       },
-      order: [['farmName', 'ASC']],
+      order: [['farmName', 'asc']],
       include: [
         {
           model: sequelize.models.Region,
@@ -128,6 +123,13 @@ module.exports = (sequelize, DataTypes) => {
           model: sequelize.models.Product,
           attributes: ['productName', 'uuid', 'specificGravity'],
           as: 'products',
+        },
+        {
+          model: sequelize.models.Data,
+          attributes: ['date', 'deliveryDate', 'product'],
+          as: 'data',
+          separate: true,
+          order: [['date', 'desc']],
         }
       ]
     });
@@ -135,7 +137,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Farm.fetchAllFarms = function() {
     return this.findAll({
-      order: [['farmName', 'ASC']],
+      order: [['farmName', 'asc']],
       include: [
         {
           model: sequelize.models.Region,

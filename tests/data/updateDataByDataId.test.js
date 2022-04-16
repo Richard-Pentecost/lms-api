@@ -6,7 +6,7 @@ const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 const jwt = require('jsonwebtoken');
 
-describe.only('PATCH /farms/:farmId/data/:dataId', () => {
+describe('PATCH /farms/:farmId/data/:dataId', () => {
   let farm;
   let previousData;
   let data;
@@ -58,6 +58,7 @@ describe.only('PATCH /farms/:farmId/data/:dataId', () => {
       targetFeedRate: 5,
       actualFeedRate: 5,
       floatAfterDelivery: 99,
+      deliveryDate: new Date('03/15/2022'),
     });
 
     data = await Data.create(dataObj);
@@ -78,13 +79,15 @@ describe.only('PATCH /farms/:farmId/data/:dataId', () => {
     
     const updatedData = await Data.findByPk(data.id, { raw: true });
 
-    expect(updatedData).to.have.property('date');
+    expect(new Date(updatedData.date)).to.deep.equal(newData.date);
     expect(updatedData.kgActual).to.exist;
     expect(updatedData.kgActual).not.to.equal(dataObj.kgActual);
     expect(updatedData.averageWaterIntake).to.exist;
     expect(updatedData.averageWaterIntake).not.to.equal(dataObj.averageWaterIntake);
     expect(updatedData.actualFeedRate).to.exist;
     expect(updatedData.actualFeedRate).not.to.equal(dataObj.actualFeedRate);
+    expect(updatedData.deliveryDate).to.exist;
+    expect(updatedData.deliveryDate).not.to.deep.equal(dataObj.deliveryDate);
     expect(+updatedData.noOfCows).to.equal(newData.noOfCows);
     expect(updatedData.product).to.equal(newData.product);
     expect(+updatedData.quantity).to.equal(newData.quantity);
@@ -122,11 +125,12 @@ describe.only('PATCH /farms/:farmId/data/:dataId', () => {
     
     const updatedData = await Data.findByPk(dataNoCalcs.id, { raw: true });
 
-    expect(updatedData).to.have.property('date');
+    expect(new Date(updatedData.date)).to.deep.equal(newData.date);
     expect(updatedData.kgActual).to.exist;
     expect(updatedData.kgActual).not.to.equal(99);
     expect(updatedData.averageWaterIntake).not.to.exist;
     expect(updatedData.actualFeedRate).not.to.exist;
+    expect(updatedData.deliveryDate).to.exist;
     expect(+updatedData.noOfCows).to.equal(newData.noOfCows);
     expect(updatedData.product).to.equal(newData.product);
     expect(+updatedData.quantity).to.equal(newData.quantity);
@@ -140,7 +144,7 @@ describe.only('PATCH /farms/:farmId/data/:dataId', () => {
   });
 
   it('should update only specific data fields in the database when only those fields have been changed', async () => {
-    const newData = { ...dataObj, targetFeedRate: dataObj.targetFeedRate + 3 };
+    const newData = { ...dataObj, quantity: dataObj.quantity + 3 };
 
     const response = await request(app)
       .patch(`/farms/${farm.uuid}/data/${data.uuid}`)
@@ -150,18 +154,19 @@ describe.only('PATCH /farms/:farmId/data/:dataId', () => {
     
     const updatedData = await Data.findByPk(data.id, { raw: true });
 
-    expect(updatedData).to.have.property('date');
+    expect(new Date(updatedData.date)).to.deep.equal(dataObj.date);
     expect(+updatedData.noOfCows).to.equal(dataObj.noOfCows);
     expect(+updatedData.kgActual).to.equal(dataObj.kgActual);
     expect(+updatedData.averageWaterIntake).to.equal(dataObj.averageWaterIntake);
     expect(+updatedData.actualFeedRate).to.equal(dataObj.actualFeedRate);
+    expect(updatedData.deliveryDate).to.deep.equal(dataObj.deliveryDate);
     expect(updatedData.product).to.equal(dataObj.product);
-    expect(+updatedData.quantity).to.equal(dataObj.quantity);
+    expect(+updatedData.quantity).to.equal(newData.quantity);
     expect(+updatedData.meterReading).to.equal(dataObj.meterReading);
     expect(+updatedData.waterUsage).to.equal(dataObj.waterUsage);
     expect(+updatedData.pumpDial).to.equal(dataObj.pumpDial);
     expect(+updatedData.floatBeforeDelivery).to.equal(dataObj.floatBeforeDelivery);
-    expect(+updatedData.targetFeedRate).to.equal(newData.targetFeedRate);
+    expect(+updatedData.targetFeedRate).to.equal(dataObj.targetFeedRate);
     expect(+updatedData.floatAfterDelivery).to.equal(dataObj.floatAfterDelivery);
     expect(updatedData.comments).to.equal(dataObj.comments);
   });
@@ -179,11 +184,12 @@ describe.only('PATCH /farms/:farmId/data/:dataId', () => {
     
     const updatedData = await Data.findByPk(data.id, { raw: true });
 
-    expect(updatedData).to.have.property('date');
+    expect(new Date(updatedData.date)).to.deep.equal(newData.date);
     expect(updatedData.kgActual).to.exist;
     expect(updatedData.kgActual).not.to.equal(99);
     expect(updatedData.averageWaterIntake).not.to.exist;
     expect(updatedData.actualFeedRate).not.to.exist;
+    expect(updatedData.deliveryDate).to.exist;
     expect(+updatedData.noOfCows).to.equal(newData.noOfCows);
     expect(updatedData.product).to.equal(newData.product);
     expect(+updatedData.quantity).to.equal(newData.quantity);

@@ -43,6 +43,7 @@ describe('POST /farms/:farmId/data', () => {
       noOfCows: 120,
       floatBeforeDelivery: 106,
       floatAfterDelivery: 120,
+      targetFeedRate: 40,
     });
     // reset jwt token mock to set isAdmin to false for the data functionality
     sinon.restore();
@@ -57,7 +58,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(response.status).to.equal(201);
     expect(newDataRecord).to.have.property('uuid');
     expect(newDataRecord.farmFk).to.equal(newData.farmFk);
-    // expect(new Date(newData.date)).to.deep.equal(newData.date);
+    expect(new Date(newDataRecord.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
     expect(newDataRecord.product).to.equal(newData.product);
     expect(+newDataRecord.quantity).to.equal(newData.quantity);
@@ -70,6 +71,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(+newDataRecord.actualFeedRate).to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
     expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
+    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/01/2021'));
     expect(newDataRecord.comments).to.equal(newData.comments);
   });
 
@@ -81,7 +83,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(response.status).to.equal(201);
     expect(newDataRecord).to.have.property('uuid');
     expect(newDataRecord.farmFk).to.equal(newData.farmFk);
-    // expect(new Date(newData.date)).to.deep.equal(newData.date);
+    expect(new Date(newDataRecord.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
     expect(newDataRecord.product).to.equal(newData.product);
     expect(+newDataRecord.quantity).to.equal(newData.quantity);
@@ -94,6 +96,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(newDataRecord.actualFeedRate).not.to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
     expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
+    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/01/2021'));
     expect(newDataRecord.comments).to.equal(newData.comments);
   });
 
@@ -106,7 +109,7 @@ describe('POST /farms/:farmId/data', () => {
 
     expect(response.status).to.equal(201);
     expect(newDataRecord).to.have.property('uuid');
-    // expect(new Date(newData.date)).to.deep.equal(newData.date);
+    expect(new Date(newDataRecord.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
     expect(newDataRecord.product).to.equal(newData.product);
     expect(+newDataRecord.quantity).to.equal(newData.quantity);
@@ -119,6 +122,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(+newDataRecord.actualFeedRate).to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
     expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
+    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/01/2021'));
     expect(newDataRecord.comments).to.be.null;
   });
 
@@ -132,7 +136,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(response.status).to.equal(201);
     expect(newDataRecord).to.have.property('uuid');
     expect(newDataRecord.farmFk).to.equal(newData.farmFk);
-    // expect(new Date(newData.date)).to.deep.equal(newData.date);
+    expect(new Date(newDataRecord.date)).to.deep.equal(newData.date);
     expect(newDataRecord.noOfCows).to.equal(newData.noOfCows);
     expect(newDataRecord.product).to.equal(newData.product);
     expect(+newDataRecord.quantity).to.equal(newData.quantity);
@@ -145,6 +149,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(newDataRecord.actualFeedRate).not.to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
     expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
+    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/01/2021'));
     expect(newDataRecord.comments).to.equal(newData.comments);
   });
 

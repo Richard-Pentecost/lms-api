@@ -122,6 +122,9 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      deliveryDate: {
+        type: DataTypes.DATE,
+      },
       comments: {
         type: DataTypes.TEXT,
       },
@@ -135,6 +138,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Data.associate = function (models) {
     Data.belongsTo(models.Farm, {
+      as: 'farm',
       foreignKey: 'farmFk',
       targetKey: 'uuid',
     });
