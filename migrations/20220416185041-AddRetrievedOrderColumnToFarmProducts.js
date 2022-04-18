@@ -7,7 +7,8 @@ module.exports = {
       'retrievedOrder',
       {
         type: Sequelize.INTEGER,
-        allowNull: true
+        allowNull: false,
+        defaultValue: 1,
       }
     )
   },

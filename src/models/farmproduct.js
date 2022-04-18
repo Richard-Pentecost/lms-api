@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
       },
       retrievedOrder: {
-        allowNull: true,
+        allowNull: false,
         type: DataTypes.INTEGER,
       }
     },
