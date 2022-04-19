@@ -21,7 +21,13 @@ const updateFarmByUuid = async (req, res) => {
   
     const existingAssociations = await FarmProduct.fetchAssociationsByFarmId(foundFarm.id);
     
-    const productsWithId = await Product.scope('withId').fetchProductsByUuid(products);
+    const productUuids = products.map(p => p.uuid);
+    const returnedProducts = await Product.scope('withId').fetchProductsByUuid(productUuids);
+
+    const productsWithId = returnedProducts.map(product => {
+      const productWithOrder = products.find(prod => prod.uuid === product.uuid)
+      return { id: product.id, order: productWithOrder.order };
+    });
 
     const productsForAdding = productsToAdd(productsWithId, existingAssociations, foundFarm.id);
 
@@ -29,6 +35,7 @@ const updateFarmByUuid = async (req, res) => {
       const association = { 
         farmId: foundFarm.id,
         productId: product.id,
+        retrievedOrder: product.order,
       };
       await FarmProduct.create(association);
     });
@@ -42,7 +49,7 @@ const updateFarmByUuid = async (req, res) => {
     await Farm.update(farm, { where: { uuid } });
     res.sendStatus(201);
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 };

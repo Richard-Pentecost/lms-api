@@ -6,7 +6,7 @@ const { Farm, Region, Product, FarmProduct } = require('../../src/models');
 const app = require('../../src/app');
 const jwt = require('jsonwebtoken');
 
-describe('PATCH /farms/:uuid', () => {
+describe.only('PATCH /farms/:uuid', () => {
   let farm;
   let products;
   let farmProductAssociations;
@@ -21,12 +21,14 @@ describe('PATCH /farms/:uuid', () => {
       await Product.create(DataFactory.product()),
     ]);
     farmProductAssociations = await Promise.all([
-      FarmProduct.create({ farmId: farm.id, productId: productsCreated[0].id }),
-      FarmProduct.create({ farmId: farm.id, productId: productsCreated[1].id }),
-      FarmProduct.create({ farmId: farm.id, productId: productsCreated[2].id }),
-      FarmProduct.create({ farmId: farm.id, productId: productsCreated[3].id }),
+      FarmProduct.create({ farmId: farm.id, productId: productsCreated[0].id, retrievedOrder: 1 }),
+      FarmProduct.create({ farmId: farm.id, productId: productsCreated[1].id, retrievedOrder: 2 }),
+      FarmProduct.create({ farmId: farm.id, productId: productsCreated[2].id, retrievedOrder: 3 }),
+      FarmProduct.create({ farmId: farm.id, productId: productsCreated[3].id, retrievedOrder: 4 }),
     ]);
-    products = productsCreated.map(product => product.uuid);
+    products = productsCreated.map((product, index) => {
+      return { uuid: product.uuid, order: index + 1 };
+    });
     sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
@@ -106,7 +108,7 @@ describe('PATCH /farms/:uuid', () => {
 
   it('should add a FarmProduct association if a product has been added', async () => {
     const newProduct = await Product.create(DataFactory.product());
-    const newProducts = [...products, newProduct.uuid];
+    const newProducts = [...products, { uuid: newProduct.uuid, order: 5 }];
 
     const response = await request(app)
       .patch(`/farms/${farm.uuid}`)
@@ -201,7 +203,7 @@ describe('PATCH /farms/:uuid', () => {
 
   it('should have removed and added a FarmProduct association if there are the same number of products but they have been changed', async () => {
     const newProduct = await Product.create(DataFactory.product());
-    const newProducts = [products[0], products[1], products[2], newProduct.uuid];
+    const newProducts = [products[0], products[1], products[2], { uuid: newProduct.uuid, order: 4 }];
     const response = await request(app)
     .patch(`/farms/${farm.uuid}`)
     .send({ farm: { farmName: 'Old Farm', postcode: 'OL0 4RM' }, products: newProducts });
