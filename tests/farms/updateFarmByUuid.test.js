@@ -6,7 +6,7 @@ const { Farm, Region, Product, FarmProduct } = require('../../src/models');
 const app = require('../../src/app');
 const jwt = require('jsonwebtoken');
 
-describe.only('PATCH /farms/:uuid', () => {
+describe('PATCH /farms/:uuid', () => {
   let farm;
   let products;
   let farmProductAssociations;
