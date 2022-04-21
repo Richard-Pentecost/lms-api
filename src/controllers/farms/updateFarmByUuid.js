@@ -1,5 +1,5 @@
 const { Farm, Product, FarmProduct } = require('../../models');
-const { productsToAdd, productsToRemove } = require('../../utils/farmProductUtils');
+const { productsToAdd, productsToRemove, productsToUpdate } = require('../../utils/farmProductUtils');
 
 const updateFarmByUuid = async (req, res) => {
   const { uuid } = req.params;
@@ -40,6 +40,13 @@ const updateFarmByUuid = async (req, res) => {
       await FarmProduct.create(association);
     });
 
+    const productsForUpdating = productsToUpdate(productsWithId, existingAssociations, foundFarm.id);
+
+    productsForUpdating.forEach(async product => {
+      const associationForUpdating = { retrievedOrder: product.order };
+      await FarmProduct.update(associationForUpdating, { where: { id: product.associationId } })
+    });
+
     const productsForRemoving = productsToRemove(productsWithId, existingAssociations, foundFarm.id);
 
     productsForRemoving.forEach(async product => {
@@ -49,7 +56,7 @@ const updateFarmByUuid = async (req, res) => {
     await Farm.update(farm, { where: { uuid } });
     res.sendStatus(201);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: 'There was an error connecting to the database' });
   }
 };

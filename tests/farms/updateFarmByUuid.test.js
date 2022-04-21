@@ -27,7 +27,7 @@ describe.only('PATCH /farms/:uuid', () => {
       FarmProduct.create({ farmId: farm.id, productId: productsCreated[3].id, retrievedOrder: 4 }),
     ]);
     products = productsCreated.map((product, index) => {
-      return { uuid: product.uuid, order: index + 1 };
+      return { id: product.id, uuid: product.uuid, order: index + 1 };
     });
     sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
@@ -134,6 +134,35 @@ describe.only('PATCH /farms/:uuid', () => {
         expect(association.productId).to.equal(newProduct.id);
       }
     });
+  });
+
+  it('should updated a FarmProduct assocation if a product order has been changed', async () => {
+    const updateProduct1 = { ...products[2], order: 4 };
+    const updateProduct2 = { ...products[3], order: 3 };
+    const productsForUpdating = [products[0], products[1], updateProduct1, updateProduct2];
+
+    const response = await request(app)
+      .patch(`/farms/${farm.uuid}`)
+      .send({ farm: { contactName: 'Farmer Giles', contactNumber: '01234567890' }, products: productsForUpdating });
+
+    const associations = await FarmProduct.findAll({ where: { farmId: farm.id } });
+    const updatedFarm = await Farm.findByPk(farm.id, { raw: true });
+
+    expect(response.status).to.equal(201);
+    expect(updatedFarm.farmName).to.equal(farm.farmName);
+    expect(updatedFarm.postcode).to.equal(farm.postcode);
+    expect(updatedFarm.contactName).to.equal('Farmer Giles');
+    expect(updatedFarm.contactNumber).to.equal('01234567890');
+
+    expect(associations.length).to.equal(4);
+
+    associations.forEach(association => {
+      const farmProductAssociation = farmProductAssociations.find(assoc => assoc.id === association.id);
+      expect(association.farmId).to.equal(farmProductAssociation.farmId);
+      expect(association.productId).to.equal(farmProductAssociation.productId);
+      const product = productsForUpdating.find(p => p.id === association.productId);
+      expect(association.retrievedOrder).to.equal(product.order);
+    })
   });
 
   it('should remove a FarmProduct association if a product has been removed', async () => {
