@@ -6,15 +6,17 @@ const formatData = (data, specificGravity, previousData) => {
     meterReading: currentMeterReading, 
     noOfCows: cows, 
     floatBeforeDelivery,
+    floatAfterDelivery,
     targetFeedRate,
   } = data;
 
-  const kilos = kgActual(specificGravity, floatBeforeDelivery);
-  const delivery = deliveryDate(kilos, targetFeedRate, cows, date)
+  const kgBeforeDelivery = kgActual(specificGravity, floatBeforeDelivery);
+  const kgAfterDelivery = kgActual(specificGravity, floatAfterDelivery);
+  const delivery = deliveryDate(kgAfterDelivery, targetFeedRate, cows, date)
 
   let dataObj = {
     ...data,
-    kgActual: kilos,
+    kgActual: kgBeforeDelivery,
     deliveryDate: delivery,
     averageWaterIntake: null,
     actualFeedRate: null,
