@@ -8,8 +8,6 @@ const jwt = require('jsonwebtoken');
 describe('POST/login', () => {
   let user;
 
-  before(async () => User.sequelize.sync());
-
   beforeEach(async () => {
     user = await User.create({
       name: 'John Doe',

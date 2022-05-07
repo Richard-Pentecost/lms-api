@@ -22,8 +22,9 @@ describe('POST /farms/:farmId/data', () => {
     // mock jwt token with isAdmin set to true, to allow post('/farms') to work
     sinon.stub(jwt, 'verify').returns({ isAdmin: true });
     const farmData = DataFactory.farm();
+
     const product = await Product.create(DataFactory.product({ specificGravity: 2.8 }));
-    const response = await request(app).post('/farms').send({ farm: farmData, products: [product.uuid] });
+    const response = await request(app).post('/farms').send({ farm: farmData, products: [{ uuid: product.uuid, order: 1 }] });
     farm = response.body.farm;
 
     previousData = await Data.create(DataFactory.data({ 

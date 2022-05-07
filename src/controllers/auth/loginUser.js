@@ -25,7 +25,7 @@ const loginUser = async (req, res) => {
     const userObj = { uuid, email: userEmail, name, isAdmin };
     res.status(201).json({ token, user: userObj });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.sendStatus(500);
   }
 }

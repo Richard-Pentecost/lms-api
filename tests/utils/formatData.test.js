@@ -41,7 +41,7 @@ describe('formatData.js', () => {
         targetFeedRate: data.targetFeedRate,
         actualFeedRate: 38.9,
         floatAfterDelivery: 120,
-        deliveryDate: new Date('12/01/2021'),
+        deliveryDate: new Date('12/10/2021'),
         comments: data.comments,
       }
 
@@ -79,7 +79,7 @@ describe('formatData.js', () => {
         targetFeedRate: data.targetFeedRate,
         actualFeedRate: null,
         floatAfterDelivery: 120,
-        deliveryDate: new Date('12/01/2021'),
+        deliveryDate: new Date('12/10/2021'),
         comments: data.comments,
       }
 

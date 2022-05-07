@@ -20,8 +20,8 @@ const createFarm = async (req, res) => {
       return res.status(401).json({ error: 'There are no products associated with this farm' });
     }
 
-    await Promise.all(products.map(async uuid => {
-      const product = await Product.scope('withId').fetchProductByUuid(uuid);
+    await Promise.all(products.map(async p => {
+      const product = await Product.scope('withId').fetchProductByUuid(p.uuid);
 
       if (!product) {
         return res.status(401).json({ error: 'The product could not be found' });
@@ -29,7 +29,8 @@ const createFarm = async (req, res) => {
 
       const association = { 
         farmId: farm.id, 
-        productId: product.id 
+        productId: product.id,
+        retrievedOrder: p.order,
       };
       await FarmProduct.create(association);
     }));

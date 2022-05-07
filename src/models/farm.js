@@ -112,7 +112,7 @@ module.exports = (sequelize, DataTypes) => {
         isActive: true,
         ...search, 
       },
-      order: [['farmName', 'asc']],
+      
       include: [
         {
           model: sequelize.models.Region,
@@ -123,6 +123,11 @@ module.exports = (sequelize, DataTypes) => {
           model: sequelize.models.Product,
           attributes: ['productName', 'uuid', 'specificGravity'],
           as: 'products',
+          through: {
+            model: sequelize.models.FarmProduct,
+            attributes: ['retrievedOrder'],
+            as: 'farmProducts',
+          },
         },
         {
           model: sequelize.models.Data,
@@ -130,8 +135,13 @@ module.exports = (sequelize, DataTypes) => {
           as: 'data',
           separate: true,
           order: [['date', 'desc']],
-        }
-      ]
+        },
+      ],
+      order: [
+        ['farmName', 'asc'],
+        [sequelize.literal(`"products.farmProducts.retrievedOrder"`), 'asc']
+      ],
+      // logging: console.log,
     });
   };
 

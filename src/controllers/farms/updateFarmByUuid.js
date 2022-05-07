@@ -1,5 +1,5 @@
 const { Farm, Product, FarmProduct } = require('../../models');
-const { productsToAdd, productsToRemove } = require('../../utils/farmProductUtils');
+const { productsToAdd, productsToRemove, productsToUpdate } = require('../../utils/farmProductUtils');
 
 const updateFarmByUuid = async (req, res) => {
   const { uuid } = req.params;
@@ -21,7 +21,13 @@ const updateFarmByUuid = async (req, res) => {
   
     const existingAssociations = await FarmProduct.fetchAssociationsByFarmId(foundFarm.id);
     
-    const productsWithId = await Product.scope('withId').fetchProductsByUuid(products);
+    const productUuids = products.map(p => p.uuid);
+    const returnedProducts = await Product.scope('withId').fetchProductsByUuid(productUuids);
+
+    const productsWithId = returnedProducts.map(product => {
+      const productWithOrder = products.find(prod => prod.uuid === product.uuid)
+      return { id: product.id, order: productWithOrder.order };
+    });
 
     const productsForAdding = productsToAdd(productsWithId, existingAssociations, foundFarm.id);
 
@@ -29,8 +35,16 @@ const updateFarmByUuid = async (req, res) => {
       const association = { 
         farmId: foundFarm.id,
         productId: product.id,
+        retrievedOrder: product.order,
       };
       await FarmProduct.create(association);
+    });
+
+    const productsForUpdating = productsToUpdate(productsWithId, existingAssociations, foundFarm.id);
+
+    productsForUpdating.forEach(async product => {
+      const associationForUpdating = { retrievedOrder: product.order };
+      await FarmProduct.update(associationForUpdating, { where: { id: product.associationId } })
     });
 
     const productsForRemoving = productsToRemove(productsWithId, existingAssociations, foundFarm.id);

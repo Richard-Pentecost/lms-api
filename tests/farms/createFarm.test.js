@@ -25,8 +25,8 @@ describe('POST /farms', () => {
       Product.create(DataFactory.product()),
       Product.create(DataFactory.product()),
     ]);
-    products = productsCreated.map(product => {
-      return product.uuid;
+    products = productsCreated.map((product, index) => {
+      return { uuid: product.uuid, order: index + 1 } ;
     });
     sinon.stub(jwt, 'verify').returns({ isAdmin: true });
   });
@@ -81,9 +81,11 @@ describe('POST /farms', () => {
     expect(response.status).to.equal(201);
     expect(associations.length).to.equal(2);
 
-    associations.forEach(association => {
+    associations.sort((a, b) => (a.retreivedOrder > b.retrievedOrder) ? 1 : ((b.retrievedOrder > a.retrievedOrder) ? -1: 0));
+    associations.forEach((association, index) => {
       expect(association.farmId).to.equal(response.body.farm.id);
       expect(productsCreated.find(product => product.id === association.productId)).to.exist;
+      expect(association.retrievedOrder).to.equal(index + 1);
     })
   });
 
@@ -168,7 +170,7 @@ describe('POST /farms', () => {
   });
 
   it('should return 401 if the product could not be found', async () => {
-    const invalidProducts = [ products[0], DataFactory.uuid ];
+    const invalidProducts = [ products[0], { uuid: DataFactory.uuid, retrievedOrder: 2 } ];
     const response = await request(app).post('/farms').send({ farm, products: invalidProducts });
     
     expect(response.status).to.equal(401);

@@ -25,7 +25,7 @@ describe('PATCH /farms/:farmId/data/:dataId', () => {
     sinon.stub(jwt, 'verify').returns({ isAdmin: true });
     const farmData = DataFactory.farm();
     product = await Product.create(DataFactory.product({ specificGravity: 1 }));
-    const response = await request(app).post('/farms').send({ farm: farmData, products: [product.uuid] });
+    const response = await request(app).post('/farms').send({ farm: farmData, products: [{ uuid: product.uuid, order: 1 }] });
     farm = response.body.farm;
 
     previousData = await Data.create(DataFactory.fullData({

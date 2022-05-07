@@ -21,12 +21,14 @@ describe('PATCH /farms/:uuid', () => {
       await Product.create(DataFactory.product()),
     ]);
     farmProductAssociations = await Promise.all([
-      FarmProduct.create({ farmId: farm.id, productId: productsCreated[0].id }),
-      FarmProduct.create({ farmId: farm.id, productId: productsCreated[1].id }),
-      FarmProduct.create({ farmId: farm.id, productId: productsCreated[2].id }),
-      FarmProduct.create({ farmId: farm.id, productId: productsCreated[3].id }),
+      FarmProduct.create({ farmId: farm.id, productId: productsCreated[0].id, retrievedOrder: 1 }),
+      FarmProduct.create({ farmId: farm.id, productId: productsCreated[1].id, retrievedOrder: 2 }),
+      FarmProduct.create({ farmId: farm.id, productId: productsCreated[2].id, retrievedOrder: 3 }),
+      FarmProduct.create({ farmId: farm.id, productId: productsCreated[3].id, retrievedOrder: 4 }),
     ]);
-    products = productsCreated.map(product => product.uuid);
+    products = productsCreated.map((product, index) => {
+      return { id: product.id, uuid: product.uuid, order: index + 1 };
+    });
     sinon.stub(jwt, 'verify').returns({ isAdmin: false });
   });
 
@@ -106,7 +108,7 @@ describe('PATCH /farms/:uuid', () => {
 
   it('should add a FarmProduct association if a product has been added', async () => {
     const newProduct = await Product.create(DataFactory.product());
-    const newProducts = [...products, newProduct.uuid];
+    const newProducts = [...products, { uuid: newProduct.uuid, order: 5 }];
 
     const response = await request(app)
       .patch(`/farms/${farm.uuid}`)
@@ -132,6 +134,35 @@ describe('PATCH /farms/:uuid', () => {
         expect(association.productId).to.equal(newProduct.id);
       }
     });
+  });
+
+  it('should updated a FarmProduct assocation if a product order has been changed', async () => {
+    const updateProduct1 = { ...products[2], order: 4 };
+    const updateProduct2 = { ...products[3], order: 3 };
+    const productsForUpdating = [products[0], products[1], updateProduct1, updateProduct2];
+
+    const response = await request(app)
+      .patch(`/farms/${farm.uuid}`)
+      .send({ farm: { contactName: 'Farmer Giles', contactNumber: '01234567890' }, products: productsForUpdating });
+
+    const associations = await FarmProduct.findAll({ where: { farmId: farm.id } });
+    const updatedFarm = await Farm.findByPk(farm.id, { raw: true });
+
+    expect(response.status).to.equal(201);
+    expect(updatedFarm.farmName).to.equal(farm.farmName);
+    expect(updatedFarm.postcode).to.equal(farm.postcode);
+    expect(updatedFarm.contactName).to.equal('Farmer Giles');
+    expect(updatedFarm.contactNumber).to.equal('01234567890');
+
+    expect(associations.length).to.equal(4);
+
+    associations.forEach(association => {
+      const farmProductAssociation = farmProductAssociations.find(assoc => assoc.id === association.id);
+      expect(association.farmId).to.equal(farmProductAssociation.farmId);
+      expect(association.productId).to.equal(farmProductAssociation.productId);
+      const product = productsForUpdating.find(p => p.id === association.productId);
+      expect(association.retrievedOrder).to.equal(product.order);
+    })
   });
 
   it('should remove a FarmProduct association if a product has been removed', async () => {
@@ -201,7 +232,7 @@ describe('PATCH /farms/:uuid', () => {
 
   it('should have removed and added a FarmProduct association if there are the same number of products but they have been changed', async () => {
     const newProduct = await Product.create(DataFactory.product());
-    const newProducts = [products[0], products[1], products[2], newProduct.uuid];
+    const newProducts = [products[0], products[1], products[2], { uuid: newProduct.uuid, order: 4 }];
     const response = await request(app)
     .patch(`/farms/${farm.uuid}`)
     .send({ farm: { farmName: 'Old Farm', postcode: 'OL0 4RM' }, products: newProducts });
