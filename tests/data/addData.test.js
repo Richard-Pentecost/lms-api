@@ -72,7 +72,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(+newDataRecord.actualFeedRate).to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
     expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
-    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/01/2021'));
+    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/10/2021'));
     expect(newDataRecord.comments).to.equal(newData.comments);
   });
 
@@ -97,7 +97,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(newDataRecord.actualFeedRate).not.to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
     expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
-    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/01/2021'));
+    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/10/2021'));
     expect(newDataRecord.comments).to.equal(newData.comments);
   });
 
@@ -123,7 +123,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(+newDataRecord.actualFeedRate).to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
     expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
-    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/01/2021'));
+    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/10/2021'));
     expect(newDataRecord.comments).to.be.null;
   });
 
@@ -150,7 +150,7 @@ describe('POST /farms/:farmId/data', () => {
     expect(newDataRecord.actualFeedRate).not.to.exist;
     expect(+newDataRecord.targetFeedRate).to.equal(newData.targetFeedRate);
     expect(+newDataRecord.floatAfterDelivery).to.equal(newData.floatAfterDelivery);
-    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/01/2021'));
+    expect(newDataRecord.deliveryDate).to.deep.equal(new Date('12/10/2021'));
     expect(newDataRecord.comments).to.equal(newData.comments);
   });
 
