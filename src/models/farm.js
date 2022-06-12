@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  Farm.fetchActiveFarms = function (searchString) {
+  Farm.fetchActiveFarms = function (sort, searchString, filterArr) {
     const search = searchString ?
       { 
         [Op.or]: [
@@ -107,17 +107,23 @@ module.exports = (sequelize, DataTypes) => {
           )
         ]  
       } : {};
+
+    const filter = filterArr.length > 0 ? 
+      {
+        [Op.or]: filterArr.map(filter => ({ regionName: filter })),
+      } : {};
+
     return this.findAll({ 
       where: { 
         isActive: true,
         ...search, 
       },
-      
       include: [
         {
           model: sequelize.models.Region,
           attributes: ['regionName'],
           as: 'region',
+          where: filterArr.length > 0 && filter,
         },
         {
           model: sequelize.models.Product,
@@ -138,7 +144,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       ],
       order: [
-        ['farmName', 'asc'],
+        ['farmName', sort],
         [sequelize.literal(`"products.farmProducts.retrievedOrder"`), 'asc']
       ],
       // logging: console.log,
@@ -159,7 +165,21 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Farm.fetchFarmByUuid = function (uuid) {
-    return this.findOne({ where: { uuid } });
+    return this.findOne({ 
+      where: { uuid },
+      include: [
+        {
+          model: sequelize.models.Product,
+          attributes: ['productName', 'uuid', 'specificGravity'],
+          as: 'products',
+          through: {
+            model: sequelize.models.FarmProduct,
+            attributes: ['retrievedOrder'],
+            as: 'farmProducts',
+          },
+        },
+      ]
+    });
   };
   
   return Farm;
