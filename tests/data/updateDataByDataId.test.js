@@ -6,7 +6,7 @@ const DataFactory = require('../helpers/data-factory');
 const app = require('../../src/app');
 const jwt = require('jsonwebtoken');
 
-describe.only('PATCH /farms/:farmId/data/:dataId', () => {
+describe('PATCH /farms/:farmId/data/:dataId', () => {
   let farm;
   let previousData;
   let data;

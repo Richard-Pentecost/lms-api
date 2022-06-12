@@ -6,13 +6,14 @@ const getDataByFarmId = async (req, res) => {
   try {
     const farm = await Farm.fetchFarmByUuid(farmId);
 
-    const farmProducts = farm.products.sort((a, b) => a.farmProducts.retrievedOrder - b.farmProducts.retrievedOrder);
-    const productOrder = farmProducts.map(product => product.productName)
-
+    
     if (!farm) {
       res.status(401).json({ error: 'The farm could not be found' });
       return;
     };
+    
+    const farmProducts = farm.products.sort((a, b) => a.farmProducts.retrievedOrder - b.farmProducts.retrievedOrder);
+    const productOrder = farmProducts.map(product => product.productName)
 
     const data = await Data.fetchDataByFarmId(farmId, productOrder);
 
