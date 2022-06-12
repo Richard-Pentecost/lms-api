@@ -144,10 +144,26 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  Data.fetchDataByFarmId = function(farmId) {
+  Data.fetchDataByFarmId = function(farmId, productOrder) {
+    const customOrder = values => {
+      let orderByClause = 'CASE ';
+
+      values.forEach((value, index) => {
+        if (typeof value === 'string') value = `'${value}'`;
+        orderByClause += `WHEN product = ${value} THEN '${index}' `;
+      })
+
+      orderByClause += 'ELSE product END'
+      return [sequelize.literal(orderByClause, 'asc')];
+    }
+
     return this.findAll({
       where: { farmFk: farmId },
-      order: [['date', 'asc'], ['product', 'asc']],
+      order: [
+        ['date', 'asc'],
+        customOrder(productOrder),
+      ],
+      // logging: console.log,
     });
   };
 

@@ -165,7 +165,21 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Farm.fetchFarmByUuid = function (uuid) {
-    return this.findOne({ where: { uuid } });
+    return this.findOne({ 
+      where: { uuid },
+      include: [
+        {
+          model: sequelize.models.Product,
+          attributes: ['productName', 'uuid', 'specificGravity'],
+          as: 'products',
+          through: {
+            model: sequelize.models.FarmProduct,
+            attributes: ['retrievedOrder'],
+            as: 'farmProducts',
+          },
+        },
+      ]
+    });
   };
   
   return Farm;

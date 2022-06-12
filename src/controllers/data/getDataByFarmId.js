@@ -4,14 +4,17 @@ const getDataByFarmId = async (req, res) => {
   const { farmId } = req.params;
 
   try {
-    const farm = await Farm.findOne({ where: { uuid: farmId } });
+    const farm = await Farm.fetchFarmByUuid(farmId);
+
+    const farmProducts = farm.products.sort((a, b) => a.farmProducts.retrievedOrder - b.farmProducts.retrievedOrder);
+    const productOrder = farmProducts.map(product => product.productName)
 
     if (!farm) {
       res.status(401).json({ error: 'The farm could not be found' });
       return;
     };
 
-    const data = await Data.fetchDataByFarmId(farmId);
+    const data = await Data.fetchDataByFarmId(farmId, productOrder);
 
     if (data) {
       res.status(201).json({ data });
