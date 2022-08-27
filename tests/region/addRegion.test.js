@@ -27,11 +27,21 @@ describe('POST /regions', () => {
     expect(newRegion).not.to.have.property('id');
   });
 
+  it('should remove any whitespace at the start or end of the region', async () => {
+    const response = await request(app).post('/regions').send({ region: { regionName: '   North West   ' } });
+    const { id } = response.body.region;
+    const newRegion = await Region.findByPk(id, { raw: true });
+
+    expect(response.status).to.equal(201)
+    expect(response.body.region.regionName).to.equal('North West');
+    expect(newRegion.regionName).to.equal('North West');
+  }); 
+
   it('should return a 401 when the region is null', async () => {
     const response = await request(app).post('/regions').send(null);
 
     expect(response.status).to.equal(401);
-    expect(response.body.error.errors[0].message).to.equal('The region must be given');
+    expect(response.body.error).to.equal('The region must be given');
   });
 
   it('should return a 401 when the region is empty', async () => {

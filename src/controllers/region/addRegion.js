@@ -2,8 +2,16 @@ const { Region } = require('../../models');
 
 const addRegion = async (req, res) => {
   try {
-    const region = await Region.create(req.body.region);
-    res.status(201).json({ region });
+    const { region } = req.body;
+
+    if (!region) {
+      return res.status(401).json({ error: 'The region must be given' })
+    }
+
+    const formattedRegion = { regionName: region.regionName.trim() };
+    const createdRegion = await Region.create(formattedRegion);
+
+    res.status(201).json({ region: createdRegion });
   } catch (error) {
     // console.error(error);
     if (error.errors) {
