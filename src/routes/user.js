@@ -15,5 +15,6 @@ router.get('/:uuid', auth, getUserByUuid);
 router.patch('/:uuid', auth, updateUserByUuid);
 router.delete('/:uuid', admin, deleteUserByUuid);
 router.patch('/:uuid/security', auth, updatePasswordByUuid);
+router.post('/createUser', createUser);
 
 module.exports = router;
