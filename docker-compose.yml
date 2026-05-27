@@ -1,7 +1,6 @@
-version: '3'
-services: 
+services:
   postgres:
-    image: postgres:13
+    image: postgres:16
     container_name: lms-db
     env_file:
       - .env
@@ -10,7 +9,7 @@ services:
     ports:
       - ${DB_PORT:-5432}:5432
   postgres-test:
-    image: postgres:13
+    image: postgres:16
     container_name: lms-test-db
     env_file:
       - .env
