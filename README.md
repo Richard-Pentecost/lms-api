@@ -1,19 +1,19 @@
 # LMS API
 
-Creating an api using a MySQL database.
+Creating an api using a PosgreSQL database.
 
 ## Setting up database in order to run the application
 
-```docker-compose up -d```
+`docker-compose up -d`
 
 ## Create migrations
 
 To create models and migrations together
 
-```sequelize model:generate --name User --attributes name:string,email:string etc.```
+`sequelize model:generate --name User --attributes name:string,email:string etc.`
 
-```sequelize seed:generate --name User```
+`sequelize seed:generate --name User`
 
 To create a migration indpendently of the model
 
-```sequelize migration:generate --name <The name of the migration>```
+`sequelize migration:generate --name <The name of the migration>`

@@ -1,5 +1,6 @@
 'use strict';
 const { Op } = require('sequelize');
+const dayjs = require('dayjs');
 
 module.exports = (sequelize, DataTypes) => {
   const Farm = sequelize.define(
@@ -21,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: 'Farm name must be given' },
-          notEmpty: { msg: 'Farm name must be given' }
+          notEmpty: { msg: 'Farm name must be given' },
         },
       },
       postcode: {
@@ -60,17 +61,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       regionFk: {
         type: DataTypes.UUID,
-      }
+      },
     },
     {
       defaultScope: { attributes: { exclude: ['id'] } },
       scopes: {
         withId: {
           attributes: { include: ['id'] },
-        }
+        },
       },
       timestamps: false,
-    },
+    }
   );
 
   Farm.associate = function (models) {
@@ -93,30 +94,38 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Farm.fetchActiveFarms = function (sort, searchString, filterArr) {
-    const search = searchString ?
-      { 
-        [Op.or]: [
-          {
-            farmName: { [Op.iLike]: `%${searchString}%` },
-          },
-          {
-            contactName: { [Op.iLike]: `%${searchString}%` },
-          },
-          sequelize.where(sequelize.fn('REPLACE', sequelize.col('postcode'), ' ', ''), {
-            [Op.iLike]: `%${searchString.replace(/\s+/g, '')}%` }
-          )
-        ]  
-      } : {};
+    const search = searchString
+      ? {
+          [Op.or]: [
+            {
+              farmName: { [Op.iLike]: `%${searchString}%` },
+            },
+            {
+              contactName: { [Op.iLike]: `%${searchString}%` },
+            },
+            sequelize.where(
+              sequelize.fn('REPLACE', sequelize.col('postcode'), ' ', ''),
+              {
+                [Op.iLike]: `%${searchString.replace(/\s+/g, '')}%`,
+              }
+            ),
+          ],
+        }
+      : {};
 
-    const filter = filterArr.length > 0 ? 
-      {
-        [Op.or]: filterArr.map(filter => ({ regionName: filter })),
-      } : {};
+    const filter =
+      filterArr.length > 0
+        ? {
+            [Op.or]: filterArr.map((filter) => ({ regionName: filter })),
+          }
+        : {};
 
-    return this.findAll({ 
-      where: { 
+    const lastYear = new Date(dayjs().subtract(5, 'year'));
+
+    return this.findAll({
+      where: {
         isActive: true,
-        ...search, 
+        ...search,
       },
       include: [
         {
@@ -137,21 +146,42 @@ module.exports = (sequelize, DataTypes) => {
         },
         {
           model: sequelize.models.Data,
-          attributes: ['date', 'deliveryDate', 'product'],
+          attributes: [
+            'uuid',
+            'farmFk',
+            'date',
+            'product',
+            'noOfCows',
+            'quantity',
+            'meterReading',
+            'waterUsage',
+            'averageWaterIntake',
+            'pumpDial',
+            'floatBeforeDelivery',
+            'kgActual',
+            'targetFeedRate',
+            'actualFeedRate',
+            'floatAfterDelivery',
+            'deliveryDate',
+            'comments',
+          ],
           as: 'data',
           separate: true,
           order: [['date', 'desc']],
+          where: {
+            date: { [Op.gt]: lastYear },
+          },
         },
       ],
       order: [
         ['farmName', sort],
-        [sequelize.literal(`"products.farmProducts.retrievedOrder"`), 'asc']
+        [sequelize.literal(`"products.farmProducts.retrievedOrder"`), 'asc'],
       ],
       // logging: console.log,
     });
   };
 
-  Farm.fetchAllFarms = function() {
+  Farm.fetchAllFarms = function () {
     return this.findAll({
       order: [['farmName', 'asc']],
       include: [
@@ -160,12 +190,12 @@ module.exports = (sequelize, DataTypes) => {
           attributes: ['regionName'],
           as: 'region',
         },
-      ]
+      ],
     });
-  }
+  };
 
   Farm.fetchFarmByUuid = function (uuid) {
-    return this.findOne({ 
+    return this.findOne({
       where: { uuid },
       include: [
         {
@@ -178,9 +208,9 @@ module.exports = (sequelize, DataTypes) => {
             as: 'farmProducts',
           },
         },
-      ]
+      ],
     });
   };
-  
+
   return Farm;
 };

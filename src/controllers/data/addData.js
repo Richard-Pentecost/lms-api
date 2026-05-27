@@ -2,12 +2,18 @@ const { Farm, Data, Product } = require('../../models');
 const { formatData } = require('../../utils/formatData');
 
 const addData = async (req, res) => {
+  console.log(req.params);
+  console.log('**** add data ****');
   const { data, previousDataUuid } = req.body;
+  console.log(req.body);
+  console.log(data);
 
   try {
     const farm = await Farm.fetchFarmByUuid(data.farmFk);
     if (!farm) {
-      return res.status(401).json({ error: 'The farm this data is associated with could not be found' });
+      return res.status(401).json({
+        error: 'The farm this data is associated with could not be found',
+      });
     }
 
     if (!data.product) {
@@ -18,25 +24,32 @@ const addData = async (req, res) => {
     if (!product) {
       return res.status(401).json({ error: 'The product does not exist' });
     }
-
-    const previousData = previousDataUuid && await Data.fetchPreviousDataForCalculations(previousDataUuid)
+    console.log('##########');
+    console.log('previousDataUuid:', previousDataUuid);
+    const previousData =
+      previousDataUuid &&
+      (await Data.fetchPreviousDataForCalculations(previousDataUuid));
 
     const dataObj = formatData(data, product.specificGravity, previousData);
-
     const dataResponse = await Data.create(dataObj);
 
     res.status(201).json({ data: dataResponse });
   } catch (error) {
-    // console.error(error);
+    console.log('**************');
+    console.error(error);
     if (error.errors) {
       res.status(401).json({ error });
     } else {
       if (!data.farmFk) {
-        return res.status(401).json({ error: 'Farm foreign key must be given' });
+        return res
+          .status(401)
+          .json({ error: 'Farm foreign key must be given' });
       }
-      res.status(500).json({ error: 'There was an error connecting to the database' });
+      res
+        .status(500)
+        .json({ error: 'There was an error connecting to the database' });
     }
   }
-}
+};
 
 module.exports = addData;
