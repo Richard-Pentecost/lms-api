@@ -2,7 +2,7 @@ const { Region } = require('../../models');
 
 const addRegion = async (req, res) => {
   try {
-    const { region } = req.body;
+    const { region } = req.body || {};
 
     if (!region) {
       return res.status(401).json({ error: 'The region must be given' })
