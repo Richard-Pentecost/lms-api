@@ -1,5 +1,5 @@
 'use strict';
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID: uuidv4 } = require('crypto');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -11,7 +11,7 @@ module.exports = {
           farmName: 'New Farm',
           postcode: 'NE3 4RM',
           contactName: 'Giles',
-          contactNumber: '01234567890',
+          contactNumber: '01234 567890',
           isActive: true,
           accessCodes: 'Some codes',
           comments: 'Some comments about this farm',
@@ -22,7 +22,7 @@ module.exports = {
           farmName: 'Old Farm',
           postcode: 'OL0 4RM',
           contactName: 'John Doe',
-          contactNumber: '01234567809',
+          contactNumber: '012345 67809',
           isActive: true,
           regionFk: 'ae3ce38c-0ae1-4117-abb5-30c1dca824b8',
         },
@@ -31,7 +31,7 @@ module.exports = {
           farmName: 'Beech Farm',
           postcode: 'BE3 4RM',
           contactName: 'Jane Doe',
-          contactNumber: '01234567098',
+          contactNumber: '01234 567098',
           isActive: true,
           regionFk: '4c811657-179c-41a8-a2cf-3e613c857f76',
         },
@@ -40,15 +40,15 @@ module.exports = {
           farmName: 'The Farm',
           postcode: 'TH3 4RM',
           contactName: 'Bobbins',
-          contactNumber: '01234560987',
+          contactNumber: '01234 560987',
           isActive: true,
         },
       ],
-      {},
-    )
+      {}
+    );
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('Farms', null, {}); 
-  }
+    await queryInterface.bulkDelete('Farms', null, {});
+  },
 };
