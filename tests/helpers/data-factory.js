@@ -1,10 +1,10 @@
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 
-exports.uuid = faker.datatype.uuid();
+exports.uuid = faker.string.uuid();
 
 exports.user = (options = {}) => {
   return {
-    name: options.firstName || faker.name.findName(),
+    name: options.firstName || faker.person.fullName(),
     email: options.email || faker.internet.email(),
     password: options.password || faker.internet.password(),
     isAdmin: options.isAdmin,
@@ -18,10 +18,10 @@ exports.farm = (options = {}) => {
   }
 
   const farm = {
-    farmName: options.farmName || faker.random.word(),
+    farmName: options.farmName || faker.word.sample(),
     postcode: options.postcode || 'AB1 2CD',
-    contactName: options.contactName || faker.name.findName(),
-    contactNumber: options.contactNumber || faker.phone.phoneNumber('07### ######'),
+    contactName: options.contactName || faker.person.fullName(),
+    contactNumber: options.contactNumber || faker.phone.number({ style: 'national' }),
     isActive: options.isActive,
     regionFk: options.region || null,
     accessCodes: options.accessCodes || null,
@@ -32,19 +32,19 @@ exports.farm = (options = {}) => {
 };
 
 exports.data = (options = {}) => {
-  const floatBeforeDelivery = faker.datatype.number();
+  const floatBeforeDelivery = faker.number.int({ max: 99999 });
   const floatAfterDelivery = floatBeforeDelivery + 100;
   const data = {
     farmFk: options.farmFk,
     date: options.date || faker.date.recent(),
-    noOfCows: options.noOfCows || faker.datatype.number(),
-    product: options.product || faker.random.word(),
-    quantity: options.quantity || faker.datatype.number(),
-    meterReading: options.meterReading || faker.datatype.number(),
-    waterUsage: options.waterUsage || faker.datatype.number(),
-    pumpDial: options.pumpDial || faker.datatype.number(),
+    noOfCows: options.noOfCows || faker.number.int({ max: 99999 }),
+    product: options.product || faker.word.sample(),
+    quantity: options.quantity || faker.number.int({ max: 99999 }),
+    meterReading: options.meterReading || faker.number.int({ max: 99999 }),
+    waterUsage: options.waterUsage || faker.number.int({ max: 99999 }),
+    pumpDial: options.pumpDial || faker.number.int({ max: 99999 }),
     floatBeforeDelivery: options.floatBeforeDelivery || floatBeforeDelivery,
-    targetFeedRate: options.targetFeedRate || faker.datatype.number(),
+    targetFeedRate: options.targetFeedRate || faker.number.int({ max: 99999 }),
     floatAfterDelivery: options.floatAfterDelivery || floatAfterDelivery,
     comments: options.comments || faker.lorem.sentence(),
   };
@@ -56,15 +56,15 @@ exports.fullData = (options = {}) => {
   const data = {
     farmFk: options.farmFk,
     date: options.date || faker.date.recent(),
-    noOfCows: options.noOfCows || faker.datatype.number(),
-    product: options.product || faker.random.word(),
-    quantity: options.quantity || faker.datatype.number(),
-    meterReading: options.meterReading || faker.datatype.number(),
-    waterUsage: options.waterUsage || faker.datatype.number(),
-    pumpDial: options.pumpDial || faker.datatype.number(),
+    noOfCows: options.noOfCows || faker.number.int({ max: 99999 }),
+    product: options.product || faker.word.sample(),
+    quantity: options.quantity || faker.number.int({ max: 99999 }),
+    meterReading: options.meterReading || faker.number.int({ max: 99999 }),
+    waterUsage: options.waterUsage || faker.number.int({ max: 99999 }),
+    pumpDial: options.pumpDial || faker.number.int({ max: 99999 }),
     kgActual: options.kgActual,
     floatBeforeDelivery: options.floatBeforeDelivery,
-    targetFeedRate: options.targetFeedRate || faker.datatype.number(),
+    targetFeedRate: options.targetFeedRate || faker.number.int({ max: 99999 }),
     averageWaterIntake: options.averageWaterIntake,
     actualFeedRate: options.actualFeedRate,
     floatBeforeDelivery: options.floatBeforeDelivery,
@@ -78,7 +78,7 @@ exports.fullData = (options = {}) => {
 
 exports.product = (options = {}) => {
   return {
-    productName: options.productName || faker.random.word(),
-    specificGravity: options.specificGravity || faker.datatype.number(),
+    productName: options.productName || faker.word.sample(),
+    specificGravity: options.specificGravity || faker.number.int({ max: 99999 }),
   };
 };
